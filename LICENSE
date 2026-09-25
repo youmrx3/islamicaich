@@ -1,0 +1,18 @@
+Copyright (c) 2026 The Thabat team. All rights reserved.
+
+This source code is published publicly so that the organizers and judges of the
+"AI in Service of Islamic Content Challenge 2026" can review, run and evaluate it,
+as required by the challenge rules. Any licence granted to the challenge organizer
+is governed solely by the challenge Terms and Conditions (section 13).
+
+No other licence is granted by publication. To use this code for another purpose,
+contact the team.
+
+Third-party components keep their own licences:
+  - Tanzil Quran Text — Creative Commons Attribution 3.0 (verbatim, unmodified)
+  - fawazahmed0/hadith-api — The Unlicense
+  - FastAPI, Uvicorn, Pydantic, RapidFuzz — MIT / BSD
+  - scikit-learn, NumPy, SciPy — BSD-3-Clause
+  - tesseract.js — Apache-2.0
+  - Fonts (Amiri, Reem Kufi, IBM Plex) — SIL Open Font License 1.1
+See docs/SOURCES.md for the full log.

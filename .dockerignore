@@ -1,0 +1,9 @@
+data/raw
+data/*.pkl
+data/*.gz
+data/quran.json
+data/flags
+**/__pycache__
+.git
+docs/screenshots
+eval/results

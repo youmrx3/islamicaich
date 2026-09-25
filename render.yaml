@@ -1,0 +1,11 @@
+# Alternative host. Note: the index needs ~650 MB RAM, above Render's free 512 MB tier;
+# use the Starter plan here, or the free Hugging Face Space (see docs/DEPLOY.md).
+services:
+  - type: web
+    name: thabat
+    runtime: docker
+    plan: starter
+    healthCheckPath: /api/health
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false

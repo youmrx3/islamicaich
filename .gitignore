@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+data/raw/
+data/hadith.jsonl.gz
+data/quran.json
+data/index-*.pkl
+data/build_manifest.json
+data/flags/
+.env
+.venv/

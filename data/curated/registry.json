@@ -1,0 +1,465 @@
+{
+  "version": "0.1.0",
+  "description_ar": "سجل منسّق لعبارات شائعة تُنسب إلى النبي ﷺ ولا تثبت، أو يُختلف في ثبوتها، أو يختلف حكم لفظها عن حكم الرواية الكاملة. كل مدخل مسودة تحتاج إلى مراجعة مختص قبل اعتمادها.",
+  "description_en": "Curated register of popular sayings attributed to the Prophet ﷺ that are not established, disputed, or whose quoted wording is graded differently from the full narration. Every entry is a DRAFT until reviewed by a qualified hadith specialist.",
+  "review_policy": "Entries with review.status = 'draft' are shown with a visible 'pending specialist review' label. Only a named reviewer can change status to 'approved'. Changes are logged in data/curated/review_log.jsonl.",
+  "entries": [
+    {
+      "id": "R001",
+      "text_ar": "اطلبوا العلم ولو بالصين",
+      "variants": [
+        "اطلبوا العلم ولو في الصين",
+        "اطلبوا العلم ولو كان بالصين",
+        "Seek knowledge even if you have to go to China",
+        "Seek knowledge even as far as China",
+        "Cherchez la science jusqu'en Chine",
+        "Tuntutlah ilmu walau sampai ke negeri Cina",
+        "İlim Çin'de de olsa arayınız"
+      ],
+      "status": "fabricated",
+      "meaning": "partly_supported",
+      "verdict_ar": "لا يثبت عن النبي ﷺ؛ حكم عليه الألباني بأنه باطل، وأورده ابن الجوزي في الموضوعات. وفضل طلب العلم ثابت بأحاديث صحيحة أخرى.",
+      "verdict_en": "Not authentically attributed to the Prophet ﷺ; al-Albani graded it baseless (batil) and Ibn al-Jawzi listed it among fabrications. The virtue of seeking knowledge is established by other authentic hadith.",
+      "sources": [
+        {
+          "ar": "الألباني، سلسلة الأحاديث الضعيفة والموضوعة، رقم 416",
+          "en": "al-Albani, Silsilat al-Ahadith al-Da'ifa, no. 416"
+        },
+        {
+          "ar": "ابن الجوزي، الموضوعات",
+          "en": "Ibn al-Jawzi, al-Mawdu'at"
+        }
+      ],
+      "alternatives": [
+        {
+          "type": "hadith",
+          "id": "muslim:6853",
+          "quote_ar": "من سلك طريقا يلتمس فيه علما سهل الله له به طريقا إلى الجنة",
+          "quote_en": "Whoever takes a path seeking knowledge, Allah makes easy for him a path to Paradise."
+        }
+      ],
+      "review": {
+        "status": "draft"
+      }
+    },
+    {
+      "id": "R002",
+      "text_ar": "حب الوطن من الإيمان",
+      "variants": [
+        "حب الأوطان من الإيمان",
+        "Love of one's homeland is part of faith",
+        "Love of the homeland is part of iman",
+        "L'amour de la patrie fait partie de la foi",
+        "Cinta tanah air sebagian dari iman",
+        "Vatan sevgisi imandandır"
+      ],
+      "status": "fabricated",
+      "meaning": "not_a_religious_ruling",
+      "verdict_ar": "لا أصل له عن النبي ﷺ؛ حكم عليه الألباني بأنه موضوع، وقال السخاوي: لم أقف عليه. وقد ثبت حبه ﷺ لمكة في حديث صحيح.",
+      "verdict_en": "Has no basis from the Prophet ﷺ; al-Albani graded it fabricated and al-Sakhawi said he could not find it. The Prophet's love for Makkah is established in an authentic hadith.",
+      "sources": [
+        {
+          "ar": "الألباني، السلسلة الضعيفة، رقم 36",
+          "en": "al-Albani, al-Silsila al-Da'ifa, no. 36"
+        },
+        {
+          "ar": "السخاوي، المقاصد الحسنة",
+          "en": "al-Sakhawi, al-Maqasid al-Hasana"
+        }
+      ],
+      "alternatives": [
+        {
+          "type": "hadith",
+          "id": "tirmidhi:3926",
+          "quote_ar": "ما أطيبك من بلد وأحبك إلي",
+          "quote_en": "How good you are as a land, and how beloved you are to me! (said of Makkah)"
+        }
+      ],
+      "review": {
+        "status": "draft"
+      }
+    },
+    {
+      "id": "R003",
+      "text_ar": "اختلاف أمتي رحمة",
+      "variants": [
+        "اختلاف امتي رحمة",
+        "اختلاف العلماء رحمة",
+        "The difference of opinion among my ummah is a mercy",
+        "Differences among my community are a mercy",
+        "La divergence dans ma communauté est une miséricorde",
+        "Perbedaan pendapat umatku adalah rahmat",
+        "Ümmetimin ihtilafı rahmettir"
+      ],
+      "status": "baseless",
+      "meaning": "disputed",
+      "verdict_ar": "لا أصل له مرفوعًا إلى النبي ﷺ بهذا اللفظ؛ نص على ذلك الألباني وغيره. والقرآن يأمر بالاعتصام ونبذ التفرق.",
+      "verdict_en": "Has no chain back to the Prophet ﷺ with this wording, as al-Albani and others stated. The Quran commands holding together and avoiding division.",
+      "sources": [
+        {
+          "ar": "الألباني، السلسلة الضعيفة، رقم 57",
+          "en": "al-Albani, al-Silsila al-Da'ifa, no. 57"
+        }
+      ],
+      "alternatives": [
+        {
+          "type": "quran",
+          "ref": "3:103"
+        }
+      ],
+      "review": {
+        "status": "draft"
+      }
+    },
+    {
+      "id": "R004",
+      "text_ar": "من عرف نفسه فقد عرف ربه",
+      "variants": [
+        "من عرف نفسه عرف ربه",
+        "He who knows himself knows his Lord",
+        "Whoever knows himself knows his Lord",
+        "Celui qui se connaît soi-même connaît son Seigneur",
+        "Barangsiapa mengenal dirinya maka ia mengenal Tuhannya",
+        "Nefsini bilen Rabbini bilir"
+      ],
+      "status": "baseless",
+      "meaning": "disputed",
+      "verdict_ar": "ليس من كلام النبي ﷺ ولا أصل له مرفوعًا؛ ذكره الألباني في الضعيفة ونقل عن أهل العلم أنه لا يُعرف مرفوعًا.",
+      "verdict_en": "Not from the Prophet ﷺ and has no chain back to him; al-Albani listed it among baseless reports, citing earlier scholars.",
+      "sources": [
+        {
+          "ar": "الألباني، السلسلة الضعيفة، رقم 66",
+          "en": "al-Albani, al-Silsila al-Da'ifa, no. 66"
+        }
+      ],
+      "alternatives": [
+        {
+          "type": "quran",
+          "ref": "51:21"
+        }
+      ],
+      "review": {
+        "status": "draft"
+      }
+    },
+    {
+      "id": "R005",
+      "text_ar": "اعمل لدنياك كأنك تعيش أبدا واعمل لآخرتك كأنك تموت غدا",
+      "variants": [
+        "اعمل لدنياك كأنك تعيش ابدا",
+        "Work for your worldly life as if you will live forever, and work for your hereafter as if you will die tomorrow",
+        "Travaille pour ce bas monde comme si tu allais vivre éternellement",
+        "Bekerjalah untuk duniamu seakan-akan kamu hidup selamanya",
+        "Dünya için hiç ölmeyecekmiş gibi çalış"
+      ],
+      "status": "baseless",
+      "meaning": "partly_supported",
+      "verdict_ar": "لا أصل له مرفوعًا إلى النبي ﷺ؛ ذكره الألباني في الضعيفة. والثابت في الحث على الاستعداد للآخرة حديث: «كن في الدنيا كأنك غريب».",
+      "verdict_en": "Has no chain back to the Prophet ﷺ; al-Albani listed it in al-Da'ifa. An authentic hadith on preparing for the hereafter is: 'Be in this world as though you were a stranger.'",
+      "sources": [
+        {
+          "ar": "الألباني، السلسلة الضعيفة، رقم 8",
+          "en": "al-Albani, al-Silsila al-Da'ifa, no. 8"
+        }
+      ],
+      "alternatives": [
+        {
+          "type": "hadith",
+          "id": "bukhari:6416",
+          "quote_ar": "كن في الدنيا كأنك غريب أو عابر سبيل",
+          "quote_en": "Be in this world as though you were a stranger or a traveller."
+        }
+      ],
+      "review": {
+        "status": "draft"
+      }
+    },
+    {
+      "id": "R006",
+      "text_ar": "الجنة تحت أقدام الأمهات",
+      "variants": [
+        "الجنة تحت اقدام الامهات",
+        "Paradise lies under the feet of mothers",
+        "Paradise is at the feet of mothers",
+        "Le paradis est sous les pieds des mères",
+        "Surga di bawah telapak kaki ibu",
+        "Cennet annelerin ayakları altındadır"
+      ],
+      "status": "fabricated",
+      "meaning": "supported",
+      "verdict_ar": "هذا اللفظ لا يثبت؛ حكم عليه الألباني بالوضع. لكن معناه صحيح؛ فقد ثبت عند النسائي قوله ﷺ: «فالزمها فإن الجنة تحت رجليها». فالأولى رواية اللفظ الثابت.",
+      "verdict_en": "This wording is not established; al-Albani graded it fabricated. The meaning, however, is sound: an-Nasa'i records with an authentic chain, 'Stay with her, for Paradise is beneath her feet.' Quote the authentic wording instead.",
+      "sources": [
+        {
+          "ar": "الألباني، السلسلة الضعيفة، رقم 593",
+          "en": "al-Albani, al-Silsila al-Da'ifa, no. 593"
+        }
+      ],
+      "alternatives": [
+        {
+          "type": "hadith",
+          "id": "nasai:3104",
+          "quote_ar": "فالزمها فإن الجنة تحت رجليها",
+          "quote_en": "Stay with her, for Paradise is beneath her feet."
+        }
+      ],
+      "review": {
+        "status": "draft"
+      }
+    },
+    {
+      "id": "R007",
+      "text_ar": "النظافة من الإيمان",
+      "variants": [
+        "النظافه من الايمان",
+        "Cleanliness is part of faith",
+        "Cleanliness is from faith",
+        "La propreté fait partie de la foi",
+        "Kebersihan sebagian dari iman",
+        "Temizlik imandandır"
+      ],
+      "status": "baseless",
+      "meaning": "supported",
+      "verdict_ar": "لا يُعرف بهذا اللفظ حديثًا ثابتًا. ومعناه صحيح؛ والثابت في صحيح مسلم: «الطُّهور شطر الإيمان».",
+      "verdict_en": "Not known as an established hadith with this wording. Its meaning is sound; the authentic narration in Sahih Muslim is 'Purification is half of faith.'",
+      "sources": [
+        {
+          "ar": "كتب الأحاديث المشتهرة (المقاصد الحسنة، كشف الخفاء)",
+          "en": "Works on popular sayings (al-Maqasid al-Hasana, Kashf al-Khafa')"
+        }
+      ],
+      "alternatives": [
+        {
+          "type": "hadith",
+          "id": "muslim:534",
+          "quote_ar": "الطهور شطر الإيمان",
+          "quote_en": "Purification is half of faith."
+        }
+      ],
+      "review": {
+        "status": "draft",
+        "note": "Confirm exact references in al-Maqasid and Kashf al-Khafa'."
+      }
+    },
+    {
+      "id": "R008",
+      "text_ar": "رجعنا من الجهاد الأصغر إلى الجهاد الأكبر",
+      "variants": [
+        "رجعنا من الجهاد الاصغر الى الجهاد الاكبر جهاد النفس",
+        "We have returned from the lesser jihad to the greater jihad",
+        "Nous sommes revenus du petit jihad vers le grand jihad",
+        "Kita kembali dari jihad kecil menuju jihad besar",
+        "Küçük cihaddan büyük cihada döndük"
+      ],
+      "status": "weak",
+      "meaning": "partly_supported",
+      "verdict_ar": "لا يثبت عن النبي ﷺ؛ ضعّفه أهل الحديث، وحكم عليه الألباني بالنكارة. والثابت في جهاد النفس: «والمجاهد من جاهد نفسه في طاعة الله».",
+      "verdict_en": "Not established from the Prophet ﷺ; hadith scholars graded it weak, and al-Albani called it munkar. An authentic narration on striving against the self is: 'The mujahid is the one who strives against himself in obedience to Allah.'",
+      "sources": [
+        {
+          "ar": "الألباني، السلسلة الضعيفة، رقم 2460",
+          "en": "al-Albani, al-Silsila al-Da'ifa, no. 2460"
+        }
+      ],
+      "alternatives": [
+        {
+          "type": "hadith",
+          "id": "tirmidhi:1621",
+          "quote_ar": "والمجاهد من جاهد نفسه",
+          "quote_en": "The mujahid is the one who strives against his own self."
+        }
+      ],
+      "review": {
+        "status": "draft"
+      }
+    },
+    {
+      "id": "R009",
+      "text_ar": "تفكر ساعة خير من عبادة سنة",
+      "variants": [
+        "تفكر ساعة خير من قيام ليلة",
+        "تفكر ساعه خير من عباده ستين سنه",
+        "An hour of reflection is better than a year of worship",
+        "Une heure de méditation vaut mieux qu'une année d'adoration",
+        "Berpikir sesaat lebih baik dari ibadah setahun"
+      ],
+      "status": "fabricated",
+      "meaning": "partly_supported",
+      "verdict_ar": "لا يثبت مرفوعًا إلى النبي ﷺ؛ حكم عليه الألباني بالوضع، ويُروى نحوه من كلام بعض السلف. والتفكر ممدوح في القرآن.",
+      "verdict_en": "Not established as the Prophet's words ﷺ; al-Albani graded it fabricated, though similar words are reported from some early scholars. Reflection is praised in the Quran.",
+      "sources": [
+        {
+          "ar": "الألباني، السلسلة الضعيفة، رقم 173",
+          "en": "al-Albani, al-Silsila al-Da'ifa, no. 173"
+        }
+      ],
+      "alternatives": [
+        {
+          "type": "quran",
+          "ref": "3:191"
+        }
+      ],
+      "review": {
+        "status": "draft"
+      }
+    },
+    {
+      "id": "R010",
+      "text_ar": "صوموا تصحوا",
+      "variants": [
+        "صوموا تصحو",
+        "Fast and you will be healthy",
+        "Fast, you will be healthy",
+        "Jeûnez, vous serez en bonne santé",
+        "Berpuasalah niscaya kamu sehat",
+        "Oruç tutun sıhhat bulun"
+      ],
+      "status": "weak",
+      "meaning": "not_a_religious_ruling",
+      "verdict_ar": "ضعيف لا يثبت عن النبي ﷺ؛ ضعّفه الألباني وغيره. والثابت في فضل الصيام: «الصيام جُنّة».",
+      "verdict_en": "Weak and not established from the Prophet ﷺ; al-Albani and others graded it weak. An authentic hadith on fasting: 'Fasting is a shield.'",
+      "sources": [
+        {
+          "ar": "الألباني، السلسلة الضعيفة، رقم 253",
+          "en": "al-Albani, al-Silsila al-Da'ifa, no. 253"
+        }
+      ],
+      "alternatives": [
+        {
+          "type": "hadith",
+          "id": "bukhari:1894",
+          "quote_ar": "الصيام جنة",
+          "quote_en": "Fasting is a shield."
+        }
+      ],
+      "review": {
+        "status": "draft"
+      }
+    },
+    {
+      "id": "R011",
+      "text_ar": "الدين المعاملة",
+      "variants": [
+        "الدين معاملة",
+        "Religion is how you treat people",
+        "Religion is dealing with people",
+        "La religion, c'est le comportement",
+        "Agama adalah muamalah"
+      ],
+      "status": "baseless",
+      "meaning": "partly_supported",
+      "verdict_ar": "لا أصل له حديثًا عن النبي ﷺ، وإن اشتهر على الألسنة. والثابت في صحيح مسلم: «الدين النصيحة».",
+      "verdict_en": "Has no basis as a hadith of the Prophet ﷺ, despite being widely quoted. The authentic narration in Sahih Muslim is 'Religion is sincere counsel.'",
+      "sources": [
+        {
+          "ar": "تنبيه أهل العلم على شهرته دون أصل",
+          "en": "Scholars' notes on popular sayings without a chain"
+        }
+      ],
+      "alternatives": [
+        {
+          "type": "hadith",
+          "id": "muslim:196",
+          "quote_ar": "الدين النصيحة",
+          "quote_en": "Religion is sincere counsel."
+        }
+      ],
+      "review": {
+        "status": "draft",
+        "note": "Add a precise scholarly reference."
+      }
+    },
+    {
+      "id": "R012",
+      "text_ar": "مداد العلماء أفضل من دم الشهداء",
+      "variants": [
+        "مداد العلماء افضل من دماء الشهداء",
+        "يوزن مداد العلماء ودم الشهداء",
+        "The ink of the scholar is holier than the blood of the martyr",
+        "L'encre du savant est plus sacrée que le sang du martyr",
+        "Tinta ulama lebih utama dari darah syuhada"
+      ],
+      "status": "fabricated",
+      "meaning": "not_supported",
+      "verdict_ar": "لا يثبت عن النبي ﷺ؛ عدّه أهل الحديث في الموضوعات.",
+      "verdict_en": "Not established from the Prophet ﷺ; hadith scholars counted it among fabrications.",
+      "sources": [
+        {
+          "ar": "كتب الموضوعات",
+          "en": "Collections of fabricated reports"
+        }
+      ],
+      "alternatives": [
+        {
+          "type": "hadith",
+          "id": "muslim:6853",
+          "quote_ar": "من سلك طريقا يلتمس فيه علما سهل الله له به طريقا إلى الجنة",
+          "quote_en": "Whoever takes a path seeking knowledge, Allah makes easy for him a path to Paradise."
+        }
+      ],
+      "review": {
+        "status": "draft",
+        "note": "Add precise reference number."
+      }
+    },
+    {
+      "id": "R013",
+      "text_ar": "أنا مدينة العلم وعلي بابها",
+      "variants": [
+        "انا مدينه العلم وعلي بابها",
+        "I am the city of knowledge and Ali is its gate",
+        "Je suis la cité de la science et Ali en est la porte",
+        "Aku adalah kota ilmu dan Ali pintunya"
+      ],
+      "status": "disputed",
+      "meaning": "disputed",
+      "verdict_ar": "مختلف فيه اختلافًا كبيرًا بين المحدثين: فمنهم من حكم عليه بالوضع كابن الجوزي، ومنهم من ضعّفه، ومنهم من حسّنه بمجموع طرقه. ورواه الترمذي بلفظ «أنا دار الحكمة وعلي بابها» وقال: غريب منكر. يُحال للترجيح إلى مختص.",
+      "verdict_en": "Strongly disputed among hadith scholars: some (e.g. Ibn al-Jawzi) judged it fabricated, others weak, and others hasan by combining routes. At-Tirmidhi narrated it as 'I am the house of wisdom and Ali is its door' and called it gharib munkar. Refer to a specialist.",
+      "sources": [
+        {
+          "ar": "جامع الترمذي (3723)",
+          "en": "Jami at-Tirmidhi 3723"
+        },
+        {
+          "ar": "ابن الجوزي، الموضوعات",
+          "en": "Ibn al-Jawzi, al-Mawdu'at"
+        }
+      ],
+      "alternatives": [],
+      "review": {
+        "status": "draft"
+      }
+    },
+    {
+      "id": "R014",
+      "text_ar": "طلب العلم فريضة على كل مسلم",
+      "variants": [
+        "طلب العلم فريضه على كل مسلم ومسلمة",
+        "Seeking knowledge is an obligation upon every Muslim",
+        "Seeking knowledge is obligatory for every Muslim",
+        "La recherche du savoir est une obligation pour tout musulman",
+        "Menuntut ilmu wajib atas setiap muslim",
+        "İlim talep etmek her Müslümana farzdır"
+      ],
+      "status": "authentic_by_routes",
+      "meaning": "supported",
+      "verdict_ar": "هذه الجملة صححها الألباني بمجموع طرقها. أما رواية ابن ماجه الكاملة ففيها زيادة «وواضع العلم عند غير أهله كمقلد الخنازير...» وهي ضعيفة جدًا؛ فحكم الرواية الكاملة لا ينطبق على الجملة المقتبسة. أما زيادة «ومسلمة» فلا أصل لها.",
+      "verdict_en": "This sentence was graded authentic by al-Albani on the strength of its combined routes. Ibn Majah's full narration adds 'and whoever imparts knowledge to those unfit for it is like one who garlands swine...', which is very weak — so the grade of the full narration does not apply to the quoted sentence. The addition 'and every Muslim woman' has no basis.",
+      "sources": [
+        {
+          "ar": "الألباني، صحيح الجامع الصغير، رقم 3913",
+          "en": "al-Albani, Sahih al-Jami' al-Saghir, no. 3913"
+        },
+        {
+          "ar": "سنن ابن ماجه (224)",
+          "en": "Sunan Ibn Majah 224"
+        }
+      ],
+      "alternatives": [],
+      "review": {
+        "status": "draft",
+        "note": "Showcase case: quoted phrase vs full-narration grading."
+      }
+    }
+  ]
+}

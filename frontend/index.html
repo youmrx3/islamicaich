@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ثَبَت — تحقّق قبل أن تنشر</title>
+  <meta name="description" content="ثَبَت: أداة تتحقق من الأحاديث والآيات المتداولة في الرسائل قبل نشرها، وتعرض المصدر وحكم المحققين، وتقترح ردًّا لطيفًا وبديلًا صحيحًا.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%231E7A5A'/%3E%3Cpath d='M20 33l8 8 16-18' stroke='white' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Reem+Kufi:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <a class="skip" href="#composer" data-i18n="skip">انتقل إلى أداة التحقق</a>
+
+  <header class="top">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">ثَبَت</span>
+      <span class="brand-sub" data-i18n="tagline">تحقّق قبل أن تنشر</span>
+    </div>
+    <nav class="top-actions">
+      <a href="#method" data-i18n="nav_method">المنهجية</a>
+      <button id="langToggle" class="ghost" type="button" aria-label="Switch language">English</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="heroTitle">
+      <h1 id="heroTitle" data-i18n="hero_title">وصلتك رسالة فيها حديث أو آية؟ الصقها هنا قبل أن تعيد إرسالها.</h1>
+      <p class="lede" data-i18n="hero_lede">نبحث عنها في القرآن الكريم وتسعة من كتب الحديث، ونعرض لك المصدر وحكم المحققين بأسمائهم، ونخبرك بصراحة إن لم نجدها.</p>
+    </section>
+
+    <section id="composer" class="composer" aria-label="Message to verify">
+      <div class="bubble">
+        <div class="bubble-head">
+          <span class="fwd" aria-hidden="true">↪</span>
+          <span data-i18n="forwarded">رسالة معاد توجيهها</span>
+        </div>
+        <label for="msg" class="sr" data-i18n="msg_label">نص الرسالة</label>
+        <textarea id="msg" rows="5" maxlength="6000" data-i18n-ph="msg_ph" placeholder="الصق نص الرسالة هنا…"></textarea>
+        <div class="bubble-foot">
+          <label class="file" for="img">
+            <input id="img" type="file" accept="image/*">
+            <span aria-hidden="true">▣</span> <span data-i18n="upload">صورة لقطة شاشة</span>
+          </label>
+          <span id="ocrStatus" class="ocr-status" role="status" aria-live="polite"></span>
+          <span class="count"><span id="count">0</span>/6000</span>
+        </div>
+      </div>
+      <div class="composer-row">
+        <button id="go" class="primary" type="button" data-i18n="verify">تحقّق</button>
+        <div class="examples">
+          <span class="ex-label" data-i18n="try">جرّب:</span>
+          <button type="button" class="chip" data-ex="0" data-i18n="ex0">رسالة «انشرها»</button>
+          <button type="button" class="chip" data-ex="1" data-i18n="ex1">آية منقولة خطأ</button>
+          <button type="button" class="chip" data-ex="2" data-i18n="ex2">English forward</button>
+          <button type="button" class="chip" data-ex="3" data-i18n="ex3">حديث غير موجود</button>
+          <button type="button" class="chip" data-ex="4" data-i18n="ex4">حكم مختلف فيه</button>
+        </div>
+      </div>
+      <p class="privacy" data-i18n="privacy">لا نحفظ الرسائل التي تتحقق منها. قراءة الصور تتم على جهازك.</p>
+    </section>
+
+    <section id="out" class="out" aria-live="polite" hidden>
+      <div id="summary" class="summary"></div>
+      <ol id="results" class="results"></ol>
+
+      <div id="replyBox" class="reply" hidden>
+        <div class="reply-head">
+          <h2 data-i18n="reply_title">ردّ مقترح للمجموعة</h2>
+          <div class="seg" role="tablist" aria-label="Reply language" id="replyLangs"></div>
+        </div>
+        <pre id="replyText" class="reply-text" dir="auto"></pre>
+        <div class="reply-actions">
+          <button id="copyReply" class="primary small" type="button" data-i18n="copy">انسخ الرد</button>
+          <a id="waReply" class="ghost small" target="_blank" rel="noopener" data-i18n="send_wa">أرسل عبر واتساب</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="method" class="method" aria-labelledby="methodTitle">
+      <h2 id="methodTitle" data-i18n="method_title">كيف نصل إلى الحكم</h2>
+      <div class="method-grid">
+        <div>
+          <h3 data-i18n="m1_t">المصادر تحكم، لا الذكاء الاصطناعي</h3>
+          <p data-i18n="m1_p">كل حكم مصدره نص موثق: القرآن الكريم (نص تنزيل)، وتسعة كتب حديثية بأحكام محققين معروفين. قد يساعد نموذج لغوي في استخراج الاقتباسات فقط، ولا يُعتمد كلامه دليلًا.</p>
+        </div>
+        <div>
+          <h3 data-i18n="m2_t">عدم العثور ليس حكمًا بالوضع</h3>
+          <p data-i18n="m2_p">إذا لم نجد النص نقول ذلك صراحة ونحيل إلى مختص، ولا نخترع مصدرًا ولا حكمًا.</p>
+        </div>
+        <div>
+          <h3 data-i18n="m3_t">نعرض الخلاف كما هو</h3>
+          <p data-i18n="m3_p">عند اختلاف المحققين نعرض حكم كل واحد باسمه. وإذا ثبت اللفظ من طريق صحيح لم تُسقطه الطرق الضعيفة.</p>
+        </div>
+        <div>
+          <h3 data-i18n="m4_t">ليس فتوى</h3>
+          <p data-i18n="m4_p">ثَبَت أداة للتحقق من النسبة والمصدر، وليست جهة إفتاء. سجل العبارات المشتهرة مسودة تخضع لمراجعة مختصين.</p>
+        </div>
+      </div>
+      <p class="sources" id="sourcesLine"></p>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span data-i18n="foot">ثَبَت — مشروع مفتوح المصدر لتحدي الذكاء الاصطناعي في خدمة المحتوى الإسلامي ٢٠٢٦</span>
+    <a href="/review" data-i18n="review_link">صفحة المراجعة</a>
+  </footer>
+
+  <template id="tplResult">
+    <li class="card">
+      <div class="chain" aria-hidden="true"></div>
+      <div class="node node-quote">
+        <span class="node-label" data-i18n="n_quote">النص المتداول</span>
+        <blockquote class="quote" dir="auto"></blockquote>
+      </div>
+      <div class="node node-source"></div>
+      <div class="node node-grades"></div>
+      <div class="node node-verdict">
+        <div class="seal"><span class="seal-level"></span><span class="seal-label"></span></div>
+        <p class="explain"></p>
+        <div class="meta"></div>
+      </div>
+      <div class="node node-alt" hidden></div>
+      <div class="card-foot">
+        <button type="button" class="link flag" data-i18n="flag">أبلغ عن خطأ في هذا الحكم</button>
+      </div>
+    </li>
+  </template>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>

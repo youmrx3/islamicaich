@@ -1,0 +1,1027 @@
+{
+  "meta": {
+    "at": "2026-09-25 23:18 UTC",
+    "hadith": 36064,
+    "verses": 6236,
+    "seed": 42,
+    "samples": 200
+  },
+  "curated": {
+    "cases": 65,
+    "correct": 64,
+    "accuracy": 0.9846,
+    "critical_errors": 0,
+    "by_category": {
+      "cross_attribution": {
+        "correct": 2,
+        "total": 2
+      },
+      "hadith_ar": {
+        "correct": 11,
+        "total": 11
+      },
+      "hadith_ar_noisy": {
+        "correct": 5,
+        "total": 5
+      },
+      "hadith_translation": {
+        "correct": 5,
+        "total": 6
+      },
+      "invented": {
+        "correct": 11,
+        "total": 11
+      },
+      "multi": {
+        "correct": 1,
+        "total": 1
+      },
+      "quran_exact": {
+        "correct": 11,
+        "total": 11
+      },
+      "quran_variant": {
+        "correct": 5,
+        "total": 5
+      },
+      "registry": {
+        "correct": 13,
+        "total": 13
+      }
+    },
+    "median_ms": 47.6
+  },
+  "curated_rows": [
+    {
+      "cat": "quran_exact",
+      "text": "الله لا إله إلا هو الحي القيوم لا تأخذه سنة ولا نوم",
+      "expected": [
+        "quran_exact"
+      ],
+      "got": "quran_exact",
+      "ok": true,
+      "critical": false,
+      "ms": 108.7,
+      "evidence": [
+        "2:255"
+      ]
+    },
+    {
+      "cat": "quran_exact",
+      "text": "قل هو الله أحد الله الصمد لم يلد ولم يولد ولم يكن له كفوا أحد",
+      "expected": [
+        "quran_exact"
+      ],
+      "got": "quran_exact",
+      "ok": true,
+      "critical": false,
+      "ms": 92.0,
+      "evidence": [
+        "112:1-4"
+      ]
+    },
+    {
+      "cat": "quran_exact",
+      "text": "فإن مع العسر يسرا إن مع العسر يسرا",
+      "expected": [
+        "quran_exact"
+      ],
+      "got": "quran_exact",
+      "ok": true,
+      "critical": false,
+      "ms": 92.7,
+      "evidence": [
+        "94:5-6"
+      ]
+    },
+    {
+      "cat": "quran_exact",
+      "text": "واعتصموا بحبل الله جميعا ولا تفرقوا",
+      "expected": [
+        "quran_exact"
+      ],
+      "got": "quran_exact",
+      "ok": true,
+      "critical": false,
+      "ms": 108.7,
+      "evidence": [
+        "3:103"
+      ]
+    },
+    {
+      "cat": "quran_exact",
+      "text": "لا يكلف الله نفسا إلا وسعها",
+      "expected": [
+        "quran_exact"
+      ],
+      "got": "quran_exact",
+      "ok": true,
+      "critical": false,
+      "ms": 134.5,
+      "evidence": [
+        "2:286"
+      ]
+    },
+    {
+      "cat": "quran_exact",
+      "text": "ألا بذكر الله تطمئن القلوب",
+      "expected": [
+        "quran_exact"
+      ],
+      "got": "quran_exact",
+      "ok": true,
+      "critical": false,
+      "ms": 85.9,
+      "evidence": [
+        "13:28"
+      ]
+    },
+    {
+      "cat": "quran_exact",
+      "text": "إن أكرمكم عند الله أتقاكم",
+      "expected": [
+        "quran_exact"
+      ],
+      "got": "quran_exact",
+      "ok": true,
+      "critical": false,
+      "ms": 56.5,
+      "evidence": [
+        "49:13"
+      ]
+    },
+    {
+      "cat": "quran_exact",
+      "text": "قل يا عبادي الذين أسرفوا على أنفسهم لا تقنطوا من رحمة الله",
+      "expected": [
+        "quran_exact"
+      ],
+      "got": "quran_exact",
+      "ok": true,
+      "critical": false,
+      "ms": 48.0,
+      "evidence": [
+        "39:53"
+      ]
+    },
+    {
+      "cat": "quran_exact",
+      "text": "فاذكروني أذكركم واشكروا لي ولا تكفرون",
+      "expected": [
+        "quran_exact"
+      ],
+      "got": "quran_exact",
+      "ok": true,
+      "critical": false,
+      "ms": 52.4,
+      "evidence": [
+        "2:152"
+      ]
+    },
+    {
+      "cat": "quran_exact",
+      "text": "الذين إذا أصابتهم مصيبة قالوا إنا لله وإنا إليه راجعون",
+      "expected": [
+        "quran_exact"
+      ],
+      "got": "quran_exact",
+      "ok": true,
+      "critical": false,
+      "ms": 55.1,
+      "evidence": [
+        "2:156"
+      ]
+    },
+    {
+      "cat": "quran_exact",
+      "text": "قال تعالى: ﴿وَقُل رَّبِّ زِدْنِي عِلْمًا﴾",
+      "expected": [
+        "quran_exact"
+      ],
+      "got": "quran_exact",
+      "ok": true,
+      "critical": false,
+      "ms": 45.1,
+      "evidence": [
+        "20:114"
+      ]
+    },
+    {
+      "cat": "quran_variant",
+      "text": "قال تعالى: إن الله مع الصابرين إذا صبروا",
+      "expected": [
+        "quran_variant"
+      ],
+      "got": "quran_variant",
+      "ok": true,
+      "critical": false,
+      "ms": 85.0,
+      "evidence": [
+        "8:46"
+      ]
+    },
+    {
+      "cat": "quran_variant",
+      "text": "وقل ربي زدني علما",
+      "expected": [
+        "quran_variant",
+        "quran_exact"
+      ],
+      "got": "quran_variant",
+      "ok": true,
+      "critical": false,
+      "ms": 89.5,
+      "evidence": [
+        "20:114"
+      ]
+    },
+    {
+      "cat": "quran_variant",
+      "text": "ادعوني أستجب لكم إن الله يحب الداعين",
+      "expected": [
+        "quran_variant"
+      ],
+      "got": "quran_variant",
+      "ok": true,
+      "critical": false,
+      "ms": 79.0,
+      "evidence": [
+        "40:60"
+      ]
+    },
+    {
+      "cat": "quran_variant",
+      "text": "وما توفيقي إلا بالله عليه توكلت وإليه المصير",
+      "expected": [
+        "quran_variant"
+      ],
+      "got": "quran_variant",
+      "ok": true,
+      "critical": false,
+      "ms": 151.4,
+      "evidence": [
+        "11:88"
+      ]
+    },
+    {
+      "cat": "quran_variant",
+      "text": "ربنا آتنا في الدنيا حسنة وفي الآخرة حسنة وقنا عذاب القبر",
+      "expected": [
+        "quran_variant"
+      ],
+      "got": "quran_variant",
+      "ok": true,
+      "critical": false,
+      "ms": 90.7,
+      "evidence": [
+        "2:201"
+      ]
+    },
+    {
+      "cat": "hadith_ar",
+      "text": "إنما الأعمال بالنيات وإنما لكل امرئ ما نوى",
+      "expected": [
+        "authentic"
+      ],
+      "got": "authentic",
+      "ok": true,
+      "critical": false,
+      "ms": 83.6,
+      "evidence": [
+        "bukhari:1",
+        "abudawud:2201",
+        "nawawi:1"
+      ]
+    },
+    {
+      "cat": "hadith_ar",
+      "text": "من كان يؤمن بالله واليوم الآخر فليقل خيرا أو ليصمت",
+      "expected": [
+        "authentic"
+      ],
+      "got": "authentic",
+      "ok": true,
+      "critical": false,
+      "ms": 58.8,
+      "evidence": [
+        "bukhari:6138",
+        "bukhari:6018",
+        "bukhari:6136"
+      ]
+    },
+    {
+      "cat": "hadith_ar",
+      "text": "لا يؤمن أحدكم حتى يحب لأخيه ما يحب لنفسه",
+      "expected": [
+        "authentic"
+      ],
+      "got": "authentic",
+      "ok": true,
+      "critical": false,
+      "ms": 46.0,
+      "evidence": [
+        "bukhari:13",
+        "tirmidhi:2515",
+        "nasai:5017"
+      ]
+    },
+    {
+      "cat": "hadith_ar",
+      "text": "المسلم من سلم المسلمون من لسانه ويده",
+      "expected": [
+        "authentic"
+      ],
+      "got": "authentic",
+      "ok": true,
+      "critical": false,
+      "ms": 52.0,
+      "evidence": [
+        "muslim:162",
+        "bukhari:6484",
+        "bukhari:10"
+      ]
+    },
+    {
+      "cat": "hadith_ar",
+      "text": "الدين النصيحة",
+      "expected": [
+        "authentic"
+      ],
+      "got": "authentic",
+      "ok": true,
+      "critical": false,
+      "ms": 37.0,
+      "evidence": [
+        "muslim:196",
+        "abudawud:4944",
+        "nasai:4199"
+      ]
+    },
+    {
+      "cat": "hadith_ar",
+      "text": "من حسن إسلام المرء تركه ما لا يعنيه",
+      "expected": [
+        "authentic",
+        "disputed"
+      ],
+      "got": "authentic",
+      "ok": true,
+      "critical": false,
+      "ms": 44.3,
+      "evidence": [
+        "ibnmajah:3976",
+        "malik:1635",
+        "tirmidhi:2317"
+      ]
+    },
+    {
+      "cat": "hadith_ar",
+      "text": "تبسمك في وجه أخيك لك صدقة",
+      "expected": [
+        "authentic"
+      ],
+      "got": "authentic",
+      "ok": true,
+      "critical": false,
+      "ms": 40.3,
+      "evidence": [
+        "tirmidhi:1956"
+      ]
+    },
+    {
+      "cat": "hadith_ar",
+      "text": "إن الله جميل يحب الجمال",
+      "expected": [
+        "authentic"
+      ],
+      "got": "authentic",
+      "ok": true,
+      "critical": false,
+      "ms": 40.8,
+      "evidence": [
+        "muslim:265"
+      ]
+    },
+    {
+      "cat": "hadith_ar",
+      "text": "ليس الشديد بالصرعة إنما الشديد الذي يملك نفسه عند الغضب",
+      "expected": [
+        "authentic"
+      ],
+      "got": "authentic",
+      "ok": true,
+      "critical": false,
+      "ms": 46.9,
+      "evidence": [
+        "bukhari:6114",
+        "muslim:6643",
+        "malik:1644"
+      ]
+    },
+    {
+      "cat": "hadith_ar",
+      "text": "من كذب علي متعمدا فليتبوأ مقعده من النار",
+      "expected": [
+        "authentic"
+      ],
+      "got": "authentic",
+      "ok": true,
+      "critical": false,
+      "ms": 44.9,
+      "evidence": [
+        "muslim:4",
+        "bukhari:3461",
+        "bukhari:1291"
+      ]
+    },
+    {
+      "cat": "hadith_ar",
+      "text": "قال رسول الله ﷺ: الطهور شطر الإيمان",
+      "expected": [
+        "authentic"
+      ],
+      "got": "authentic",
+      "ok": true,
+      "critical": false,
+      "ms": 51.1,
+      "evidence": [
+        "muslim:534",
+        "nawawi:23"
+      ]
+    },
+    {
+      "cat": "hadith_ar_noisy",
+      "text": "لا يؤمن احدكم حتي يحب لاخيه ما يحب لنفسه",
+      "expected": [
+        "authentic"
+      ],
+      "got": "authentic",
+      "ok": true,
+      "critical": false,
+      "ms": 40.6,
+      "evidence": [
+        "bukhari:13",
+        "tirmidhi:2515",
+        "nasai:5017"
+      ]
+    },
+    {
+      "cat": "hadith_ar_noisy",
+      "text": "انما الاعمال بالنيات و انما لكل امرء ما نوى",
+      "expected": [
+        "authentic"
+      ],
+      "got": "authentic",
+      "ok": true,
+      "critical": false,
+      "ms": 42.7,
+      "evidence": [
+        "bukhari:1",
+        "abudawud:2201",
+        "nawawi:1"
+      ]
+    },
+    {
+      "cat": "hadith_ar_noisy",
+      "text": "من كان يومن بالله و اليوم الاخر فليقل خيرا او ليصمت",
+      "expected": [
+        "authentic"
+      ],
+      "got": "authentic",
+      "ok": true,
+      "critical": false,
+      "ms": 43.2,
+      "evidence": [
+        "nawawi:15",
+        "bukhari:6138",
+        "bukhari:6136"
+      ]
+    },
+    {
+      "cat": "hadith_ar_noisy",
+      "text": "الكلمه الطيبه صدقه",
+      "expected": [
+        "authentic"
+      ],
+      "got": "authentic",
+      "ok": true,
+      "critical": false,
+      "ms": 40.2,
+      "evidence": [
+        "bukhari:2989",
+        "muslim:2335",
+        "nawawi:26"
+      ]
+    },
+    {
+      "cat": "hadith_ar_noisy",
+      "text": "عن ابي هريره رضي الله عنه قال قال رسول الله صلي الله عليه وسلم من سلك طريقا يلتمس فيه علما سهل الله له طريقا الى الجنه",
+      "expected": [
+        "authentic"
+      ],
+      "got": "authentic",
+      "ok": true,
+      "critical": false,
+      "ms": 59.4,
+      "evidence": [
+        "tirmidhi:2646",
+        "ibnmajah:223",
+        "tirmidhi:2945"
+      ]
+    },
+    {
+      "cat": "hadith_translation",
+      "text": "None of you truly believes until he loves for his brother what he loves for himself",
+      "expected": [
+        "authentic",
+        "needs_review"
+      ],
+      "got": "authentic",
+      "ok": true,
+      "critical": false,
+      "ms": 39.7,
+      "evidence": [
+        "ibnmajah:66",
+        "tirmidhi:2515",
+        "nawawi:13"
+      ]
+    },
+    {
+      "cat": "hadith_translation",
+      "text": "Whoever believes in Allah and the Last Day should speak good or keep silent",
+      "expected": [
+        "authentic",
+        "needs_review"
+      ],
+      "got": "authentic",
+      "ok": true,
+      "critical": false,
+      "ms": 37.9,
+      "evidence": [
+        "bukhari:6136"
+      ]
+    },
+    {
+      "cat": "hadith_translation",
+      "text": "The strong man is not the one who wrestles, but the one who controls himself when angry",
+      "expected": [
+        "authentic"
+      ],
+      "got": "authentic",
+      "ok": true,
+      "critical": false,
+      "ms": 44.5,
+      "evidence": [
+        "muslim:6643"
+      ]
+    },
+    {
+      "cat": "hadith_translation",
+      "text": "Cleanliness is half of faith",
+      "expected": [
+        "authentic",
+        "needs_review"
+      ],
+      "got": "authentic",
+      "ok": true,
+      "critical": false,
+      "ms": 29.3,
+      "evidence": [
+        "muslim:534"
+      ]
+    },
+    {
+      "cat": "hadith_translation",
+      "text": "Les actions ne valent que par les intentions",
+      "expected": [
+        "authentic",
+        "needs_review"
+      ],
+      "got": "authentic",
+      "ok": true,
+      "critical": false,
+      "ms": 39.1,
+      "evidence": [
+        "nasai:3437",
+        "abudawud:2201",
+        "nasai:75"
+      ]
+    },
+    {
+      "cat": "hadith_translation",
+      "text": "Sesungguhnya setiap amalan tergantung pada niatnya",
+      "expected": [
+        "authentic",
+        "needs_review"
+      ],
+      "got": "not_found",
+      "ok": false,
+      "critical": false,
+      "ms": 38.6,
+      "evidence": []
+    },
+    {
+      "cat": "registry",
+      "text": "اطلبوا العلم ولو كان في الصين",
+      "expected": [
+        "fabricated"
+      ],
+      "got": "fabricated",
+      "ok": true,
+      "critical": false,
+      "ms": 50.2,
+      "evidence": []
+    },
+    {
+      "cat": "registry",
+      "text": "قال رسول الله ﷺ: حب الوطن من الايمان",
+      "expected": [
+        "fabricated"
+      ],
+      "got": "fabricated",
+      "ok": true,
+      "critical": false,
+      "ms": 47.6,
+      "evidence": []
+    },
+    {
+      "cat": "registry",
+      "text": "اختلاف امتي رحمه",
+      "expected": [
+        "baseless"
+      ],
+      "got": "baseless",
+      "ok": true,
+      "critical": false,
+      "ms": 45.5,
+      "evidence": []
+    },
+    {
+      "cat": "registry",
+      "text": "من عرف نفسه فقد عرف ربه",
+      "expected": [
+        "baseless"
+      ],
+      "got": "baseless",
+      "ok": true,
+      "critical": false,
+      "ms": 41.6,
+      "evidence": []
+    },
+    {
+      "cat": "registry",
+      "text": "صوموا تصحوا",
+      "expected": [
+        "weak"
+      ],
+      "got": "weak",
+      "ok": true,
+      "critical": false,
+      "ms": 34.4,
+      "evidence": []
+    },
+    {
+      "cat": "registry",
+      "text": "الدين المعاملة",
+      "expected": [
+        "baseless"
+      ],
+      "got": "baseless",
+      "ok": true,
+      "critical": false,
+      "ms": 28.7,
+      "evidence": []
+    },
+    {
+      "cat": "registry",
+      "text": "Cleanliness is part of faith",
+      "expected": [
+        "baseless"
+      ],
+      "got": "baseless",
+      "ok": true,
+      "critical": false,
+      "ms": 34.4,
+      "evidence": []
+    },
+    {
+      "cat": "registry",
+      "text": "Surga di bawah telapak kaki ibu",
+      "expected": [
+        "fabricated"
+      ],
+      "got": "fabricated",
+      "ok": true,
+      "critical": false,
+      "ms": 25.3,
+      "evidence": []
+    },
+    {
+      "cat": "registry",
+      "text": "The ink of the scholar is holier than the blood of the martyr",
+      "expected": [
+        "fabricated"
+      ],
+      "got": "fabricated",
+      "ok": true,
+      "critical": false,
+      "ms": 37.1,
+      "evidence": []
+    },
+    {
+      "cat": "registry",
+      "text": "Work for this world as if you will live forever, and for the hereafter as if you will die tomorrow",
+      "expected": [
+        "baseless"
+      ],
+      "got": "baseless",
+      "ok": true,
+      "critical": false,
+      "ms": 37.6,
+      "evidence": []
+    },
+    {
+      "cat": "registry",
+      "text": "طلب العلم فريضة على كل مسلم",
+      "expected": [
+        "authentic_by_routes"
+      ],
+      "got": "authentic_by_routes",
+      "ok": true,
+      "critical": false,
+      "ms": 50.5,
+      "evidence": []
+    },
+    {
+      "cat": "registry",
+      "text": "أنا مدينة العلم وعلي بابها",
+      "expected": [
+        "disputed"
+      ],
+      "got": "disputed",
+      "ok": true,
+      "critical": false,
+      "ms": 73.8,
+      "evidence": []
+    },
+    {
+      "cat": "registry",
+      "text": "رجعنا من الجهاد الأصغر إلى الجهاد الأكبر",
+      "expected": [
+        "weak"
+      ],
+      "got": "weak",
+      "ok": true,
+      "critical": false,
+      "ms": 62.8,
+      "evidence": []
+    },
+    {
+      "cat": "invented",
+      "text": "قال رسول الله ﷺ: من صلى الفجر في جماعة ثم قرأ سورة الملك سبعين مرة غفر الله له ذنوب أربعين سنة",
+      "expected": [
+        "not_found",
+        "needs_review"
+      ],
+      "got": "not_found",
+      "ok": true,
+      "critical": false,
+      "ms": 70.4,
+      "evidence": []
+    },
+    {
+      "cat": "invented",
+      "text": "قال النبي ﷺ: من قال سبحان الله مئة مرة يوم الجمعة بعد العصر رأى الجنة في منامه",
+      "expected": [
+        "not_found",
+        "needs_review"
+      ],
+      "got": "not_found",
+      "ok": true,
+      "critical": false,
+      "ms": 66.0,
+      "evidence": []
+    },
+    {
+      "cat": "invented",
+      "text": "من نشر هذا الدعاء فرج الله همه في ثلاثة أيام",
+      "expected": [
+        "not_found",
+        "needs_review"
+      ],
+      "got": "not_found",
+      "ok": true,
+      "critical": false,
+      "ms": 52.1,
+      "evidence": []
+    },
+    {
+      "cat": "invented",
+      "text": "قال رسول الله ﷺ: النظر إلى البحر عبادة ويمحو الذنوب",
+      "expected": [
+        "not_found",
+        "needs_review"
+      ],
+      "got": "not_found",
+      "ok": true,
+      "critical": false,
+      "ms": 49.1,
+      "evidence": []
+    },
+    {
+      "cat": "invented",
+      "text": "قال رسول الله ﷺ: من شرب الماء قائما في رمضان أصابه الفقر",
+      "expected": [
+        "not_found",
+        "needs_review"
+      ],
+      "got": "not_found",
+      "ok": true,
+      "critical": false,
+      "ms": 41.1,
+      "evidence": []
+    },
+    {
+      "cat": "invented",
+      "text": "The Prophet said: whoever shares this message will receive good news within 24 hours",
+      "expected": [
+        "not_found",
+        "needs_review"
+      ],
+      "got": "not_found",
+      "ok": true,
+      "critical": false,
+      "ms": 39.1,
+      "evidence": []
+    },
+    {
+      "cat": "invented",
+      "text": "قال رسول الله ﷺ: من قرأ آية الكرسي عشر مرات عند شرب القهوة حفظه الله من العين",
+      "expected": [
+        "not_found",
+        "needs_review"
+      ],
+      "got": "not_found",
+      "ok": true,
+      "critical": false,
+      "ms": 45.1,
+      "evidence": []
+    },
+    {
+      "cat": "invented",
+      "text": "قال رسول الله ﷺ: إن الله يحب العبد الذي يبتسم في وجه المطر",
+      "expected": [
+        "not_found",
+        "needs_review"
+      ],
+      "got": "not_found",
+      "ok": true,
+      "critical": false,
+      "ms": 41.3,
+      "evidence": []
+    },
+    {
+      "cat": "invented",
+      "text": "قال رسول الله ﷺ: من صام يوم الأربعاء الأخير من صفر كتب الله له براءة من النار",
+      "expected": [
+        "not_found",
+        "needs_review"
+      ],
+      "got": "not_found",
+      "ok": true,
+      "critical": false,
+      "ms": 46.8,
+      "evidence": []
+    },
+    {
+      "cat": "invented",
+      "text": "Le Prophète a dit : celui qui partage ce message verra sa prière exaucée avant vendredi",
+      "expected": [
+        "not_found",
+        "needs_review"
+      ],
+      "got": "not_found",
+      "ok": true,
+      "critical": false,
+      "ms": 60.0,
+      "evidence": []
+    },
+    {
+      "cat": "invented",
+      "text": "قال تعالى: ومن يتوكل على الله يرزقه من حيث لا يدري ويجعل له في كل يوم فرجا",
+      "expected": [
+        "quran_variant",
+        "not_found",
+        "needs_review"
+      ],
+      "got": "not_found",
+      "ok": true,
+      "critical": false,
+      "ms": 67.3,
+      "evidence": []
+    },
+    {
+      "cat": "cross_attribution",
+      "text": "قال رسول الله ﷺ: إن مع العسر يسرا",
+      "expected": [
+        "quran_exact"
+      ],
+      "got": "quran_exact",
+      "ok": true,
+      "critical": false,
+      "ms": 59.7,
+      "evidence": [
+        "94:6"
+      ]
+    },
+    {
+      "cat": "cross_attribution",
+      "text": "قال تعالى: الدين النصيحة",
+      "expected": [
+        "authentic"
+      ],
+      "got": "authentic",
+      "ok": true,
+      "critical": false,
+      "ms": 21.6,
+      "evidence": [
+        "muslim:196",
+        "abudawud:4944",
+        "nasai:4199"
+      ]
+    },
+    {
+      "cat": "multi",
+      "text": "قال رسول الله: إنما الأعمال بالنيات\nوقال تعالى: وما خلقت الجن والإنس إلا ليعبدون\nوقال ﷺ: اطلبوا العلم ولو بالصين",
+      "expected": [
+        "authentic",
+        "quran_exact",
+        "fabricated"
+      ],
+      "got": [
+        "authentic",
+        "quran_exact",
+        "fabricated"
+      ],
+      "ok": true,
+      "critical": false,
+      "ms": 240.9,
+      "evidence": [
+        "bukhari:1",
+        "abudawud:2201",
+        "ibnmajah:4227"
+      ]
+    }
+  ],
+  "sampled": {
+    "arabic_clean": {
+      "n": 200,
+      "recall@1": 1.0,
+      "recall@3": 1.0,
+      "baseline_exact_raw": 0.0,
+      "baseline_exact_normalized": 1.0
+    },
+    "arabic_noisy": {
+      "n": 200,
+      "recall@1": 0.94,
+      "recall@3": 0.985,
+      "baseline_exact_raw": 0.0,
+      "baseline_exact_normalized": 0.0
+    },
+    "english": {
+      "n": 100,
+      "recall@1": 0.97,
+      "recall@3": 0.97,
+      "baseline_exact_raw": 0.03,
+      "baseline_exact_normalized": 1.0
+    },
+    "examples": [
+      {
+        "id": "bukhari:7280",
+        "query_clean": "كل امتي يدخلون الجنه الا من ابي قالوا يا رسول",
+        "query_noisy": "كل امتي يدخلون ألجنه من ابي قالوا يا رسول"
+      },
+      {
+        "id": "muslim:1675",
+        "query_clean": "بن رافع قالا حدثنا ابن ابي فديك عن الضحاك بن عثمان عن",
+        "query_noisy": "بن رافع حدثنا ابن ابي فديك عن الضحاك بن عثمأن عن"
+      },
+      {
+        "id": "nasai:3517",
+        "query_clean": "قال انبانا عبد الرزاق قال انبانا ابن جريج",
+        "query_noisy": "قال عبد الرزاق قال انبانا ابن جريج"
+      },
+      {
+        "id": "abudawud:308",
+        "query_clean": "داود ام الهذيل هي حفصه بنت سيرين كان ابنها اسمه هذيل واسم",
+        "query_noisy": "داود الهذيل هي حفصه بنت سيرين كان ابنها أسمه هذيل واسم"
+      },
+      {
+        "id": "malik:1587",
+        "query_clean": "يزاد في الجراح كما يزاد في النفس فقال نعم",
+        "query_noisy": "يزاد في الجراح كما فى النفس فقال نعم"
+      }
+    ]
+  },
+  "deterministic": true
+}

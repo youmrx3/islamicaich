@@ -1,0 +1,80 @@
+# Methodology
+
+## The problem
+
+Forwarded messages in WhatsApp, Telegram and social media routinely attribute sayings to the Prophet ﷺ that are weak, fabricated or baseless, and misquote Quran verses (words added, dropped or swapped). People forward them with good intentions. Correcting them today means one of:
+
+- asking a knowledgeable person (slow, and not everyone has one), or
+- searching sites such as dorar.net or sunnah.com, which needs the exact wording, fails on everyday spelling, typos and translations, and does not work from a screenshot, or
+- asking a general chatbot, which can invent references (the "hallucination" risk the challenge highlights).
+
+**Thabat's single job:** paste a message or upload a screenshot, and within a second see, for each quote, where it comes from, what named scholars said about it, and a gentle, sourced reply you can send back, or an honest "we could not find this."
+
+## Pipeline
+
+```
+message / screenshot
+   │  (screenshot → on-device OCR, tesseract.js ara+eng)
+   ▼
+1. Segment      split into quotes; strip lead-ins ("قال رسول الله ﷺ:", "The Prophet (pbuh) said"),
+                emojis, and forwarding pressure ("انشرها… أمانة في رقبتك"), which is flagged separately.
+                [optional LLM: find quotes in messy text; propose an Arabic query for other languages]
+   ▼
+2. Retrieve     hashed word uni+bigram TF-IDF over normalized text (Arabic: no diacritics, unified
+                alef/ya/ta-marbuta, clitic stripping; matn separated from isnad) → top 40–60 candidates
+   ▼
+3. Align        character-level fuzzy alignment (RapidFuzz partial ratio + token coverage) → score 0..1
+                Quran: best span of 1–4 consecutive verses, then a word-level diff
+   ▼
+4. Decide       register → Quran → hadith, with explicit thresholds and tie-break rules (below)
+   ▼
+5. Explain      evidence (collection, number, link), each grader by name with the exact label,
+                authentic alternative, and a deterministic reply in ar / en / fr / id / tr
+```
+
+## Decision rules
+
+| Rule | Why |
+|---|---|
+| Curated register first, unless a real narration matches clearly better (+0.03). | The register holds nuance the dataset lacks (e.g. a phrase graded differently from the full narration). But "Cleanliness is half of faith" is Muslim 223 and must not be caught by the baseless "Cleanliness is part of faith". |
+| Quran exact match wins ties with hadith. A *misquoted* verse is reported only if it scores within 0.03 of the best hadith match. | Many hadith quote verses; a hadith that shares a verse phrase ("من كان يؤمن بالله واليوم الآخر") must not be mislabelled a misquoted verse. |
+| A weak Quran match (0.62–0.80) counts only with ≥4 consecutive exact verse words forming half the quote. | Catches "ادعوني أستجب لكم إن الله يحب الداعين" (40:60 with an invented ending) without false alarms. |
+| Hadith: strong ≥ 0.86 (Arabic) / 0.80 (translations); candidate ≥ 0.70 / 0.62. | Below candidate → **not found**. Between → **needs review** with the closest texts shown. |
+| Two-word quotes only count on verbatim matches. | Very short sayings ("الدين النصيحة") are common but ambiguous. |
+| Grade aggregation over all strong matches: any authentic *marfu'* route → authentic (weaker routes noted); only authentic *mawquf/maqtu'* → "sound, but not the Prophet's words"; graders disagree → disputed; all weak → weak; all fabricated → fabricated. | Mirrors the hadith-science principle that a text established through one sound route is not cancelled by weaker routes. |
+| Sahih al-Bukhari and Sahih Muslim entries have no per-hadith grades in the dataset; they are marked "in the two Sahihs". | Scholarly consensus on accepting their connected reports. |
+| Nawawi's Forty and Forty Qudsi (secondary compilations, ungraded) never decide a verdict alone. | They cite primary sources; the primary source should decide. |
+
+## Status taxonomy and levels
+
+| Status | Level | Meaning | Refer to specialist |
+|---|---|---|---|
+| `quran_exact` | 1 | Exact Quran text | no |
+| `authentic`, `authentic_by_routes` | 2 | Established through an accepted chain | no |
+| `quran_variant` | 3 | Verse exists but was misquoted; word diff shown | no |
+| `authentic_mawquf` | 3 | Sound, but a Companion's/Successor's words | no |
+| `disputed` | 3 | Named graders disagree | **yes** |
+| `needs_review` | 3 | Similar text found, wording differs | **yes** |
+| `weak`, `fabricated`, `baseless` | 4 | Not established; do not attribute | no |
+| `not_found` | 0 | Abstain: not in indexed sources (≠ fabricated) | **yes** |
+
+The four numbered levels are our working mapping. When the challenge's scientific annex publishes its official "four content levels", we map our statuses onto them in `backend/app/verify.py` (`STATUS`, `LEVELS`). Statuses stay unchanged, so this is a one-table edit.
+
+## Role of AI, and why this design
+
+| Component | Technique | Why this and not something bigger |
+|---|---|---|
+| Arabic normalization + matn extraction | Rule-based NLP | Removes the main failure of exact search (diacritics, spelling, isnad). Deterministic and auditable. |
+| Candidate retrieval | Hashed TF-IDF (uni+bigrams) | Fast (≈60 ms per message on CPU), no GPU, ~600 MB RAM, identical results on every run. |
+| Re-ranking/alignment | Fuzzy character alignment | Tolerates typos and partial quotes. Gives the exact aligned span, which drives the Quran word diff and the highlighted hadith snippet. |
+| Screenshot reading | OCR (tesseract.js), on device | Most forwards arrive as images. Running OCR on the user's device keeps images private. |
+| Quote finding / cross-language query | LLM (Claude), optional | Helps with messy, long or other-language messages. Its output is only a search query; it cannot create evidence. Matches found this way are labelled and capped at medium confidence. |
+
+**Why not a RAG chatbot?** Generating an answer invites the model to paraphrase or invent a reference. Thabat never generates the evidence. Every sentence a user sees about a source is either verbatim source data or a fixed, reviewable template.
+
+## Known limitations
+
+- Coverage is limited to the Quran and nine hadith books. Many narrations (e.g. Musnad Ahmad, al-Hakim, al-Tabarani, al-Bayhaqi) are not yet indexed, so a real but uncovered hadith returns **not found**, never "fabricated". Adding collections is the first roadmap item.
+- Gradings are those in the dataset. Scholars' gradings of the full narration may not apply to a quoted fragment (see register entry R014). The register handles known cases; others need specialist review.
+- Paraphrases far from any published translation (e.g. the Indonesian case in the evaluation) are missed by the deterministic core; the optional LLM step targets them.
+- The curated register is a draft until reviewed by a qualified specialist.
