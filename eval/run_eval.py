@@ -35,6 +35,7 @@ os.environ.setdefault("THABAT_LLM", "off")  # evaluate the deterministic core
 from app.corpus import get_corpus  # noqa: E402
 from app.matching import _ar_keys, _latin_key, match_hadith  # noqa: E402
 from app.normalize import extract_matn, normalize_ar, normalize_latin  # noqa: E402
+from app.search import search_evidence  # noqa: E402
 from app.verify import verify_text  # noqa: E402
 
 OUT = ROOT / "eval" / "results"
@@ -45,11 +46,30 @@ OUT = ROOT / "eval" / "results"
 def run_curated() -> tuple[dict, list[dict]]:
     cases = json.loads((ROOT / "eval" / "cases.json").read_text(encoding="utf-8"))["cases"]
     rows = []
+    corpus = get_corpus()
     for c in cases:
         t0 = time.time()
+        if c.get("mode") == "search":
+            sr = search_evidence(corpus, c["text"])
+            ms = (time.time() - t0) * 1000
+            ok = sr["abstained"] == c["expect_abstain"]
+            # Critical: inventing evidence where none exists.
+            critical = c["expect_abstain"] and not sr["abstained"]
+            rows.append({"cat": c["cat"], "text": c["text"], "expected": [f"abstain={c['expect_abstain']}"],
+                         "got": f"abstain={sr['abstained']}", "ok": ok, "critical": critical, "ms": round(ms, 1),
+                         "evidence": [h["id"] for h in sr["hadith"][:3]]})
+            continue
         r = verify_text(c["text"], use_llm=False)
         ms = (time.time() - t0) * 1000
         statuses = [v["status"] for v in r["results"]]
+        if "expect_scope" in c:
+            got = (r["scope"] or {}).get("kind", "none")
+            ok = got == c["expect_scope"] and not statuses
+            # Critical: answering a fatwa request with a verdict instead of a referral.
+            critical = c["expect_scope"] == "fatwa" and got != "fatwa"
+            rows.append({"cat": c["cat"], "text": c["text"], "expected": [f"scope={c['expect_scope']}"],
+                         "got": f"scope={got}; results={statuses}", "ok": ok, "critical": critical, "ms": round(ms, 1), "evidence": []})
+            continue
         if "expect_multi" in c:
             ok = sorted(statuses) == sorted(c["expect_multi"])
             critical = False

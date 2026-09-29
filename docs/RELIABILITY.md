@@ -1,60 +1,68 @@
-# Reliability and scientific-safety plan
+# Reliability, scientific safety and compliance with the scientific annex
 
-Maps to the rubric items "Reliability plan" (acceptance, 20%) and "Reliability and scientific safety" (final, 15%).
+Maps to the rubric items "Reliability plan" (acceptance, 20%) and "Reliability and scientific safety" (final, 15%), and to the challenge's scientific annex *المرجعية والحزمة العلمية والبيانات* (the "annex").
 
-## 1. Approved sources and how they are used
+## 1. The annex's mandatory scientific standard (p.5), item by item
 
-| Content | Source | How it is used | How output is checked |
-|---|---|---|---|
-| Quran | Tanzil (verbatim) | Displayed only as the published Uthmani text; matching uses in-memory normalized keys | Every Quran result shows surah and ayah plus a quran.com link; misquotes get a word-level diff against the verbatim text |
-| Hadith | 9 collections, Arabic + 4 translations | Displayed verbatim with collection and standard number | sunnah.com link on every result; snippet highlighting shows exactly which words matched |
-| Gradings | Named graders in the dataset | Shown verbatim with grader name; aggregated by a published rule (METHODOLOGY.md) | The raw label is always visible next to our summary |
-| Popular sayings | Curated register (draft) | Specialist-review badge until approved | Named reviewer and change log (below) |
-
-## 2. Attribution (إسناد)
-
-- No sentence about a source is generated freely. Explanations are fixed templates, reviewable in advance (`backend/app/verify.py`, `backend/app/replies.py`).
-- Each result links to an independent public copy (sunnah.com / quran.com), so a user or reviewer can check in one click.
-- An LLM, when enabled, cannot introduce a source: it only proposes quote boundaries and an Arabic search string. Results reached this way carry the label "matched via AI translation" and at most medium confidence.
-
-## 3. Abstention and referral (امتناع وإحالة)
-
-| Situation | Behaviour |
-|---|---|
-| Nothing found above threshold | `not_found`: "not found in indexed sources — this does not prove it is fabricated"; refer to specialist |
-| Similar wording found | `needs_review`: closest texts shown; no verdict; refer to specialist |
-| Graders disagree | `disputed`: every grader shown by name; refer to specialist |
-| Only ungraded compilations match | `needs_review` |
-| Grade of the full narration ≠ quoted phrase | Handled in the register (e.g. R014 "طلب العلم فريضة") with an explicit explanation |
-| Religious ruling requested ("is it halal…") | Out of scope: Thabat checks attribution only; the method section says "not a fatwa" |
-
-## 4. Tests (see `eval/` and `backend/tests/`)
-
-| Test | What it proves | Current result |
+| Annex requirement | How Thabat meets it | Where |
 |---|---|---|
-| 65 curated cases in 9 categories | Correct status for exact and misquoted verses, authentic/noisy/translated hadith, register entries, invented texts, cross-attribution, multi-quote messages | 64/65 (98.5%) |
-| Critical-error count | Never labels a non-established text authentic, or an authentic one fabricated | **0** |
-| 200 random Arabic phrases, clean and with phone-typing noise | Finding the true source | recall@3 100% clean / 98.5% noisy (exact search: 0% noisy) |
-| 100 random English phrases | Cross-language finding | recall@3 97% |
-| Two identical runs | Repeatability | identical |
-| 13 unit tests | Safety invariants (e.g. fabricated ≠ authentic; unknown → abstain; register references resolve) | pass |
+| **Reliability & attribution**: every religious text or ruling shown is traceable to its source; nothing is attributed to a source that doesn't contain it; revealed text is distinguished from generated explanation; insufficient information is admitted | Every result shows the collection and number (or surah:ayah) with a link to a public copy and a dorar.net cross-check link. Sacred text is displayed verbatim in a distinct typeface; explanations are fixed templates labelled separately. `not_found` / `needs_review` admit insufficiency. | `verify.py`, `public/app.html` |
+| **Definitive vs. ijtihad**: disputed matters are not presented as certain | `disputed` → level ج, each grader named; weak/fabricated gradings are attributed to the named scholars (level ب), not asserted by the tool | `grades.py`, `verify.py` |
+| **No independent fatwa** | Scope guard: personal ruling requests → level د, no ruling, referral; ruling questions → level ج, referral | `scope.py` |
+| **Hallucination resistance**: abstain, qualify or refer when references are missing or confidence is low | Nothing is generated as evidence. Below-threshold matches → abstain + refer. Evidence search refuses to invent ("no matching evidence found"). The optional LLM cannot introduce a source. | `verify.py`, `search.py`, `llm.py` |
+| **Da'wah quality**: consider the addressee's background, level, language and context; clarity and good presentation | Replies begin by thanking the sender's intention, give the finding and source, offer an authentic alternative, and are available in 5 languages; the UI is bilingual (ar/en) | `replies.py` |
+| **Translation & localisation**: preserve the meaning of Islamic terms | Reply templates keep terms such as *hadith*, *sahih* and ﷺ, and add an explanation rather than a loose translation. The Jamhara term dictionary (islamic-content.com) is the reference for new templates. | `replies.py` |
+| **Transparency**: disclose that it is an AI-assisted tool | Every result page and API response carries "automated result from an AI-assisted tool… not a fatwa or a human specialist's opinion" (`transparency_ar` / `transparency_en`) | `verify.py`, UI |
+| **Privacy**: collect no personal data beyond need, under a published policy; no religious inferences about the user | Messages are processed in memory and not stored; OCR runs on the device; reports carry no identifiers; published policy at `/privacy`; no profiling | `main.py`, `public/privacy.html` |
 
-**Conflict cases covered:** grader disagreement (disputed), phrase vs full narration (R014), companion's words attributed to the Prophet ﷺ (`authentic_mawquf`), Quran quoted as hadith and vice versa, authentic English rendering vs near-identical baseless saying.
+## 2. Approved references (annex pp.3–4) and our use
 
-**Missing-reference cases covered:** 11 invented texts (Arabic, English, French), all correctly abstained on (`not_found` / `needs_review`).
+| Domain | Annex reference | Thabat |
+|---|---|---|
+| Quran | Approved script and text (King Fahd Complex print) | Tanzil Uthmani text following the Madinah Mushaf, displayed verbatim; quran.com link for each verse. **Planned:** switch display to the King Fahd Complex digital text (KFGQPC Hafs). |
+| Hadith | Authentic hadith from the two Sahihs, plus other books after confirming authenticity (dorar.net/hadith, shamela.ws). "Never attribute a hadith without a source and an approved grading in the data." | Bukhari & Muslim marked "in the two Sahihs"; other books shown with named graders' verdicts; every hadith result links to sunnah.com and offers a dorar.net cross-check. Ungraded matches never produce an "authentic" verdict. |
+| Common questions | *Bayyinat* (dawa.center/file/7937) | Referral target for general questions |
+| Fiqh | Four-madhhab references / dorar.net/feqhia | Referral target for ruling questions (no weighing) |
+| Terms | Jamhara dictionary (islamic-content.com/dictionary) | Reference for reply wording |
+
+## 3. Attribution, abstention and referral
+
+| Situation | Behaviour | Level |
+|---|---|---|
+| Exact verse / authentic hadith | Direct answer with source | أ |
+| Misquoted verse | Gentle correction, correct text, surah and ayah | أ |
+| Weak / fabricated / baseless (named graders or reviewed register) | Grading attributed with reference + authentic alternative | ب |
+| Graders disagree | All graders shown; refer | ج |
+| Similar wording only / nothing found | Abstain; "not found ≠ fabricated"; refer | ج |
+| Personal fatwa request | No ruling; referral to an official fatwa body | د |
+
+## 4. Tests (`eval/`, `backend/tests/`)
+
+| Test | What it shows | Result |
+|---|---|---|
+| 73 curated cases in 10 categories, including the annex's test types (misquoted verse in a question, "give me a hadith proving X" with none existing, personal fatwa, ruling question, general question) | Correct status or behaviour | 72/73 (98.6%) |
+| Critical errors (non-established called authentic or the reverse; a fatwa request answered; evidence invented) | Safety | **0** |
+| 200 random Arabic phrases, clean and with phone-typing noise | Finding the true source | recall@3 100% / 98.5% (exact search 0% with noise) |
+| 100 random English phrases | Cross-language | recall@3 97% |
+| Two full runs | Repeatability | identical |
+| 18 unit/API tests | Safety invariants, annex behaviours, endpoints | pass |
+
+**Conflict cases covered:** grader disagreement; phrase vs full narration (R014); Companion's words attributed to the Prophet ﷺ; Quran quoted as hadith and the reverse; an authentic English rendering vs a near-identical baseless saying.
+**Missing-reference cases covered:** 11 invented texts in 3 languages, plus 2 "prove X" evidence requests: all abstained.
+**Honest limit:** the cases were written during development; the specialist's held-out set is the real benchmark.
 
 ## 5. Human review
 
-- **Register workflow:** entries are `draft` until a named specialist reviews them. The reviewer records a decision (approve / edit / reject) with a note. Approved entries lose the "pending review" badge.
-- **User flags:** any result can be reported. Flags land in the review queue (`/review`) with the quote, the verdict and the evidence ID.
-- **Planned for the challenge days:** a reviewer form writing to `data/curated/review_log.jsonl` (who, when, what changed, why), and a held-out test set written by the team's specialist.
+- **Register:** entries stay `draft` (with a visible badge) until a named hadith specialist approves them; decisions are logged (who, when, what, why).
+- **User reports:** any result can be reported; reports go to the token-protected review queue (`/review`), stored in Redis in production.
 
 ## 6. Expected errors and handling
 
 | Error | Mitigation |
 |---|---|
-| OCR misreads Arabic letters | User sees and can edit the extracted text before checking. The fuzzy matching tolerates letter errors (98.5% recall with noise). |
-| Quote spans two narrations or is heavily paraphrased | `needs_review` rather than a verdict |
-| Dataset grading error | Raw label shown; users and reviewers can flag it; the register can override it with a documented reason |
-| LLM outage or refusal | Automatic fallback to the deterministic pipeline (no user-visible failure) |
+| OCR misreads Arabic | Extracted text is shown for editing before checking; matching tolerates letter errors |
+| Heavy paraphrase / text spanning narrations | `needs_review`, not a verdict |
+| Dataset grading error | Raw label always visible; reportable; the register can override it with a documented reason |
+| LLM outage or refusal | Automatic fallback to the deterministic pipeline |
 | Short ambiguous phrases | Two-word quotes must match verbatim |
+| Lexical search misses a synonym | Search abstains rather than guessing (safe failure) |

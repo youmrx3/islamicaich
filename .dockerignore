@@ -5,5 +5,7 @@ data/quran.json
 data/flags
 **/__pycache__
 .git
-docs/screenshots
-eval/results
+docs
+eval
+proposal
+deliverables

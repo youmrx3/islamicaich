@@ -2,23 +2,23 @@
 
 Maps to "Operational realism and continuation" (final, 10%).
 
-## Measured footprint (local measurement, 2026-09-25)
+## Measured footprint (local measurement, 2026-09-29)
 
 | Item | Value |
 |---|---|
-| Memory at runtime | ~600 MB (index + corpus) |
-| Cold start | ~3.5 s with cached index (≈80 s first build, done at image build time) |
-| Latency | median ≈ 60 ms per message on a laptop CPU (deterministic core) |
-| Disk | ~35 MB compressed corpus + ~330 MB index file |
-| External calls at runtime | none (LLM optional) |
+| Memory at runtime | ~120 MB (memory-mapped NumPy index + compressed record shards) |
+| Cold start | ~0.3 s to load the corpus (~1.5 s including Python imports) |
+| Latency | median ≈ 25 ms per message; evidence search ≈ 10–55 ms |
+| Deployed bundle | ≈ 220 MB (111 MB data + ~110 MB Python packages), under Vercel's 500 MB limit |
+| External calls at runtime | none (LLM optional; Upstash only when a report is sent) |
 
 ## Monthly cost estimates
 
 | Scenario | Hosting | LLM | Total |
 |---|---|---|---|
-| Pilot (≤ 10k checks/month) | Hugging Face Space, CPU basic: free | off | **$0** |
+| Pilot (≤ 10k checks/month) | Vercel Hobby (free) + Upstash free tier | off | **$0** |
 | Pilot with LLM assist | free | ~10k × ≈1.2k tokens on Claude ≈ $10–15 (estimate at $5 / $25 per M input / output tokens) | **≈ $15** |
-| Production (≤ 300k checks/month) | 1 small VM, 2 vCPU / 2 GB RAM, ≈ $12–25 | LLM only on messages the core cannot resolve (~20%), ≈ $60–90 | **≈ $75–115** |
+| Production (≤ 300k checks/month) | Vercel Pro ($20/month), ~25 ms CPU per check | LLM only on messages the core cannot resolve (~20%), ≈ $60–90 | **≈ $80–110** |
 
 The LLM figures are estimates to be replaced by measured token counts during the challenge days (the app logs token usage per request, without content).
 
@@ -29,7 +29,7 @@ The LLM figures are estimates to be replaced by measured token counts during the
 | Tanzil / hadith-api downloads | only at build time | Raw files can be vendored; the index is built once and cached |
 | Claude API | no | Deterministic pipeline runs without it |
 | tesseract.js CDN | for screenshots only | Self-host the script and trained data (Apache-2.0) |
-| Hosting provider | yes | Single Docker image: HF Spaces, Render, Fly.io or any VM |
+| Hosting provider (Vercel) | yes | Same code runs from the included Dockerfile on Render, HF Spaces, Fly.io or any VM (~120 MB RAM) |
 
 ## Maintenance and content review
 

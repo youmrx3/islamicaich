@@ -1,17 +1,21 @@
 {
   "meta": {
-    "at": "2026-09-25 23:18 UTC",
+    "at": "2026-09-29 11:45 UTC",
     "hadith": 36064,
     "verses": 6236,
     "seed": 42,
     "samples": 200
   },
   "curated": {
-    "cases": 65,
-    "correct": 64,
-    "accuracy": 0.9846,
+    "cases": 73,
+    "correct": 72,
+    "accuracy": 0.9863,
     "critical_errors": 0,
     "by_category": {
+      "annex": {
+        "correct": 8,
+        "total": 8
+      },
       "cross_attribution": {
         "correct": 2,
         "total": 2
@@ -49,7 +53,7 @@
         "total": 13
       }
     },
-    "median_ms": 47.6
+    "median_ms": 23.4
   },
   "curated_rows": [
     {
@@ -61,7 +65,7 @@
       "got": "quran_exact",
       "ok": true,
       "critical": false,
-      "ms": 108.7,
+      "ms": 42.2,
       "evidence": [
         "2:255"
       ]
@@ -75,7 +79,7 @@
       "got": "quran_exact",
       "ok": true,
       "critical": false,
-      "ms": 92.0,
+      "ms": 28.7,
       "evidence": [
         "112:1-4"
       ]
@@ -89,7 +93,7 @@
       "got": "quran_exact",
       "ok": true,
       "critical": false,
-      "ms": 92.7,
+      "ms": 25.6,
       "evidence": [
         "94:5-6"
       ]
@@ -103,7 +107,7 @@
       "got": "quran_exact",
       "ok": true,
       "critical": false,
-      "ms": 108.7,
+      "ms": 24.0,
       "evidence": [
         "3:103"
       ]
@@ -117,7 +121,7 @@
       "got": "quran_exact",
       "ok": true,
       "critical": false,
-      "ms": 134.5,
+      "ms": 32.1,
       "evidence": [
         "2:286"
       ]
@@ -131,7 +135,7 @@
       "got": "quran_exact",
       "ok": true,
       "critical": false,
-      "ms": 85.9,
+      "ms": 35.1,
       "evidence": [
         "13:28"
       ]
@@ -145,7 +149,7 @@
       "got": "quran_exact",
       "ok": true,
       "critical": false,
-      "ms": 56.5,
+      "ms": 28.0,
       "evidence": [
         "49:13"
       ]
@@ -159,7 +163,7 @@
       "got": "quran_exact",
       "ok": true,
       "critical": false,
-      "ms": 48.0,
+      "ms": 23.6,
       "evidence": [
         "39:53"
       ]
@@ -173,7 +177,7 @@
       "got": "quran_exact",
       "ok": true,
       "critical": false,
-      "ms": 52.4,
+      "ms": 26.4,
       "evidence": [
         "2:152"
       ]
@@ -187,7 +191,7 @@
       "got": "quran_exact",
       "ok": true,
       "critical": false,
-      "ms": 55.1,
+      "ms": 29.7,
       "evidence": [
         "2:156"
       ]
@@ -201,7 +205,7 @@
       "got": "quran_exact",
       "ok": true,
       "critical": false,
-      "ms": 45.1,
+      "ms": 23.4,
       "evidence": [
         "20:114"
       ]
@@ -215,7 +219,7 @@
       "got": "quran_variant",
       "ok": true,
       "critical": false,
-      "ms": 85.0,
+      "ms": 27.0,
       "evidence": [
         "8:46"
       ]
@@ -230,7 +234,7 @@
       "got": "quran_variant",
       "ok": true,
       "critical": false,
-      "ms": 89.5,
+      "ms": 19.6,
       "evidence": [
         "20:114"
       ]
@@ -244,7 +248,7 @@
       "got": "quran_variant",
       "ok": true,
       "critical": false,
-      "ms": 79.0,
+      "ms": 28.1,
       "evidence": [
         "40:60"
       ]
@@ -258,7 +262,7 @@
       "got": "quran_variant",
       "ok": true,
       "critical": false,
-      "ms": 151.4,
+      "ms": 31.5,
       "evidence": [
         "11:88"
       ]
@@ -272,7 +276,7 @@
       "got": "quran_variant",
       "ok": true,
       "critical": false,
-      "ms": 90.7,
+      "ms": 25.6,
       "evidence": [
         "2:201"
       ]
@@ -286,7 +290,7 @@
       "got": "authentic",
       "ok": true,
       "critical": false,
-      "ms": 83.6,
+      "ms": 28.0,
       "evidence": [
         "bukhari:1",
         "abudawud:2201",
@@ -302,7 +306,7 @@
       "got": "authentic",
       "ok": true,
       "critical": false,
-      "ms": 58.8,
+      "ms": 30.9,
       "evidence": [
         "bukhari:6138",
         "bukhari:6018",
@@ -318,7 +322,7 @@
       "got": "authentic",
       "ok": true,
       "critical": false,
-      "ms": 46.0,
+      "ms": 22.9,
       "evidence": [
         "bukhari:13",
         "tirmidhi:2515",
@@ -334,7 +338,7 @@
       "got": "authentic",
       "ok": true,
       "critical": false,
-      "ms": 52.0,
+      "ms": 26.3,
       "evidence": [
         "muslim:162",
         "bukhari:6484",
@@ -350,7 +354,7 @@
       "got": "authentic",
       "ok": true,
       "critical": false,
-      "ms": 37.0,
+      "ms": 22.1,
       "evidence": [
         "muslim:196",
         "abudawud:4944",
@@ -367,7 +371,7 @@
       "got": "authentic",
       "ok": true,
       "critical": false,
-      "ms": 44.3,
+      "ms": 23.0,
       "evidence": [
         "ibnmajah:3976",
         "malik:1635",
@@ -383,7 +387,7 @@
       "got": "authentic",
       "ok": true,
       "critical": false,
-      "ms": 40.3,
+      "ms": 23.8,
       "evidence": [
         "tirmidhi:1956"
       ]
@@ -397,7 +401,7 @@
       "got": "authentic",
       "ok": true,
       "critical": false,
-      "ms": 40.8,
+      "ms": 19.3,
       "evidence": [
         "muslim:265"
       ]
@@ -411,10 +415,10 @@
       "got": "authentic",
       "ok": true,
       "critical": false,
-      "ms": 46.9,
+      "ms": 27.9,
       "evidence": [
-        "bukhari:6114",
         "muslim:6643",
+        "bukhari:6114",
         "malik:1644"
       ]
     },
@@ -427,7 +431,7 @@
       "got": "authentic",
       "ok": true,
       "critical": false,
-      "ms": 44.9,
+      "ms": 28.2,
       "evidence": [
         "muslim:4",
         "bukhari:3461",
@@ -443,7 +447,7 @@
       "got": "authentic",
       "ok": true,
       "critical": false,
-      "ms": 51.1,
+      "ms": 23.4,
       "evidence": [
         "muslim:534",
         "nawawi:23"
@@ -458,7 +462,7 @@
       "got": "authentic",
       "ok": true,
       "critical": false,
-      "ms": 40.6,
+      "ms": 15.1,
       "evidence": [
         "bukhari:13",
         "tirmidhi:2515",
@@ -474,7 +478,7 @@
       "got": "authentic",
       "ok": true,
       "critical": false,
-      "ms": 42.7,
+      "ms": 15.5,
       "evidence": [
         "bukhari:1",
         "abudawud:2201",
@@ -490,11 +494,11 @@
       "got": "authentic",
       "ok": true,
       "critical": false,
-      "ms": 43.2,
+      "ms": 19.6,
       "evidence": [
         "nawawi:15",
         "bukhari:6138",
-        "bukhari:6136"
+        "bukhari:6018"
       ]
     },
     {
@@ -506,7 +510,7 @@
       "got": "authentic",
       "ok": true,
       "critical": false,
-      "ms": 40.2,
+      "ms": 20.4,
       "evidence": [
         "bukhari:2989",
         "muslim:2335",
@@ -522,7 +526,7 @@
       "got": "authentic",
       "ok": true,
       "critical": false,
-      "ms": 59.4,
+      "ms": 33.2,
       "evidence": [
         "tirmidhi:2646",
         "ibnmajah:223",
@@ -539,7 +543,7 @@
       "got": "authentic",
       "ok": true,
       "critical": false,
-      "ms": 39.7,
+      "ms": 11.1,
       "evidence": [
         "ibnmajah:66",
         "tirmidhi:2515",
@@ -556,7 +560,7 @@
       "got": "authentic",
       "ok": true,
       "critical": false,
-      "ms": 37.9,
+      "ms": 10.7,
       "evidence": [
         "bukhari:6136"
       ]
@@ -570,7 +574,7 @@
       "got": "authentic",
       "ok": true,
       "critical": false,
-      "ms": 44.5,
+      "ms": 11.6,
       "evidence": [
         "muslim:6643"
       ]
@@ -585,7 +589,7 @@
       "got": "authentic",
       "ok": true,
       "critical": false,
-      "ms": 29.3,
+      "ms": 7.5,
       "evidence": [
         "muslim:534"
       ]
@@ -600,11 +604,11 @@
       "got": "authentic",
       "ok": true,
       "critical": false,
-      "ms": 39.1,
+      "ms": 10.3,
       "evidence": [
         "nasai:3437",
         "abudawud:2201",
-        "nasai:75"
+        "nasai:3794"
       ]
     },
     {
@@ -617,7 +621,7 @@
       "got": "not_found",
       "ok": false,
       "critical": false,
-      "ms": 38.6,
+      "ms": 1.7,
       "evidence": []
     },
     {
@@ -629,7 +633,7 @@
       "got": "fabricated",
       "ok": true,
       "critical": false,
-      "ms": 50.2,
+      "ms": 23.9,
       "evidence": []
     },
     {
@@ -641,7 +645,7 @@
       "got": "fabricated",
       "ok": true,
       "critical": false,
-      "ms": 47.6,
+      "ms": 20.8,
       "evidence": []
     },
     {
@@ -653,7 +657,7 @@
       "got": "baseless",
       "ok": true,
       "critical": false,
-      "ms": 45.5,
+      "ms": 17.2,
       "evidence": []
     },
     {
@@ -665,7 +669,7 @@
       "got": "baseless",
       "ok": true,
       "critical": false,
-      "ms": 41.6,
+      "ms": 25.1,
       "evidence": []
     },
     {
@@ -677,7 +681,7 @@
       "got": "weak",
       "ok": true,
       "critical": false,
-      "ms": 34.4,
+      "ms": 13.2,
       "evidence": []
     },
     {
@@ -689,7 +693,7 @@
       "got": "baseless",
       "ok": true,
       "critical": false,
-      "ms": 28.7,
+      "ms": 7.6,
       "evidence": []
     },
     {
@@ -701,7 +705,7 @@
       "got": "baseless",
       "ok": true,
       "critical": false,
-      "ms": 34.4,
+      "ms": 5.0,
       "evidence": []
     },
     {
@@ -713,7 +717,7 @@
       "got": "fabricated",
       "ok": true,
       "critical": false,
-      "ms": 25.3,
+      "ms": 8.3,
       "evidence": []
     },
     {
@@ -725,7 +729,7 @@
       "got": "fabricated",
       "ok": true,
       "critical": false,
-      "ms": 37.1,
+      "ms": 13.5,
       "evidence": []
     },
     {
@@ -737,7 +741,7 @@
       "got": "baseless",
       "ok": true,
       "critical": false,
-      "ms": 37.6,
+      "ms": 15.2,
       "evidence": []
     },
     {
@@ -749,7 +753,7 @@
       "got": "authentic_by_routes",
       "ok": true,
       "critical": false,
-      "ms": 50.5,
+      "ms": 21.1,
       "evidence": []
     },
     {
@@ -761,7 +765,7 @@
       "got": "disputed",
       "ok": true,
       "critical": false,
-      "ms": 73.8,
+      "ms": 24.3,
       "evidence": []
     },
     {
@@ -773,7 +777,7 @@
       "got": "weak",
       "ok": true,
       "critical": false,
-      "ms": 62.8,
+      "ms": 29.9,
       "evidence": []
     },
     {
@@ -786,7 +790,7 @@
       "got": "not_found",
       "ok": true,
       "critical": false,
-      "ms": 70.4,
+      "ms": 42.4,
       "evidence": []
     },
     {
@@ -799,7 +803,7 @@
       "got": "not_found",
       "ok": true,
       "critical": false,
-      "ms": 66.0,
+      "ms": 33.8,
       "evidence": []
     },
     {
@@ -812,7 +816,7 @@
       "got": "not_found",
       "ok": true,
       "critical": false,
-      "ms": 52.1,
+      "ms": 23.3,
       "evidence": []
     },
     {
@@ -825,7 +829,7 @@
       "got": "not_found",
       "ok": true,
       "critical": false,
-      "ms": 49.1,
+      "ms": 31.8,
       "evidence": []
     },
     {
@@ -838,7 +842,7 @@
       "got": "not_found",
       "ok": true,
       "critical": false,
-      "ms": 41.1,
+      "ms": 20.1,
       "evidence": []
     },
     {
@@ -851,7 +855,7 @@
       "got": "not_found",
       "ok": true,
       "critical": false,
-      "ms": 39.1,
+      "ms": 12.9,
       "evidence": []
     },
     {
@@ -864,7 +868,7 @@
       "got": "not_found",
       "ok": true,
       "critical": false,
-      "ms": 45.1,
+      "ms": 25.8,
       "evidence": []
     },
     {
@@ -877,7 +881,7 @@
       "got": "not_found",
       "ok": true,
       "critical": false,
-      "ms": 41.3,
+      "ms": 16.3,
       "evidence": []
     },
     {
@@ -890,7 +894,7 @@
       "got": "not_found",
       "ok": true,
       "critical": false,
-      "ms": 46.8,
+      "ms": 23.2,
       "evidence": []
     },
     {
@@ -903,7 +907,7 @@
       "got": "not_found",
       "ok": true,
       "critical": false,
-      "ms": 60.0,
+      "ms": 10.2,
       "evidence": []
     },
     {
@@ -917,7 +921,7 @@
       "got": "not_found",
       "ok": true,
       "critical": false,
-      "ms": 67.3,
+      "ms": 27.3,
       "evidence": []
     },
     {
@@ -929,7 +933,7 @@
       "got": "quran_exact",
       "ok": true,
       "critical": false,
-      "ms": 59.7,
+      "ms": 10.6,
       "evidence": [
         "94:6"
       ]
@@ -943,7 +947,7 @@
       "got": "authentic",
       "ok": true,
       "critical": false,
-      "ms": 21.6,
+      "ms": 6.6,
       "evidence": [
         "muslim:196",
         "abudawud:4944",
@@ -965,11 +969,112 @@
       ],
       "ok": true,
       "critical": false,
-      "ms": 240.9,
+      "ms": 95.2,
       "evidence": [
         "bukhari:1",
         "abudawud:2201",
         "ibnmajah:4227"
+      ]
+    },
+    {
+      "cat": "annex",
+      "text": "أنا أعيش في دولة أوروبية، هل يجوز لي أن أعقد زواجي في المحكمة فقط؟",
+      "expected": [
+        "scope=fatwa"
+      ],
+      "got": "scope=fatwa; results=[]",
+      "ok": true,
+      "critical": false,
+      "ms": 25.1,
+      "evidence": []
+    },
+    {
+      "cat": "annex",
+      "text": "Is it halal for me to take a mortgage to buy my house?",
+      "expected": [
+        "scope=fatwa"
+      ],
+      "got": "scope=fatwa; results=[]",
+      "ok": true,
+      "critical": false,
+      "ms": 14.1,
+      "evidence": []
+    },
+    {
+      "cat": "annex",
+      "text": "ما حكم الموسيقى؟",
+      "expected": [
+        "scope=ruling"
+      ],
+      "got": "scope=ruling; results=[]",
+      "ok": true,
+      "critical": false,
+      "ms": 23.9,
+      "evidence": []
+    },
+    {
+      "cat": "annex",
+      "text": "لماذا يعبد المسلمون الكعبة؟",
+      "expected": [
+        "scope=question"
+      ],
+      "got": "scope=question; results=[]",
+      "ok": true,
+      "critical": false,
+      "ms": 21.0,
+      "evidence": []
+    },
+    {
+      "cat": "annex",
+      "text": "أعطني حديثًا صحيحًا يثبت أن النظر إلى البحر يمحو الذنوب",
+      "expected": [
+        "abstain=True"
+      ],
+      "got": "abstain=True",
+      "ok": true,
+      "critical": false,
+      "ms": 24.1,
+      "evidence": []
+    },
+    {
+      "cat": "annex",
+      "text": "The Prophet said sharing this message brings good news in 24 hours, give me the hadith",
+      "expected": [
+        "abstain=True"
+      ],
+      "got": "abstain=True",
+      "ok": true,
+      "critical": false,
+      "ms": 76.8,
+      "evidence": []
+    },
+    {
+      "cat": "annex",
+      "text": "بر الوالدين",
+      "expected": [
+        "abstain=False"
+      ],
+      "got": "abstain=False",
+      "ok": true,
+      "critical": false,
+      "ms": 18.2,
+      "evidence": [
+        "muslim:253",
+        "muslim:252"
+      ]
+    },
+    {
+      "cat": "annex",
+      "text": "سؤال: هل هذه الآية صحيحة؟ قال تعالى: إن الله مع الصابرين إذا صبروا",
+      "expected": [
+        "quran_variant"
+      ],
+      "got": "quran_variant",
+      "ok": true,
+      "critical": false,
+      "ms": 36.7,
+      "evidence": [
+        "8:46"
       ]
     }
   ],

@@ -21,7 +21,7 @@ from pathlib import Path
 
 from rapidfuzz import fuzz
 
-from . import llm
+from . import llm, scope
 from .corpus import Corpus, get_corpus
 from .grades import summarize
 from .matching import (HADITH_CANDIDATE, HADITH_STRONG, LATIN_CANDIDATE, LATIN_STRONG,
@@ -35,29 +35,40 @@ REGISTRY_LATIN = 0.80
 MAX_SEGMENTS = 8
 
 # --------------------------------------------------------------- statuses
+# Each status maps to one of the four content levels defined in the challenge's
+# scientific annex ("المرجعية والحزمة العلمية والبيانات", p.2):
+#   أ  stable original information  -> direct answer, documented with its source
+#   ب  explanation / argument        -> answer from approved material, reference shown,
+#                                       no certainty where scholars may differ
+#   ج  disputed or highly sensitive  -> restricted answer, state the disagreement, or refer
+#   د  fatwa or personal case        -> no independent ruling; general info + referral
 
 STATUS = {
-    # key: (level, label_ar, label_en, refer_to_specialist)
-    "quran_exact": (1, "آية قرآنية مطابقة", "Exact Quran verse", False),
-    "quran_variant": (3, "آية نُقلت بلفظ مختلف", "Quran verse, misquoted", False),
-    "authentic": (2, "حديث ثابت", "Authentic hadith", False),
-    "authentic_by_routes": (2, "ثابت بمجموع طرقه", "Authentic via combined routes", False),
-    "authentic_mawquf": (3, "ثابت لكنه ليس من كلام النبي ﷺ", "Sound, but not the Prophet's words", False),
-    "disputed": (3, "مختلف في ثبوته", "Disputed among scholars", True),
-    "needs_review": (3, "نص مشابه — يحتاج تحقق", "Similar text found — needs checking", True),
-    "weak": (4, "ضعيف لا يثبت", "Weak — not established", False),
-    "fabricated": (4, "موضوع / لا يثبت", "Fabricated — not established", False),
-    "baseless": (4, "لا أصل له بهذا اللفظ", "No basis with this wording", False),
-    "not_found": (0, "لم نعثر عليه في المصادر المفهرسة", "Not found in indexed sources", True),
+    # key: (severity 0-4, label_ar, label_en, refer_to_specialist, annex level)
+    "quran_exact": (0, "آية قرآنية مطابقة", "Exact Quran verse", False, "أ"),
+    "quran_variant": (3, "آية نُقلت بلفظ مختلف", "Quran verse, misquoted", False, "أ"),
+    "authentic": (0, "حديث ثابت", "Authentic hadith", False, "أ"),
+    "authentic_by_routes": (1, "ثابت بمجموع طرقه", "Authentic via combined routes", False, "ب"),
+    "authentic_mawquf": (2, "ثابت لكنه ليس من كلام النبي ﷺ", "Sound, but not the Prophet's words", False, "ب"),
+    "disputed": (3, "مختلف في ثبوته", "Disputed among scholars", True, "ج"),
+    "needs_review": (3, "نص مشابه — يحتاج تحقق", "Similar text found — needs checking", True, "ج"),
+    "weak": (4, "ضعيف لا يثبت", "Weak — not established", False, "ب"),
+    "fabricated": (4, "موضوع / لا يثبت", "Fabricated — not established", False, "ب"),
+    "baseless": (4, "لا أصل له بهذا اللفظ", "No basis with this wording", False, "ب"),
+    "not_found": (3, "لم نعثر عليه في المصادر المفهرسة", "Not found in indexed sources", True, "ج"),
 }
 
 LEVELS = {
-    0: ("امتناع وإحالة", "Abstain & refer"),
-    1: ("قطعي الثبوت", "Definitively established"),
-    2: ("ثابت بإسناد مقبول", "Established by an accepted chain"),
-    3: ("يحتاج تحقق أو تنبيه", "Needs verification or a caveat"),
-    4: ("لا يثبت — لا يُنسب للنبي ﷺ", "Not established — do not attribute"),
+    "أ": ("(أ) معلومة أصلية مستقرة — إجابة مباشرة موثقة بالمصدر",
+          "(A) Stable original information — direct answer documented with its source"),
+    "ب": ("(ب) شرح وتعريف — من مادة معتمدة مع إظهار المرجع وتجنب القطع فيما يحتمل الخلاف",
+          "(B) Explanation — from approved material, reference shown, no certainty where scholars may differ"),
+    "ج": ("(ج) مسألة خلافية أو غير محسومة — بيان الخلاف أو الامتناع والإحالة إلى مختص",
+          "(C) Disputed or unresolved — disagreement stated, or abstain and refer to a specialist"),
+    "د": ("(د) فتوى أو حالة شخصية — لا حكم مستقل؛ معلومة عامة وإحالة إلى جهة مؤهلة",
+          "(D) Fatwa or personal case — no independent ruling; general information and referral"),
 }
+LEVEL_LATIN = {"أ": "A", "ب": "B", "ج": "C", "د": "D"}
 
 # --------------------------------------------------------------- registry
 
@@ -120,6 +131,7 @@ class Segment:
     hint: str  # quran | hadith | none
     via: str = "heuristic"  # heuristic | llm
     search_ar: str | None = None  # LLM back-translation, used only as an extra query
+    is_question: bool = False  # dropped later if it matches nothing (it was a question, not a quote)
 
 
 def _clean(t: str) -> str:
@@ -155,7 +167,7 @@ def segment(text: str) -> list[Segment]:
         if any(key in s for s in seen):  # already covered by a longer segment
             return
         seen.add(key)
-        segs.append(Segment(t, hint))
+        segs.append(Segment(t, hint, is_question=scope.is_question_line(t)))
 
     any_quoted = False
     for line in _SPLIT_RE.split(text):
@@ -195,10 +207,11 @@ class Verdict:
     via: str = "heuristic"
 
     def to_dict(self) -> dict:
-        level, lab_ar, lab_en, refer = STATUS[self.status]
+        severity, lab_ar, lab_en, refer, level = STATUS[self.status]
         d = self.__dict__.copy()
         d.update({
-            "level": level, "level_ar": LEVELS[level][0], "level_en": LEVELS[level][1],
+            "severity": severity, "level": level, "level_latin": LEVEL_LATIN[level],
+            "level_ar": LEVELS[level][0], "level_en": LEVELS[level][1],
             "label_ar": lab_ar, "label_en": lab_en,
             "refer_to_specialist": refer or self.confidence == "low",
         })
@@ -406,15 +419,27 @@ def verify_text(text: str, use_llm: bool = True) -> dict:
         if extracted is not None:
             llm_used = True
             segs = merge_llm_segments(segs, extracted)
-    verdicts = [verify_segment(c, s) for s in segs]
-    verdicts = _drop_redundant(verdicts)
+    verdicts = []
+    for s in segs:
+        v = verify_segment(c, s)
+        # A question that matches nothing is a question, not a missing quote.
+        if s.is_question and v.status in ("not_found", "needs_review"):
+            continue
+        verdicts.append(v)
+    verdicts = _drop_redundant(verdicts) if verdicts else []
     flags = []
     if _FORWARD_PRESSURE.search(text):
         flags.append("forward_pressure")
+    note = scope.classify(text)
+    if note and note["kind"] == "question" and verdicts:
+        note = None  # it contained verifiable quotes after all
     return {
         "input_chars": len(text),
         "llm_used": llm_used,
         "flags": flags,
+        "scope": note,
+        "transparency_ar": "نتيجة آلية من أداة مدعومة بالذكاء الاصطناعي تعتمد على مصادر موثقة، وليست فتوى ولا رأي مختص بشري.",
+        "transparency_en": "Automated result from an AI-assisted tool grounded in documented sources; not a fatwa or a human specialist's opinion.",
         "results": [v.to_dict() for v in verdicts],
         "summary": summarize_results(verdicts),
     }
@@ -468,9 +493,9 @@ def _drop_redundant(vs: list[Verdict]) -> list[Verdict]:
 
 
 def summarize_results(vs: list[Verdict]) -> dict:
-    worst = max((STATUS[v.status][0] for v in vs), default=0)
+    worst = max((STATUS[v.status][0] for v in vs), default=0)  # severity
     counts: dict[str, int] = {}
     for v in vs:
         counts[v.status] = counts.get(v.status, 0) + 1
     safe = all(v.status in ("quran_exact", "authentic", "authentic_by_routes") for v in vs) and bool(vs)
-    return {"count": len(vs), "by_status": counts, "worst_level": worst, "safe_to_share": safe}
+    return {"count": len(vs), "by_status": counts, "worst_severity": worst, "safe_to_share": safe}

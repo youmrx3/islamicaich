@@ -20,7 +20,7 @@ message / screenshot
                 emojis, and forwarding pressure ("انشرها… أمانة في رقبتك"), which is flagged separately.
                 [optional LLM: find quotes in messy text; propose an Arabic query for other languages]
    ▼
-2. Retrieve     hashed word uni+bigram TF-IDF over normalized text (Arabic: no diacritics, unified
+2. Retrieve     hashed TF-IDF (Arabic uni+bigrams, translations unigrams) over normalized text (Arabic: no diacritics, unified
                 alef/ya/ta-marbuta, clitic stripping; matn separated from isnad) → top 40–60 candidates
    ▼
 3. Align        character-level fuzzy alignment (RapidFuzz partial ratio + token coverage) → score 0..1
@@ -45,27 +45,44 @@ message / screenshot
 | Sahih al-Bukhari and Sahih Muslim entries have no per-hadith grades in the dataset; they are marked "in the two Sahihs". | Scholarly consensus on accepting their connected reports. |
 | Nawawi's Forty and Forty Qudsi (secondary compilations, ungraded) never decide a verdict alone. | They cite primary sources; the primary source should decide. |
 
-## Status taxonomy and levels
+## Status taxonomy and the annex's four content levels
 
-| Status | Level | Meaning | Refer to specialist |
-|---|---|---|---|
-| `quran_exact` | 1 | Exact Quran text | no |
-| `authentic`, `authentic_by_routes` | 2 | Established through an accepted chain | no |
-| `quran_variant` | 3 | Verse exists but was misquoted; word diff shown | no |
-| `authentic_mawquf` | 3 | Sound, but a Companion's/Successor's words | no |
-| `disputed` | 3 | Named graders disagree | **yes** |
-| `needs_review` | 3 | Similar text found, wording differs | **yes** |
-| `weak`, `fabricated`, `baseless` | 4 | Not established; do not attribute | no |
-| `not_found` | 0 | Abstain: not in indexed sources (≠ fabricated) | **yes** |
+The challenge's scientific annex (*المرجعية والحزمة العلمية والبيانات*, p.2) defines four content levels, each with a required behaviour. Every Thabat result carries one of them (`backend/app/verify.py`, `STATUS` and `LEVELS`):
 
-The four numbered levels are our working mapping. When the challenge's scientific annex publishes its official "four content levels", we map our statuses onto them in `backend/app/verify.py` (`STATUS`, `LEVELS`). Statuses stay unchanged, so this is a one-table edit.
+| Status | Annex level | Behaviour required by the annex, and what Thabat does |
+|---|---|---|
+| `quran_exact` | **أ** stable original information | Direct answer documented with its source: surah and ayah, Mushaf text, link |
+| `quran_variant` | **أ** | "A question containing a misquoted verse": gentle correction showing the surah, ayah and correct text; the distorted wording is never built upon (annex p.6) |
+| `authentic` | **أ** | Direct answer: collection, number and named graders |
+| `authentic_by_routes` | **ب** explanation | Reference shown, with the explanation that the quoted phrase and the full narration are graded differently |
+| `authentic_mawquf` | **ب** | "Sound, but the words of a Companion or Successor, not the Prophet ﷺ" |
+| `weak`, `fabricated`, `baseless` | **ب** | Grading attributed to named scholars with the reference; not presented as Thabat's own judgement |
+| `disputed` | **ج** disputed | The disagreement is stated, each grader named, and the question is referred to a specialist |
+| `needs_review`, `not_found` | **ج** | Abstain and refer ("not found in indexed sources ≠ fabricated") |
+| fatwa request (scope guard) | **د** fatwa / personal case | No independent ruling; states the tool's nature and refers to an official fatwa body |
+
+## Scope guard (`backend/app/scope.py`)
+
+The annex forbids independent fatwas and requires referral for personal cases. Users still paste such questions, so before verifying, every message is classified:
+
+| Detected | Example | Response |
+|---|---|---|
+| Personal ruling request | «أنا في دولة أوروبية، هل يجوز لي…؟», "Is it halal for me to…" | Level **د**: "Thabat does not issue fatwas" + referral (alifta.gov.sa) |
+| Ruling question | «ما حكم الموسيقى؟» | Level **ج**: no weighing of opinions; referral to an approved fiqh reference (dorar.net/feqhia) |
+| General question with no quote | «لماذا يعبد المسلمون الكعبة؟» | Out of scope; pointer to *Bayyinat*, the Q&A reference named in the annex |
+
+A question line is still checked (some hadith are phrased as questions) and only dropped if nothing matches, so it is never reported as a "missing quote".
+
+## Evidence search (`backend/app/search.py`)
+
+"Give me an authentic hadith about X" is served from the same index. Only verses and hadith graded acceptable (marfu') are returned. Topic terms must all appear (≤ 3 terms) or 75% of them (longer topics). When nothing qualifies, the answer is the annex's required behaviour: "no matching evidence found; we will not invent one".
 
 ## Role of AI, and why this design
 
 | Component | Technique | Why this and not something bigger |
 |---|---|---|
 | Arabic normalization + matn extraction | Rule-based NLP | Removes the main failure of exact search (diacritics, spelling, isnad). Deterministic and auditable. |
-| Candidate retrieval | Hashed TF-IDF (uni+bigrams) | Fast (≈60 ms per message on CPU), no GPU, ~600 MB RAM, identical results on every run. |
+| Candidate retrieval | TF-IDF over hashed terms, stored as a NumPy inverted index (uint16 doc ids, float16 weights, memory-mapped) | ≈25 ms per message on CPU, ~0.3 s cold start, ~120 MB RAM, identical results on every run, and small enough to run as a serverless function. |
 | Re-ranking/alignment | Fuzzy character alignment | Tolerates typos and partial quotes. Gives the exact aligned span, which drives the Quran word diff and the highlighted hadith snippet. |
 | Screenshot reading | OCR (tesseract.js), on device | Most forwards arrive as images. Running OCR on the user's device keeps images private. |
 | Quote finding / cross-language query | LLM (Claude), optional | Helps with messy, long or other-language messages. Its output is only a search query; it cannot create evidence. Matches found this way are labelled and capped at medium confidence. |

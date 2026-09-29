@@ -97,3 +97,41 @@ def test_deterministic(corpus):
     a = verify_text("قال رسول الله ﷺ: من تشبه بقوم فهو منهم", use_llm=False)
     b = verify_text("قال رسول الله ﷺ: من تشبه بقوم فهو منهم", use_llm=False)
     assert a["results"] == b["results"]
+
+
+# ---- scientific annex behaviours
+
+def test_personal_fatwa_request_is_referred_not_answered(corpus):
+    r = verify_text("أنا أعيش في دولة أوروبية، هل يجوز لي أن أعقد زواجي في المحكمة فقط؟", use_llm=False)
+    assert r["scope"]["kind"] == "fatwa" and r["scope"]["level"] == "د"
+    assert r["results"] == [] and r["scope"]["referrals"]
+
+
+def test_general_question_is_not_reported_as_missing_quote(corpus):
+    r = verify_text("لماذا يعبد المسلمون الكعبة؟", use_llm=False)
+    assert r["results"] == [] and r["scope"]["kind"] == "question"
+
+
+def test_every_result_has_annex_level_and_transparency(corpus):
+    r = verify_text("قال رسول الله ﷺ: إنما الأعمال بالنيات", use_llm=False)
+    assert r["results"][0]["level"] in ("أ", "ب", "ج", "د")
+    assert "ليست فتوى" in r["transparency_ar"]
+
+
+def test_evidence_search_refuses_to_invent(corpus):
+    from app.search import search_evidence
+    assert search_evidence(corpus, "أعطني حديثا يثبت أن النظر إلى البحر يمحو الذنوب")["abstained"] is True
+    found = search_evidence(corpus, "بر الوالدين")
+    assert not found["abstained"]
+    assert all(h["grade"]["status"] == "authentic" for h in found["hadith"])
+
+
+def test_api_smoke():
+    from fastapi.testclient import TestClient
+    from app.main import app
+    c = TestClient(app)
+    assert c.get("/api/health").json()["ok"] is True
+    r = c.post("/api/verify", json={"text": "قال تعالى: إن الله مع الصابرين إذا صبروا", "reply_lang": "en"})
+    assert r.status_code == 200 and r.json()["results"][0]["status"] == "quran_variant"
+    assert "Al-Anfal" in r.json()["reply"]
+    assert c.get("/api/search", params={"q": "honesty"}).status_code == 200

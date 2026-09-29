@@ -1,0 +1,187 @@
+{
+  "built_at": "2026-09-29T11:06:51.382385+00:00",
+  "quran_verses": 6236,
+  "hadith_records": 36064,
+  "languages": [
+    "ara",
+    "eng",
+    "fra",
+    "ind",
+    "tur"
+  ],
+  "sources": [
+    {
+      "edition": "tanzil-uthmani",
+      "url": "https://tanzil.net/pub/download/index.php?quranType=uthmani&outType=txt-2&agree=true&marks=true&sajdah=true&tatweel=true"
+    },
+    {
+      "edition": "tanzil-simple",
+      "url": "https://tanzil.net/pub/download/index.php?quranType=simple&outType=txt-2&agree=true&marks=true&sajdah=true&tatweel=true"
+    },
+    {
+      "edition": "ara-bukhari",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-bukhari.min.json"
+    },
+    {
+      "edition": "eng-bukhari",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/eng-bukhari.min.json"
+    },
+    {
+      "edition": "fra-bukhari",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/fra-bukhari.min.json"
+    },
+    {
+      "edition": "ind-bukhari",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ind-bukhari.min.json"
+    },
+    {
+      "edition": "tur-bukhari",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/tur-bukhari.min.json"
+    },
+    {
+      "edition": "ara-muslim",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-muslim.min.json"
+    },
+    {
+      "edition": "eng-muslim",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/eng-muslim.min.json"
+    },
+    {
+      "edition": "fra-muslim",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/fra-muslim.min.json"
+    },
+    {
+      "edition": "ind-muslim",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ind-muslim.min.json"
+    },
+    {
+      "edition": "tur-muslim",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/tur-muslim.min.json"
+    },
+    {
+      "edition": "ara-abudawud",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-abudawud.min.json"
+    },
+    {
+      "edition": "eng-abudawud",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/eng-abudawud.min.json"
+    },
+    {
+      "edition": "fra-abudawud",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/fra-abudawud.min.json"
+    },
+    {
+      "edition": "ind-abudawud",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ind-abudawud.min.json"
+    },
+    {
+      "edition": "tur-abudawud",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/tur-abudawud.min.json"
+    },
+    {
+      "edition": "ara-tirmidhi",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-tirmidhi.min.json"
+    },
+    {
+      "edition": "eng-tirmidhi",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/eng-tirmidhi.min.json"
+    },
+    {
+      "edition": "ind-tirmidhi",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ind-tirmidhi.min.json"
+    },
+    {
+      "edition": "tur-tirmidhi",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/tur-tirmidhi.min.json"
+    },
+    {
+      "edition": "ara-nasai",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-nasai.min.json"
+    },
+    {
+      "edition": "eng-nasai",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/eng-nasai.min.json"
+    },
+    {
+      "edition": "fra-nasai",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/fra-nasai.min.json"
+    },
+    {
+      "edition": "ind-nasai",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ind-nasai.min.json"
+    },
+    {
+      "edition": "tur-nasai",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/tur-nasai.min.json"
+    },
+    {
+      "edition": "ara-ibnmajah",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-ibnmajah.min.json"
+    },
+    {
+      "edition": "eng-ibnmajah",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/eng-ibnmajah.min.json"
+    },
+    {
+      "edition": "fra-ibnmajah",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/fra-ibnmajah.min.json"
+    },
+    {
+      "edition": "ind-ibnmajah",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ind-ibnmajah.min.json"
+    },
+    {
+      "edition": "tur-ibnmajah",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/tur-ibnmajah.min.json"
+    },
+    {
+      "edition": "ara-malik",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-malik.min.json"
+    },
+    {
+      "edition": "eng-malik",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/eng-malik.min.json"
+    },
+    {
+      "edition": "fra-malik",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/fra-malik.min.json"
+    },
+    {
+      "edition": "ind-malik",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ind-malik.min.json"
+    },
+    {
+      "edition": "tur-malik",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/tur-malik.min.json"
+    },
+    {
+      "edition": "ara-nawawi",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-nawawi.min.json"
+    },
+    {
+      "edition": "eng-nawawi",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/eng-nawawi.min.json"
+    },
+    {
+      "edition": "fra-nawawi",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/fra-nawawi.min.json"
+    },
+    {
+      "edition": "tur-nawawi",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/tur-nawawi.min.json"
+    },
+    {
+      "edition": "ara-qudsi",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-qudsi.min.json"
+    },
+    {
+      "edition": "eng-qudsi",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/eng-qudsi.min.json"
+    },
+    {
+      "edition": "fra-qudsi",
+      "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/fra-qudsi.min.json"
+    }
+  ],
+  "store_version": 4
+}

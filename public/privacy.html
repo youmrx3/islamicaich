@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ثَبَت — سياسة الخصوصية</title>
+  <link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=IBM+Plex+Sans:wght@400;600;700&family=Reem+Kufi:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/landing.css">
+  <style>
+    .doc { background: var(--sheet); padding: 56px 0 72px; }
+    .doc h1 { font-family: var(--f-brand); font-size: clamp(30px, 5vw, 44px); margin: 0 0 6px; }
+    html[lang="en"] .doc h1 { font-family: "IBM Plex Sans", sans-serif; }
+    .doc h2 { font-size: 20px; margin: 30px 0 8px; }
+    .doc p, .doc li { color: var(--ink-soft); }
+    .doc ul { padding-inline-start: 20px; }
+    .meta { font-size: 14px; color: var(--ink-soft); }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="logo" href="/"><span class="logo-mark">ثَبَت</span><span class="logo-sub" data-en="Verify before you forward">تحقّق قبل أن تنشر</span></a>
+      <div class="nav-cta">
+        <button id="langToggle" class="btn ghost small" type="button">English</button>
+        <a class="btn accent small" href="/app" data-en="Open the checker">افتح أداة التحقق</a>
+      </div>
+    </div>
+  </header>
+  <main class="doc">
+    <div class="wrap narrow">
+      <h1 data-en="Privacy policy">سياسة الخصوصية</h1>
+      <p class="meta" data-en="Version 1.0 · 29 September 2026">الإصدار 1.0 · 29 سبتمبر 2026</p>
+
+      <h2 data-en="In one sentence">باختصار</h2>
+      <p data-en="Thabat does not store the messages you check, does not ask who you are, and reads screenshots on your own device.">«ثَبَت» لا يحفظ الرسائل التي تتحقق منها، ولا يسألك من أنت، ويقرأ لقطات الشاشة على جهازك.</p>
+
+      <h2 data-en="What we process">ما الذي نعالجه</h2>
+      <ul>
+        <li data-en="Message text you submit: processed in memory to find and verify quotes, then discarded. It is not written to logs or databases.">نص الرسالة الذي ترسله: يُعالج في الذاكرة لاستخراج النصوص والتحقق منها ثم يُهمل، ولا يُكتب في السجلات ولا في قواعد البيانات.</li>
+        <li data-en="Screenshots: read by OCR inside your browser (tesseract.js). The image is never uploaded; only the extracted text is sent if you press “Check”.">لقطات الشاشة: تُقرأ داخل متصفحك (tesseract.js)، ولا تُرفع الصورة أبدًا؛ يُرسل النص المستخرج فقط إذا ضغطت «تحقّق».</li>
+        <li data-en="Problem reports: if you choose to report a result, we store the quote, the verdict, the evidence reference and your optional comment, with no name, email, IP address or account.">بلاغات الخطأ: إذا اخترت الإبلاغ عن نتيجة نحفظ النص والحكم ومرجع الدليل وتعليقك الاختياري، دون اسم أو بريد أو عنوان IP أو حساب.</li>
+        <li data-en="Technical data: your IP address is held in memory for up to one minute to limit abuse (rate limiting) and is not stored. Our hosting provider (Vercel) may keep standard request logs under its own policy.">بيانات تقنية: يُحتفظ بعنوان IP في الذاكرة مدة أقصاها دقيقة للحد من الإساءة (تحديد معدل الطلبات)، ولا يُخزَّن. وقد يحتفظ مزود الاستضافة (Vercel) بسجلات الطلبات المعتادة وفق سياسته.</li>
+        <li data-en="Third-party files: fonts are loaded from Google Fonts, and the OCR script from the jsDelivr CDN when you upload a screenshot. These services receive your IP address as part of the download.">ملفات من أطراف أخرى: تُحمَّل الخطوط من Google Fonts، ويُحمَّل برنامج قراءة الصور من شبكة jsDelivr عند رفع لقطة شاشة، وتصل هذه الخدمات عنوان IP الخاص بك ضمن التحميل.</li>
+      </ul>
+
+      <h2 data-en="Optional AI service">خدمة الذكاء الاصطناعي الاختيارية</h2>
+      <p data-en="When the operator enables it, message text may be sent to Anthropic's Claude API only to locate quotes inside long messages. The model does not decide any verdict. Anthropic processes API data under its commercial terms. When it is disabled, nothing leaves our server.">إذا فعّلها المشغّل، قد يُرسل نص الرسالة إلى واجهة Claude من شركة Anthropic لاستخراج الاقتباسات من الرسائل الطويلة فقط، ولا يقرر النموذج أي حكم. تعالج Anthropic بيانات الواجهة وفق شروطها التجارية. وإذا عُطّلت لا يغادر أي شيء خادمنا.</p>
+
+      <h2 data-en="What we never do">ما لا نفعله أبدًا</h2>
+      <ul>
+        <li data-en="We do not infer or record anything about your religion, beliefs, or practice.">لا نستنتج ولا نسجّل أي شيء عن دينك أو معتقدك أو ممارستك.</li>
+        <li data-en="We do not use cookies for tracking, and there are no analytics or advertising scripts.">لا نستخدم ملفات تعريف الارتباط للتتبع، ولا توجد برامج تحليل أو إعلانات.</li>
+        <li data-en="We do not sell or share data. Your interface-language choice is kept only in your browser.">لا نبيع البيانات ولا نشاركها. ويُحفظ اختيار لغة الواجهة في متصفحك فقط.</li>
+      </ul>
+
+      <h2 data-en="Nature of the service">طبيعة الخدمة</h2>
+      <p data-en="Thabat is an automated, AI-assisted tool grounded in documented sources. Its results are not fatwas and not the opinion of a human specialist.">«ثَبَت» أداة آلية مدعومة بالذكاء الاصطناعي تعتمد على مصادر موثقة، ونتائجها ليست فتاوى ولا رأي مختص بشري.</p>
+
+      <h2 data-en="Contact">التواصل</h2>
+      <p data-en="Questions or deletion requests for a report you sent: open an issue on the project's GitHub repository.">للأسئلة أو لطلب حذف بلاغ أرسلته: افتح طلبًا في مستودع المشروع على GitHub.</p>
+      <p><a href="https://github.com/youmrx3/islamicaich" target="_blank" rel="noopener">github.com/youmrx3/islamicaich</a></p>
+    </div>
+  </main>
+  <footer class="foot"><div class="wrap foot-in"><span class="logo-mark small">ثَبَت</span><nav class="foot-links"><a href="/" data-en="Home">الرئيسية</a><a href="/app" data-en="Checker">أداة التحقق</a></nav></div></footer>
+  <script>
+    (function () {
+      var ui; try { ui = localStorage.getItem("thabat.ui") || "ar"; } catch (e) { ui = "ar"; }
+      if (/[?&]lang=en/.test(location.search)) ui = "en";
+      function apply() {
+        document.documentElement.lang = ui; document.documentElement.dir = ui === "ar" ? "rtl" : "ltr";
+        document.querySelectorAll("[data-en]").forEach(function (el) {
+          if (el.dataset.ar === undefined) el.dataset.ar = el.textContent;
+          el.textContent = ui === "en" ? el.getAttribute("data-en") : el.dataset.ar;
+        });
+        document.getElementById("langToggle").textContent = ui === "ar" ? "English" : "العربية";
+      }
+      document.getElementById("langToggle").addEventListener("click", function () {
+        ui = ui === "ar" ? "en" : "ar"; try { localStorage.setItem("thabat.ui", ui); } catch (e) {} apply();
+      });
+      apply();
+    })();
+  </script>
+</body>
+</html>

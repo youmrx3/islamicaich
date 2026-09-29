@@ -1,11 +1,12 @@
-# Alternative host. Note: the index needs ~650 MB RAM, above Render's free 512 MB tier;
-# use the Starter plan here, or the free Hugging Face Space (see docs/DEPLOY.md).
+# Alternative host (the primary target is Vercel — see vercel.json).
 services:
   - type: web
     name: thabat
     runtime: docker
-    plan: starter
+    plan: free
     healthCheckPath: /api/health
     envVars:
       - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: REVIEW_TOKEN
         sync: false
