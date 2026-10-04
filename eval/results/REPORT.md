@@ -1,12 +1,12 @@
 # Thabat evaluation report
 
-Run: 2026-09-29 11:45 UTC · corpus: 36064 hadith, 6236 verses · seed 42 · LLM: off (deterministic core)
+Run: 2026-10-04 18:58 UTC · corpus: 36064 hadith, 6236 verses · seed 42 · LLM: off (deterministic core)
 
 ## 1. Curated cases
 
 - **Accuracy:** 72/73 (98.6%)
 - **Critical errors:** 0 (a non-established text called authentic, or an authentic text called fabricated/weak)
-- **Median latency:** 23.4 ms per message
+- **Median latency:** 24.6 ms per message
 
 | Category | Correct | Total |
 |---|---:|---:|

@@ -80,7 +80,13 @@ class QuranMatch:
         d = self.__dict__.copy()
         d["citation_ar"] = cite_ar(self.surah, self.ayah_from, self.ayah_to)
         d["citation_en"] = cite_en(self.surah, self.ayah_from, self.ayah_to)
+        d["audio"] = [audio_url(self.surah, a) for a in range(self.ayah_from, self.ayah_to + 1)]
         return d
+
+
+def audio_url(surah: int, ayah: int) -> str:
+    """Recitation (Mishary Alafasy) from everyayah.com, one file per ayah."""
+    return f"https://everyayah.com/data/Alafasy_128kbps/{surah:03d}{ayah:03d}.mp3"
 
 
 def _words_with_norm(text: str, honorifics: bool = False) -> list[tuple[str, str]]:

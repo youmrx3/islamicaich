@@ -4,51 +4,78 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ثَبَت — صفحة المراجعة</title>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri&family=IBM+Plex+Mono&family=IBM+Plex+Sans+Arabic:wght@400;600&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/app.css">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700&family=Amiri&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/site.css">
   <style>
-    table { width: 100%; border-collapse: collapse; font-size: 15px; background: var(--sheet); border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow); }
-    th, td { text-align: start; padding: 10px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
-    th { font-size: 13px; color: var(--ink-soft); font-weight: 600; }
-    .ar { font-family: var(--f-text); font-size: 18px; }
-    .wrap { overflow-x: auto; }
-    h2 { margin: 36px 0 10px; font-size: 20px; }
-    .st { font-family: var(--f-mono); font-size: 12px; background: var(--paper); border-radius: 999px; padding: 1px 8px; white-space: nowrap; }
+    .rv { padding: 40px 0 80px; }
+    .tok { display: flex; gap: 8px; max-width: 560px; margin: 16px 0 30px; }
+    .tok input, .rv input[type=text], .rv textarea { flex: 1; border: 1px solid var(--raml-2); background: var(--white); border-radius: 999px; padding: 12px 16px; font: inherit; }
+    .rv textarea { border-radius: 18px; width: 100%; min-height: 60px; }
+    .entry { background: var(--white); border-radius: 26px; padding: 18px 20px; margin-bottom: 12px; display: grid; gap: 8px; }
+    .entry .top { display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .entry .q { font-family: var(--f-text); font-size: 22px; }
+    .entry .v { color: var(--layl-soft); font-size: 15px; margin: 0; }
+    .entry .src { font-size: 14px; color: var(--muted); }
+    .acts { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .st { font-size: 13px; font-weight: 600; border-radius: 999px; padding: 2px 12px; background: var(--raml); }
+    .st.approved { background: var(--g-sahih-bg); color: var(--g-sahih-ink); }
+    .st.needs_edit { background: var(--g-daif-bg); color: var(--g-daif-ink); }
+    .st.rejected { background: var(--g-mawdu-bg); color: var(--g-mawdu-ink); }
+    table { width: 100%; border-collapse: collapse; background: var(--white); border-radius: 22px; overflow: hidden; font-size: 15px; }
+    th, td { text-align: start; padding: 10px 12px; border-bottom: 1px solid var(--raml); vertical-align: top; }
+    th { font-size: 13px; color: var(--muted); }
+    .wrapt { overflow-x: auto; }
   </style>
 </head>
 <body>
-  <header class="top">
-    <div class="brand"><a href="/" class="mark" style="text-decoration:none">ثَبَت</a><span class="brand-sub">صفحة المراجعة للمختصين</span></div>
-  </header>
-  <main>
-    <p class="lede">هنا تظهر بلاغات المستخدمين عن الأحكام، ومداخل سجل العبارات المشتهرة التي تنتظر اعتماد مختص. لا يُعتمد أي مدخل في السجل إلا بعد مراجعة مختص مسمّى، وتُسجّل كل مراجعة في سجل التغييرات.</p>
-    <h2>بلاغات المستخدمين</h2>
-    <form id="tokForm" class="searchbar" style="max-width:560px"><label for="tok" class="sr">رمز المراجع</label><input id="tok" type="password" placeholder="رمز المراجع (REVIEW_TOKEN)" autocomplete="off"><button class="primary small" type="submit">عرض البلاغات</button></form>
-    <div class="wrap"><table><thead><tr><th>النص</th><th>الحكم</th><th>الدليل</th><th>ملاحظة</th><th>التاريخ</th></tr></thead><tbody id="flags"><tr><td colspan="5">…</td></tr></tbody></table></div>
-    <h2>سجل العبارات المشتهرة (<span id="regv"></span>)</h2>
-    <div class="wrap"><table><thead><tr><th>#</th><th>العبارة</th><th>الحكم</th><th>المصادر</th><th>حالة المراجعة</th></tr></thead><tbody id="reg"></tbody></table></div>
+  <header class="nav"><div class="wrap nav-in"><a class="logo" href="/"><img src="/assets/brand/mark-dark.svg" alt=""><span>ثَبَت</span></a><span class="eyebrow">صفحة المراجعة للمختصين</span></div></header>
+  <main class="wrap rv">
+    <h1 style="margin:0">مراجعة السجل والبلاغات</h1>
+    <p class="lede">لا يُعتمد أي مدخل في سجل العبارات المشتهرة إلا بعد قرار مختص مسمّى، ويُحفظ كل قرار مع اسم المراجع ووقته. هذه الصفحة محمية برمز المراجع.</p>
+    <form class="tok" id="tokForm"><label class="sr" for="tok">رمز المراجع</label><input id="tok" type="password" placeholder="رمز المراجع (REVIEW_TOKEN)" autocomplete="off"><input id="who" type="text" placeholder="اسم المراجع"><button class="btn dark small">دخول</button></form>
+    <p id="msg" class="lede" style="font-size:15px"></p>
+    <h2 style="font-size:28px">سجل العبارات المشتهرة <span id="regv" class="st"></span></h2>
+    <div id="reg"></div>
+    <h2 style="font-size:28px;margin-top:40px">بلاغات المستخدمين</h2>
+    <div class="wrapt"><table><thead><tr><th>النوع</th><th>النص</th><th>الحكم</th><th>الدليل</th><th>ملاحظة</th><th>التاريخ</th></tr></thead><tbody id="flags"><tr><td colspan="6">أدخل الرمز لعرض البلاغات.</td></tr></tbody></table></div>
   </main>
-  <footer class="foot"><a href="/">العودة إلى الأداة</a></footer>
   <script>
     const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-    function loadFlags(token) {
-      fetch("/api/flags", { headers: token ? { "x-review-token": token } : {} }).then(async (r) => {
-        const j = await r.json();
-        if (!r.ok) { document.getElementById("flags").innerHTML = `<tr><td colspan="5">${esc(j.detail || r.status)}</td></tr>`; return; }
-        const flags = j.flags;
-        document.getElementById("flags").innerHTML = flags.length ? flags.map((f) => `<tr><td class="ar">${esc(f.quote)}</td><td><span class="st">${esc(f.status)}</span></td><td class="mono">${esc(f.evidence_id || "—")}</td><td>${esc(f.comment || "—")}</td><td class="mono">${esc(f.at.slice(0, 16).replace("T", " "))}</td></tr>`).join("") : `<tr><td colspan="5">لا توجد بلاغات بعد.</td></tr>`;
-      });
-    }
-    let saved = ""; try { saved = sessionStorage.getItem("thabat.tok") || ""; } catch (e) {}
-    loadFlags(saved);
-    document.getElementById("tokForm").addEventListener("submit", (e) => {
-      e.preventDefault(); const v = document.getElementById("tok").value;
-      try { sessionStorage.setItem("thabat.tok", v); } catch (err) {} loadFlags(v);
-    });
-    fetch("/api/registry").then((r) => r.json()).then((reg) => {
+    const S = { get(k) { try { return sessionStorage.getItem(k) || ""; } catch { return ""; } }, set(k, v) { try { sessionStorage.setItem(k, v); } catch {} } };
+    const KIND = { problem: "خطأ في الحكم", request_review: "طلب مراجعة", suggest_source: "اقتراح مصدر" };
+    const DEC = { approved: "معتمد", needs_edit: "يحتاج تعديل", rejected: "مرفوض", draft: "مسودة" };
+    let token = S.get("thabat.tok"), who = S.get("thabat.who");
+    document.getElementById("tok").value = token; document.getElementById("who").value = who;
+    async function loadReg() {
+      const reg = await (await fetch("/api/registry")).json();
       document.getElementById("regv").textContent = "الإصدار " + reg.version;
-      document.getElementById("reg").innerHTML = reg.entries.map((e) => `<tr><td class="mono">${esc(e.id)}</td><td class="ar">${esc(e.text_ar)}</td><td><span class="st">${esc(e.status)}</span></td><td>${e.sources.map((s) => esc(s.ar)).join("<br>")}</td><td><span class="st">${esc(e.review?.status)}</span>${e.review?.note ? "<br><small>" + esc(e.review.note) + "</small>" : ""}</td></tr>`).join("");
-    });
+      document.getElementById("reg").innerHTML = reg.entries.map((e) => `<div class="entry"><div class="top"><span class="st">${esc(e.id)} · ${esc(e.status)}</span><span class="st ${esc(e.review?.status || "")}">${esc(DEC[e.review?.status] || "مسودة")}${e.review?.reviewer ? " — " + esc(e.review.reviewer) : ""}</span></div>
+        <div class="q">${esc(e.text_ar)}</div><p class="v">${esc(e.verdict_ar)}</p><div class="src">${e.sources.map((s) => esc(s.ar)).join(" · ")}</div>
+        ${e.review?.note ? `<div class="src">ملاحظة المراجع: ${esc(e.review.note)}</div>` : ""}
+        <div class="acts"><textarea data-note="${esc(e.id)}" placeholder="ملاحظة المراجع (اختياري)"></textarea>
+          <button class="btn nur small" data-d="approved" data-id="${esc(e.id)}">اعتماد</button><button class="btn white small" data-d="needs_edit" data-id="${esc(e.id)}">يحتاج تعديل</button><button class="btn white small" data-d="rejected" data-id="${esc(e.id)}">رفض</button></div></div>`).join("");
+      document.querySelectorAll("[data-d]").forEach((b) => b.onclick = () => decide(b.dataset.id, b.dataset.d));
+    }
+    async function decide(id, decision) {
+      if (!token || !who) { msg("أدخل الرمز واسم المراجع أولًا."); return; }
+      const note = document.querySelector(`[data-note="${id}"]`).value;
+      const r = await fetch("/api/review", { method: "POST", headers: { "Content-Type": "application/json", "x-review-token": token }, body: JSON.stringify({ entry_id: id, decision, reviewer: who, note }) });
+      const j = await r.json().catch(() => ({}));
+      msg(r.ok ? `حُفظ القرار على ${id}: ${DEC[decision]}.` : (j.detail || "تعذر الحفظ"));
+      if (r.ok) setTimeout(loadReg, 300);
+    }
+    async function loadFlags() {
+      const r = await fetch("/api/flags", { headers: token ? { "x-review-token": token } : {} });
+      const j = await r.json().catch(() => ({}));
+      const tb = document.getElementById("flags");
+      if (!r.ok) { tb.innerHTML = `<tr><td colspan="6">${esc(j.detail || r.status)}</td></tr>`; return; }
+      tb.innerHTML = j.flags.length ? j.flags.map((f) => `<tr><td>${esc(KIND[f.kind] || f.kind || "")}</td><td style="font-family:var(--f-text);font-size:17px">${esc(f.quote)}</td><td>${esc(f.status)}</td><td>${esc(f.evidence_id || "—")}</td><td>${esc(f.comment || "—")}</td><td>${esc((f.created_at || f.at || "").slice(0, 16).replace("T", " "))}</td></tr>`).join("") : `<tr><td colspan="6">لا توجد بلاغات بعد.</td></tr>`;
+    }
+    function msg(t) { document.getElementById("msg").textContent = t; }
+    document.getElementById("tokForm").onsubmit = (e) => { e.preventDefault(); token = document.getElementById("tok").value; who = document.getElementById("who").value.trim(); S.set("thabat.tok", token); S.set("thabat.who", who); loadFlags(); };
+    loadReg(); if (token) loadFlags();
   </script>
 </body>
 </html>

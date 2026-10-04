@@ -10,3 +10,7 @@ data/build_manifest.json
 data/flags/
 .env
 .venv/
+
+# local-only material (decks with personal photo, drafts, plans)
+deliverables/
+TODO_CHALLENGE.md

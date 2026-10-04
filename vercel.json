@@ -4,7 +4,7 @@
   "functions": {
     "index.py": {
       "maxDuration": 30,
-      "excludeFiles": "{data/raw/**,data/hadith.jsonl.gz,data/quran.json,data/index-*.pkl,docs/**,eval/**,proposal/**,scripts/**,backend/tests/**,deliverables/**,**/__pycache__/**,.git/**}"
+      "excludeFiles": "{data/raw/**,data/hadith.jsonl.gz,data/quran.json,data/index-*.pkl,docs/**,eval/**,scripts/**,backend/tests/**,deliverables/**,**/__pycache__/**,.git/**}"
     }
   },
   "headers": [

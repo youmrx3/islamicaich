@@ -89,6 +89,7 @@ class ReplyIn(BaseModel):
 
 
 class FlagIn(BaseModel):
+    kind: str = Field(default="problem", pattern="^(problem|request_review|suggest_source)$")
     quote: str = Field(max_length=1000)
     status: str = Field(max_length=40)
     evidence_id: str | None = Field(default=None, max_length=60)
@@ -166,17 +167,55 @@ def hadith(hid: str) -> dict:
 @app.get("/api/registry")
 def registry() -> dict:
     reg = load_registry()
-    return {
-        "version": reg["version"],
-        "review_policy": reg["review_policy"],
-        "entries": [{k: v for k, v in e.items() if not k.startswith("_")} for e in reg["entries"]],
-    }
+    dec = flag_store.decisions()
+    entries = []
+    for e in reg["entries"]:
+        row = {k: v for k, v in e.items() if not k.startswith("_")}
+        if e["id"] in dec:
+            d = dec[e["id"]]
+            row["review"] = {"status": d["decision"], "reviewer": d["reviewer"], "note": d.get("note", ""),
+                             "at": d.get("created_at")}
+        entries.append(row)
+    return {"version": reg["version"], "review_policy": reg["review_policy"], "entries": entries}
+
+
+class ReviewIn(BaseModel):
+    entry_id: str = Field(pattern=r"^R\d{3,4}$")
+    decision: str = Field(pattern="^(approved|needs_edit|rejected)$")
+    reviewer: str = Field(min_length=2, max_length=120)
+    note: str = Field(default="", max_length=2000)
+
+
+@app.post("/api/review")
+def review(body: ReviewIn, request: Request) -> dict:
+    """Record a specialist's decision on a register entry (token-protected)."""
+    _require_reviewer(request)
+    if body.entry_id not in {e["id"] for e in load_registry()["entries"]}:
+        raise HTTPException(404, "Unknown register entry.")
+    rec = body.model_dump()
+    if flag_store.backend_name() != "supabase":
+        rec["created_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
+    try:
+        flag_store.add_decision(rec)
+    except Exception:
+        log.exception("could not store review decision")
+        raise HTTPException(503, "The decision could not be saved right now.")
+    return {"ok": True}
+
+
+@app.get("/api/daily")
+def daily(day: int | None = None) -> dict:
+    """Hadith of the day: a short authentic text shown from the source record, never retyped."""
+    from .search import daily_hadith
+    return daily_hadith(get_corpus(), day)
 
 
 @app.post("/api/flag")
 def flag(body: FlagIn, request: Request) -> dict:
     _rate_limit(request)
-    rec = body.model_dump() | {"at": dt.datetime.now(dt.timezone.utc).isoformat(), "state": "open"}
+    rec = body.model_dump() | {"state": "open"}
+    if flag_store.backend_name() != "supabase":
+        rec["created_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
     try:
         flag_store.add(rec)
     except Exception:
@@ -200,7 +239,8 @@ async def _unhandled(request: Request, exc: Exception):
 # --------------------------------------------------------------- pages
 # On Vercel these files are served by the CDN (public/ + cleanUrls); the routes
 # below are a fallback and what serves them in local development.
-_PAGES = {"/": "index.html", "/app": "app.html", "/review": "review.html", "/privacy": "privacy.html"}
+_PAGES = {"/": "index.html", "/app": "app.html", "/mobile": "mobile.html", "/review": "review.html",
+          "/privacy": "privacy.html"}
 
 
 def _page(name: str):

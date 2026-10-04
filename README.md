@@ -1,92 +1,164 @@
-# ثَبَت · Thabat — verify before you forward
+<div align="center">
 
-> **ثَبَت** أداة تتحقق من الأحاديث والآيات المتداولة في رسائل واتساب ووسائل التواصل قبل نشرها. تحدد مصدر كل نص في القرآن الكريم وتسعة من كتب الحديث، وتعرض حكم المحققين بأسمائهم، وتكشف تحريف لفظ الآيات كلمةً كلمة، وتمتنع بصراحة حين لا تجد مصدرًا، ثم تقترح ردًّا لطيفًا بخمس لغات مع بديل صحيح ثابت. وكل نتيجة موسومة بأحد **مستويات المحتوى الأربعة (أ/ب/ج/د)** المعتمدة في الحزمة العلمية للتحدي.
->
-> Entry for **Track 04 — Knowledge & verification tools** of the *AI in Service of Islamic Content Challenge 2026* (IslamicAIch.org).
+<img src="public/assets/brand/mark.svg" width="88" alt="Thabat logo">
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/youmrx3/islamicaich)
+# ثَبَت · Thabat
 
-![Thabat checking a forwarded message](docs/screenshots/ex0.png)
+**وصلتك رسالة؟ ثبّتها.** Got a forwarded message? Verify it before you share it.
 
-## What it does
+Verifies the Quran verses and hadith in forwarded messages against the sources, with each scholar's grading by name.
+
+*Entry for **Track 04: Knowledge & verification tools**, AI in Service of Islamic Content Challenge 2026 ([IslamicAIch.org](https://islamicaich.org)). Built by **Youcef Kouadria**.*
+
+[Website](#run-it) · [App (PWA)](#the-app) · [How the AI works](#how-the-ai-works) · [Results](#measured-results) · [Docs](#documentation)
+
+</div>
+
+![Thabat website](docs/screenshots/site-hero.png)
+
+## The problem
+
+Messages that start with «قال رسول الله ﷺ» or quote a verse travel through family groups every day. Some are authentic. Some are fabricated, weak, or a verse quoted with a wrong word. The person who receives one rarely has the tools or time to check, and generic AI chatbots can make it worse by **inventing a reference**.
+
+## What Thabat does
+
+Paste a message or share a screenshot. For **every quote in it**, Thabat:
 
 | | |
 |---|---|
-| **Check a message** (`/app`) | Paste a forwarded message or upload a screenshot (OCR runs on the device). For every quote: the source (surah:ayah, or collection + standard number, linked to quran.com / sunnah.com), each grader by name with their exact label, a clear status, the annex content level (أ/ب/ج/د), an authentic alternative, and a ready reply in Arabic, English, French, Indonesian or Turkish. Misquoted verses get a word-level diff. |
-| **Find evidence** (`/app?mode=search`) | Type a topic, get only the verses and authentic hadith that mention it, with source and grading, or an honest "none found". Evidence is never invented. |
-| **Stays in scope** | Personal fatwa requests → level د, no ruling, referral to an official fatwa body. Ruling questions → level ج, referral. General questions → pointer to the approved Q&A reference (Bayyinat). |
-| **Forwarding pressure** | Flags "انشرها… أمانة في رقبتك" / "forward to 10 people". |
-| **Human review** | Draft register under specialist review; any result can be reported to a token-protected review queue (`/review`). |
+| 📖 **Finds the source** | Surah and ayah, or the collection and hadith number, with a link to quran.com / sunnah.com |
+| ⚖️ **Shows the grading by name** | al-Albani, Shu'ayb al-Arna'ut, Zubair Ali Zai, Ahmad Shakir… exactly as published. If scholars differ, all gradings are shown |
+| 🔤 **Checks verses word by word** | A misquoted verse shows which words differ from the Mushaf, with the correct wording and a recitation |
+| 🚫 **Abstains honestly** | "No source found" is never presented as "fabricated". It refers you to a specialist |
+| 🧭 **Stays in scope** | Every result carries the annex's content level (أ/ب/ج/د). Fatwa requests are referred, not answered |
+| 💬 **Helps you reply kindly** | A gentle reply in Arabic, English, French, Indonesian or Turkish, with an authentic alternative, or a verdict card image for the group |
 
-## Results (`eval/results/REPORT.md`, deterministic core)
+## The app
+
+One codebase serves the website and an **installable mobile app (PWA)** for Android and iPhone. Native-only features (floating bubble, widgets, iOS share sheet, WhatsApp bot) are shown as **clearly labelled simulations that call the real engine**. The native store apps are *coming soon*.
+
+![Thabat app screens](docs/screenshots/app-strip.png)
+
+| Feature | Status |
+|---|---|
+| Paste, screenshot (OCR on the device), clipboard | ✅ live |
+| Results, hadith detail with the source passage, verse word tiles, listen to the verse | ✅ live |
+| Reply in 5 languages, verdict card PNG, result link, WhatsApp share | ✅ live |
+| History and saved items, stored **on the device only** | ✅ live |
+| Evidence search by topic (verses + authentic hadith only) | ✅ live |
+| Install to the home screen, offline app shell, app shortcuts | ✅ live |
+| **Share a WhatsApp message into Thabat** (Android share target) | ✅ live once installed |
+| Floating bubble, widgets, iOS share sheet, WhatsApp bot | 🧪 simulation in the app · native version *coming soon* |
+| App Store / Google Play, Telegram bot, more hadith books | 🔜 coming soon |
+
+**For judges:** open **`/mobile`** to use the full app inside a phone frame, or scan its QR code to open it on your own phone.
+
+![The /mobile simulator](docs/screenshots/mobile-simulator.png)
+
+## How the AI works
+
+> **AI that finds the source, not AI that invents one.**
+
+Thabat uses **retrieval-based verification with Arabic NLP**. It is **not RAG**: no language model writes the answer. Every verdict is built from the source record itself, with fixed rules that can be reviewed.
+
+```
+message ─▶ ① OCR (on device) ─▶ ② Arabic NLP: normalise, strip lead-ins & pressure, split isnad/matn
+        ─▶ ③ TF-IDF retrieval over 36,064 narrations + 6,236 verses
+        ─▶ ④ fuzzy alignment + word-level diff against the Mushaf
+        ─▶ ⑤ rules: named gradings, register, abstention, annex level أ–د, scope guard
+        ─▶ verdict + source + reply
+   (⑥ optional LLM, off by default: only locates quotes in messy messages; never grades or cites)
+```
+
+The website has a full section on this (`/#ai`). Details are in [docs/METHODOLOGY.md](docs/METHODOLOGY.md); every AI tool, in the product and in its making, is listed in [docs/AI_USAGE.md](docs/AI_USAGE.md).
+
+![The AI section of the website](docs/screenshots/site-ai.png)
+
+## Measured results
+
+From [`eval/results/REPORT.md`](eval/results/REPORT.md), deterministic core:
 
 | Metric | Result |
 |---|---|
 | Curated cases (73, 10 categories, including the annex's own test types) | **98.6%** correct |
-| Critical errors (non-established called authentic or the reverse; answering a fatwa request; inventing evidence) | **0** |
+| Critical errors (calling a non-established text authentic or the reverse, answering a fatwa request, inventing evidence) | **0** |
 | True source found from a random Arabic phrase with phone-typing noise | **98.5%** recall@3 (exact search: **0%**) |
 | Same, English translations | **97%** recall@3 |
 | Repeated runs | identical output |
-| Median latency / cold start / memory | ~25 ms per message · ~0.3 s index load · ~120 MB RAM |
+| Speed and footprint | ~25 ms per message · ~0.3 s cold load · ~120 MB RAM |
 
-These cases were written during development, so the figures are optimistic. A held-out, specialist-written test set is the next benchmark.
+These cases were written during development, so the figures are optimistic. A held-out test set written by a specialist is the next benchmark.
 
 ## Why it can be trusted
 
-- **Sources decide, never the AI.** Verdicts come only from verbatim source data and fixed, reviewable templates. An optional LLM (Claude) may only locate quotes or propose an Arabic search query, and anything found that way is labelled.
-- **Not found ≠ fabricated.** When the sources are silent, Thabat abstains and refers you to a specialist.
-- **Conflicts are explicit:** grader disagreement; a phrase graded differently from its full narration; a Companion's words attributed to the Prophet ﷺ; a verse quoted as hadith.
-- **Transparent and private:** every result says it is automated and not a fatwa; messages are not stored; screenshots never leave the device. See the [privacy policy](public/privacy.html).
+- **The sources decide, never the AI.** Quran text (Tanzil) and hadith text and gradings are shown verbatim. Sacred text is never typed by hand or generated.
+- **Human review.** Popular sayings in the register stay *draft* until a named specialist approves them on `/review`. Every decision is logged with the reviewer's name and time.
+- **Conflicts are shown, not hidden:** scholars who disagree; a phrase graded differently from its full narration; a Companion's words attributed to the Prophet ﷺ; a verse quoted as a hadith.
+- **Private by design:** messages are not stored; screenshots never leave the device; history stays on the phone. See the [privacy policy](public/privacy.html).
 
-Details: [Methodology](docs/METHODOLOGY.md) · [Reliability & annex compliance](docs/RELIABILITY.md) · [Sources & licences log](docs/SOURCES.md) · [Operations & cost](docs/OPERATIONS.md) · [Starting-version disclosure](docs/BASELINE.md) · [Deploy](docs/DEPLOY.md)
-
-## Run locally
+## Run it
 
 ```bash
 pip install -r requirements-dev.txt
 python -m uvicorn index:app --port 8000
-# http://localhost:8000  (landing)  ·  /app  (checker)  ·  /api/docs  (API)
 ```
 
-The compiled corpus is committed in `data/dist/`, so no download is needed. To rebuild it from the original sources: `python scripts/build_data.py && python scripts/build_index.py`.
+| URL | |
+|---|---|
+| `http://localhost:8000/` | website |
+| `/app` | the app (PWA) · demos: `/app?ex=0` … `/app?ex=5` · search: `/app?mode=search` |
+| `/mobile` | the app in a phone frame + QR code |
+| `/review` | specialist review page |
+| `/api/docs` | API (`/api/verify`, `/api/search`, `/api/daily`, `/api/reply`, `/api/flag`, `/api/review`…) |
 
-Tests and evaluation:
+The compiled corpus is committed in `data/dist/`, so nothing needs to be downloaded. To rebuild it from the original sources: `python scripts/build_data.py && python scripts/build_index.py`.
 
 ```bash
-cd backend && python -m pytest tests -q && cd ..
-python eval/run_eval.py --samples 200
+cd backend && python -m pytest tests -q && cd ..   # 23 tests
+python eval/run_eval.py                             # evaluation report
 ```
 
-## Deploy on Vercel
+### Deploy (Vercel)
 
-Import the repository in Vercel. It is detected as a FastAPI project (`index.py` → `app`), `public/` is served from the CDN, and `data/dist/` is bundled with the function. No build step is needed. Optional environment variables:
+Import the repository in Vercel (FastAPI is detected; no build step). Then set:
 
 | Variable | Purpose |
 |---|---|
-| `ANTHROPIC_API_KEY` | Enables the optional LLM quote extraction (`THABAT_MODEL` to change the model, `THABAT_LLM=off` to disable) |
-| `REVIEW_TOKEN` | Enables the reviewer queue at `/review` |
-| `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` (or Vercel KV's `KV_REST_API_*`) | Persistent storage for problem reports |
+| `SUPABASE_URL` | Supabase project URL. Run [`supabase/schema.sql`](supabase/schema.sql) once in the SQL editor |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server-side key for storing reports and review decisions (never committed or sent to the browser) |
+| `REVIEW_TOKEN` | Enables `/review` and the report queue |
+| `ANTHROPIC_API_KEY` | *Optional* LLM quote extraction |
 
 Full guide: [docs/DEPLOY.md](docs/DEPLOY.md).
 
-## Repository layout
+## Repository
 
 ```
-index.py            Vercel/ASGI entrypoint (exposes backend.app.main:app)
-backend/app/        normalize · corpus (numpy index + compressed store) · matching (Quran diff, hadith)
-                    grades · verify (pipeline, annex levels) · scope (fatwa/question guard)
-                    search (evidence finder) · replies (5 languages) · llm (optional) · flags · main (API)
-backend/tests/      safety-invariant, annex and API tests
-public/             landing page, checker app, review page, privacy policy, assets
-data/dist/          compiled corpus: 36,064 narrations + 6,236 verses (built by scripts/)
-data/curated/       registry.json — popular sayings (draft, pending specialist review)
-eval/               cases.json, run_eval.py, results/REPORT.md
-docs/               methodology, reliability, sources, operations, baseline, deploy, screenshots
-proposal/           registration proposal (Arabic), pitch outline, demo script
-deliverables/       presentation (PPTX/PDF), project brief
+index.py              ASGI entry point (Vercel) → backend.app.main:app
+backend/app/          normalize · corpus · matching · grades · verify · scope · search · replies · llm · flags · main
+backend/tests/        safety, annex and API tests
+public/               index.html (website) · app.html (PWA) · mobile.html · review.html · privacy.html
+  assets/             site.* · app.* · brand/ · icons/
+  manifest.webmanifest, sw.js
+data/dist/            compiled corpus (36,064 narrations + 6,236 verses)
+data/curated/         registry.json (popular sayings, under review) · daily.json (hadith of the day)
+supabase/schema.sql   reports + review decisions, row-level security
+eval/                 cases, runner, results
+docs/                 methodology · reliability · AI usage · sources · operations · baseline · deploy
+CHALLENGE_LOG.md      what was built during 4–6 October 2026
 ```
+
+## Documentation
+
+[Methodology](docs/METHODOLOGY.md) · [Reliability & annex compliance](docs/RELIABILITY.md) · [AI usage disclosure](docs/AI_USAGE.md) · [Sources & licences](docs/SOURCES.md) · [Operations & cost](docs/OPERATIONS.md) · [Starting-version disclosure](docs/BASELINE.md) · [Challenge log](CHALLENGE_LOG.md) · [Deploy](docs/DEPLOY.md) · [Registration proposal (AR)](docs/PROPOSAL_AR.md)
+
+## Challenge compliance
+
+- **Judged work:** only 4–6 October 2026. Prior work is declared by the tag `baseline-pre-challenge` and described in [docs/BASELINE.md](docs/BASELINE.md); the challenge-days work is in [CHALLENGE_LOG.md](CHALLENGE_LOG.md).
+- **Scientific annex:** content levels أ–د, the mandatory standard, approved references and the test types are covered in [docs/RELIABILITY.md](docs/RELIABILITY.md).
+- **Disclosure:** every dataset, library, service and AI tool, with its licence, is in [SOURCES.md](docs/SOURCES.md) and [AI_USAGE.md](docs/AI_USAGE.md). No real user data was used.
 
 ## Licence
 
-Code: © 2026 the Thabat team, published for the challenge's evaluation (see `LICENSE`).
-Data: Tanzil Quran text (CC BY 3.0, verbatim) and fawazahmed0/hadith-api (Unlicense). Full list in [docs/SOURCES.md](docs/SOURCES.md).
+Code © 2026 Youcef Kouadria, published for the challenge's evaluation (see [`LICENSE`](LICENSE)).
+Data: Tanzil Quran text (CC BY 3.0, verbatim) and fawazahmed0/hadith-api (Unlicense). Fonts: Alexandria and Amiri (OFL). Full list in [docs/SOURCES.md](docs/SOURCES.md).

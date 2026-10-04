@@ -23,7 +23,7 @@ from pydantic import BaseModel, Field
 
 log = logging.getLogger("thabat.llm")
 
-MODEL = os.environ.get("THABAT_MODEL", "claude-opus-5")
+MODEL = os.environ.get("THABAT_MODEL", "claude-opus-5-5")
 TIMEOUT_S = float(os.environ.get("THABAT_LLM_TIMEOUT", "25"))
 
 SYSTEM = """You extract religious quotations from forwarded social-media messages so that a separate, \

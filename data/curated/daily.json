@@ -1,0 +1,77 @@
+{
+ "about": "Short authentic hadith for the 'hadith of the day' widget. The quote is located inside the referenced record at runtime and shown from the source text, never retyped.",
+ "items": [
+  {
+   "quote": "الكلمة الطيبة صدقة",
+   "id": "bukhari:2989"
+  },
+  {
+   "quote": "إن الله جميل يحب الجمال",
+   "id": "muslim:265"
+  },
+  {
+   "quote": "الدين النصيحة",
+   "id": "muslim:196"
+  },
+  {
+   "quote": "تبسمك في وجه أخيك لك صدقة",
+   "id": "tirmidhi:1956"
+  },
+  {
+   "quote": "ليس الشديد بالصرعة إنما الشديد الذي يملك نفسه عند الغضب",
+   "id": "bukhari:6114"
+  },
+  {
+   "quote": "إنما الأعمال بالنيات",
+   "id": "bukhari:1"
+  },
+  {
+   "quote": "المسلم من سلم المسلمون من لسانه ويده",
+   "id": "muslim:162"
+  },
+  {
+   "quote": "من كان يؤمن بالله واليوم الآخر فليقل خيرا أو ليصمت",
+   "id": "bukhari:6018"
+  },
+  {
+   "quote": "لا يؤمن أحدكم حتى يحب لأخيه ما يحب لنفسه",
+   "id": "bukhari:13"
+  },
+  {
+   "quote": "الطهور شطر الإيمان",
+   "id": "muslim:534"
+  },
+  {
+   "quote": "من سلك طريقا يلتمس فيه علما سهل الله له به طريقا إلى الجنة",
+   "id": "muslim:6853"
+  },
+  {
+   "quote": "دعه فإن الحياء من الإيمان",
+   "id": "bukhari:24"
+  },
+  {
+   "quote": "كن في الدنيا كأنك غريب أو عابر سبيل",
+   "id": "bukhari:6416"
+  },
+  {
+   "quote": "الصيام جنة",
+   "id": "bukhari:1894"
+  },
+  {
+   "quote": "من لا يرحم لا يرحم",
+   "id": "bukhari:6013"
+  },
+  {
+   "quote": "خيركم من تعلم القرآن وعلمه",
+   "id": "bukhari:5027"
+  },
+  {
+   "quote": "إن الله رفيق يحب الرفق في الأمر كله",
+   "id": "bukhari:6927"
+  },
+  {
+   "quote": "إن الدال على الخير كفاعله",
+   "id": "tirmidhi:2670"
+  }
+ ]
+}

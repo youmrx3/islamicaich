@@ -4,335 +4,254 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ثَبَت — تحقّق قبل أن تنشر</title>
-  <meta name="description" content="ثَبَت أداة تتحقق من الأحاديث والآيات المتداولة في الرسائل قبل نشرها: المصدر، وحكم المحققين بأسمائهم، وكشف تحريف الآيات، وامتناع صريح حين لا يوجد مصدر.">
-  <meta property="og:title" content="ثَبَت — تحقّق قبل أن تنشر">
-  <meta property="og:description" content="الصق رسالة فيها حديث أو آية، واعرف مصدرها وحكم المحققين قبل أن تنشرها.">
-  <meta property="og:type" content="website">
+  <meta name="description" content="ثَبَت يتحقق من الآيات والأحاديث في الرسائل المتداولة قبل نشرها: المصدر، وحكم المحققين بأسمائهم، وكشف تحريف الآيات كلمةً كلمة، وامتناع صريح حين لا يوجد مصدر.">
+  <meta property="og:title" content="ثَبَت — وصلتك رسالة؟ ثبّتها.">
+  <meta property="og:description" content="الصق رسالة فيها آية أو حديث، واعرف مصدرها وحكم المحققين قبل أن تنشرها.">
+  <meta property="og:image" content="/assets/icons/og.png">
+  <meta name="theme-color" content="#FFF7EC">
   <link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Reem+Kufi:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/landing.css">
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/site.css">
 </head>
 <body>
-  <a class="skip" href="#main" data-en="Skip to content">انتقل إلى المحتوى</a>
+<a class="skip" href="#main" data-en="Skip to content">انتقل إلى المحتوى</a>
 
-  <header class="nav" id="top">
-    <div class="wrap nav-in">
-      <a class="logo" href="/" aria-label="ثَبَت"><span class="logo-mark">ثَبَت</span><span class="logo-sub" data-en="Verify before you forward">تحقّق قبل أن تنشر</span></a>
-      <nav class="nav-links" aria-label="Sections">
-        <a href="#how" data-en="How it works">كيف يعمل</a>
-        <a href="#levels" data-en="Reliability">الموثوقية</a>
-        <a href="#evidence" data-en="Results">النتائج</a>
-        <a href="#faq" data-en="FAQ">أسئلة</a>
-      </nav>
-      <div class="nav-cta">
-        <button id="langToggle" class="btn ghost small" type="button">English</button>
-        <a class="btn accent small" href="/app" data-en="Open the checker">افتح أداة التحقق</a>
-      </div>
+<header class="nav"><div class="wrap nav-in">
+  <a class="logo" href="/"><img src="/assets/brand/mark-dark.svg" alt=""><span data-en="Thabat">ثَبَت</span></a>
+  <nav class="nav-links" aria-label="sections">
+    <a href="#tool" data-en="Verify">التحقّق</a><a href="#how" data-en="How it works">كيف يعمل</a><a href="#ai" data-en="The AI">الذكاء الاصطناعي</a>
+    <a href="#grades" data-en="Gradings">الأحكام</a><a href="#bubble" data-en="The bubble">الفقاعة</a><a href="/mobile" data-en="The app">التطبيق</a>
+  </nav>
+  <div class="nav-cta"><button class="langbtn" id="lang">EN</button><a class="btn dark small" href="/app" data-en="Start verifying">ابدأ التحقّق</a></div>
+</div></header>
+
+<main id="main">
+<!-- HERO -->
+<section class="hero"><div class="wrap hero-in">
+  <div>
+    <span class="eyebrow" data-en="A free verification service on the web">خدمة تحقّق مجانية على الويب</span>
+    <h1><span data-en="Got a message?">وصلتك رسالة؟</span><br><span class="hl" data-en="Verify it.">ثبّتها.</span></h1>
+    <p class="lede" data-en="Paste a forwarded message or a screenshot of it. Thabat finds every hadith and verse inside, shows their sources and each named scholar's grading, marks misquoted verses word by word — and says plainly when it finds no source.">الصق رسالة معاد توجيهها أو لقطة شاشة لها. يجد «ثَبَت» كل حديث وآية فيها، ويعرض مصدرها وحكم المحققين بأسمائهم، ويكشف تحريف لفظ الآيات كلمةً كلمة — ويقول بصراحة إذا لم يجد مصدرًا.</p>
+    <form class="askbar" id="ask" action="/app">
+      <label class="sr" for="q" data-en="Message">الرسالة</label>
+      <input id="q" name="q" autocomplete="off" placeholder="الصق الرسالة هنا…" data-en-ph="Paste the message here…">
+      <a class="chip" href="/app" data-en="Photo">صورة</a>
+      <button class="btn dark small" data-en="Verify">ثبّت</button>
+    </form>
+    <div class="tags"><span data-en="Works in the browser">يعمل في المتصفّح</span><span data-en="No download, no sign-up">بلا تحميل ولا تسجيل</span><a href="/mobile" data-en="And a mobile app ←">وتطبيق للجوال ←</a></div>
+  </div>
+  <div class="stage" id="stage" aria-hidden="true"><div class="stage-in" id="stageIn">
+    <div class="phone3d"><div class="scr">
+      <div class="mini-title" id="heroTitle">٤ نصوص، <span style="background:var(--g-sahih-bg);border-radius:8px;padding:0 6px">واحد ثابت</span></div>
+      <div class="mini-bar" id="heroBar"></div>
+      <div id="heroCards" style="display:grid;gap:8px"></div>
+    </div></div>
+    <div class="float" style="--fx:-210px;--fy:-180px;--fz:120px"><span class="chip" style="--c-bg:var(--g-sahih-bg);--c-ink:var(--g-sahih-ink);--c-dot:var(--g-sahih)" data-en="Sahih">صحيح</span> <span class="q">«إنما الأعمال بالنيات»</span></div>
+    <div class="float" style="--fx:200px;--fy:-40px;--fz:180px"><span class="chip" style="--c-bg:var(--g-daif-bg);--c-ink:var(--g-daif-ink);--c-dot:var(--g-daif)" data-en="Misquoted verse">آية مُحرّفة</span> <span class="q">وَقُل <u style="text-decoration-color:var(--g-mawdu)">رَّبِّ</u> زِدْنِي عِلْمًا</span></div>
+    <div class="float" style="--fx:-200px;--fy:170px;--fz:160px"><span class="chip" style="--c-bg:var(--g-mawdu-bg);--c-ink:var(--g-mawdu-ink);--c-dot:var(--g-mawdu)" data-en="Fabricated">موضوع</span> <span class="q">«اطلبوا العلم ولو بالصين»</span></div>
+  </div></div>
+</div></section>
+
+<!-- STORY -->
+<section class="story" id="how"><div class="story-pin"><div class="wrap story-in">
+  <div class="caps" id="caps">
+    <div class="cap on"><span class="kicker" data-en="1 · Read">١ · نقرأ</span><h2 data-en="One message. Several claims.">رسالة واحدة… وعدة نصوص.</h2><p data-en="We separate every quote from the framing — «the Prophet ﷺ said», emojis, and the «share it, it's a trust on your neck» pressure.">نفصل كل نص عن مقدّمته — «قال رسول الله ﷺ» والرموز وعبارات الضغط «انشرها… أمانة في رقبتك».</p></div>
+    <div class="cap"><span class="kicker" data-en="2 · Match">٢ · نطابق</span><h2 data-en="Each quote, against the sources.">كل نص… مقابل المصادر.</h2><p data-en="The Quran and 36,064 narrations from nine hadith collections, searched despite typos and missing diacritics.">القرآن الكريم و٣٦٬٠٦٤ رواية من تسعة كتب حديثية، نبحث فيها رغم الأخطاء الإملائية وغياب التشكيل.</p></div>
+    <div class="cap"><span class="kicker" data-en="3 · Judge by the source">٣ · نحكم بالمصدر</span><h2 data-en="A verdict you can trace.">حكمٌ يمكنك تتبّعه.</h2><p data-en="The book and the number, each scholar's grading by name — or an honest «we found no source».">الكتاب والرقم، وحكم كل محقق باسمه — أو «لم نجد مصدرًا» بصراحة.</p></div>
+    <div class="capdots" id="capdots"><i class="on"></i><i></i><i></i></div>
+  </div>
+  <div class="scene" id="scene" style="--k:0">
+    <div class="msg" id="storyMsg"><div class="fw" data-en="↪ Forwarded many times">↪ مُعاد توجيهه كثيرًا</div>
+      قال رسول الله ﷺ: «<mark>إنما الأعمال بالنيات</mark>» وقال تعالى: «<mark>وقل ربي زدني علما</mark>». وقال ﷺ: «<mark>اطلبوا العلم ولو بالصين</mark>». ومن نشرها «<mark>فُتح له باب من الجنة</mark>»…</div>
+    <div id="storyCards"></div>
+  </div>
+</div></div></section>
+
+<!-- TOOL -->
+<section class="sec" id="tool"><div class="wrap tool-in">
+  <div>
+    <span class="kicker" data-en="The verification tool">أداة التحقّق</span>
+    <h2><span data-en="Verification starts here,">التحقّق يبدأ هنا،</span><br><span data-en="on the website.">على الموقع.</span></h2>
+    <p class="lede" data-en="Thabat is a web service first. Paste the message here and get the source and the scholars' gradings by name within seconds.">ثَبَت خدمة على الويب أولًا. الصق الرسالة في هذه الصفحة، واحصل على المصدر وأحكام المحقّقين بأسمائهم خلال ثوانٍ.</p>
+    <div class="perks">
+      <div><span class="n" data-en="1">١</span><div><h3 data-en="No download, no sign-up">بلا تحميل ولا تسجيل</h3><p data-en="On a work computer, or on a phone with no room for another app.">على الحاسوب في العمل، أو على جوال لا يتّسع لتطبيق جديد.</p></div></div>
+      <div><span class="n" data-en="2">٢</span><div><h3 data-en="A link for every result">رابط لكل نتيجة</h3><p data-en="Share the link in the group; anyone opens it without installing anything.">شارك الرابط في المجموعة، فيفتحه أي أحد دون تحميل شيء.</p></div></div>
+      <div><span class="n" data-en="3">٣</span><div><h3 data-en="For imams and teachers">للأئمة والمعلّمين</h3><p data-en="A wide screen to review chains and the scholars' statements in detail.">شاشة واسعة لمراجعة الأسانيد وأقوال المحقّقين بالتفصيل.</p></div></div>
     </div>
-  </header>
-
-  <main id="main">
-    <!-- HERO: the stamped forward -->
-    <section class="hero">
-      <div class="wrap hero-in">
-        <div class="hero-copy">
-          <p class="eyebrow" data-en="AI in Service of Islamic Content Challenge 2026 · Track 04">تحدي الذكاء الاصطناعي في خدمة المحتوى الإسلامي ٢٠٢٦ · المسار ٠٤</p>
-          <h1><span data-en="Verify before">تحقّق قبل</span><br><span class="h1-accent" data-en="you forward.">أن تنشر.</span></h1>
-          <p class="hero-lede" data-en="Paste a forwarded message, or a screenshot of it. Thabat finds every hadith and verse inside, shows its source and what named scholars said about it, marks misquoted words in verses, and says so plainly when no source exists.">الصق رسالة معاد توجيهها أو لقطة شاشة لها. يجد «ثَبَت» كل حديث وآية فيها، ويعرض مصدرها وحكم المحققين بأسمائهم، ويكشف تحريف لفظ الآيات كلمةً كلمة، ويقول بصراحة إذا لم يجد مصدرًا.</p>
-          <div class="hero-cta">
-            <a class="btn accent" href="/app" data-en="Check a message now">تحقّق من رسالة الآن</a>
-            <a class="btn ghost-light" href="#try" data-en="Try it on this page">جرّبه في هذه الصفحة</a>
-          </div>
-          <ul class="hero-facts">
-            <li><b class="num">36,064</b> <span data-en="narrations">رواية</span></li>
-            <li><b class="num">6,236</b> <span data-en="verses">آية</span></li>
-            <li><b class="num">9</b> <span data-en="hadith collections">كتب حديثية</span></li>
-            <li><b class="num">5</b> <span data-en="reply languages">لغات للرد</span></li>
-          </ul>
-        </div>
-
-        <div class="stage" aria-label="مثال: رسالة متداولة بعد التحقق منها" data-en-aria="Example: a forwarded message after checking">
-          <div class="phone">
-            <div class="chat-head"><span class="dot"></span><span data-en="Family group">مجموعة العائلة</span></div>
-            <div class="fwd-bubble">
-              <div class="fwd-label">↪ <span data-en="Forwarded many times">أُعيد توجيهها عدة مرات</span></div>
-              <div class="line" style="--i:0">
-                <span class="q">قال ﷺ: «اطلبوا العلم ولو بالصين»</span>
-                <span class="stamp bad"><i>ب</i><span data-en="Not established">لا يثبت</span></span>
-              </div>
-              <div class="line" style="--i:1">
-                <span class="q">﴿إن الله مع الصابرين <s>إذا صبروا</s>﴾</span>
-                <span class="stamp check"><i>أ</i><span data-en="Misquoted · Al-Anfal 46">آية محرّفة · الأنفال ٤٦</span></span>
-              </div>
-              <div class="line" style="--i:2">
-                <span class="q">قال ﷺ: «الطهور شطر الإيمان»</span>
-                <span class="stamp ok"><i>أ</i><span data-en="Authentic · Muslim 223">ثابت · مسلم ٢٢٣</span></span>
-              </div>
-              <div class="line" style="--i:3">
-                <span class="q muted">انشرها ولا تجعلها تقف عندك… أمانة في رقبتك</span>
-                <span class="stamp warn"><i>!</i><span data-en="Forwarding pressure">ضغط لإعادة النشر</span></span>
-              </div>
-            </div>
-            <div class="reply-bubble" style="--i:4">
-              <b data-en="Suggested reply">الرد المقترح</b>
-              <span data-en="May Allah reward you 🌿 A gentle note: “Seek knowledge even in China” is not authentically attributed to the Prophet ﷺ. Authentic instead: “Whoever takes a path seeking knowledge…” (Muslim 2699).">جزاك الله خيرًا 🌿 تنبيه لطيف: «اطلبوا العلم ولو بالصين» لا تثبت نسبتها إلى النبي ﷺ. والثابت: «من سلك طريقًا يلتمس فيه علمًا…» (مسلم ٢٦٩٩).</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PROBLEM: the sayings everyone has received -->
-    <section class="band problem" aria-labelledby="pTitle">
-      <div class="wrap">
-        <h2 id="pTitle" data-en="How many times has this reached you?">كم مرة وصلتك هذه الرسائل؟</h2>
-        <p class="sub" data-en="Well-known sayings attributed to the Prophet ﷺ that are not established, next to real ones. Click any of them to check it.">عبارات مشهورة تُنسب إلى النبي ﷺ ولا تثبت، بجانب أحاديث ثابتة. اضغط أي عبارة لتتحقق منها بنفسك.</p>
-        <div class="sayings">
-          <a class="saying bad" href="/app?q=اطلبوا%20العلم%20ولو%20بالصين">اطلبوا العلم ولو بالصين</a>
-          <a class="saying ok" href="/app?q=الطهور%20شطر%20الإيمان">الطهور شطر الإيمان</a>
-          <a class="saying bad" href="/app?q=حب%20الوطن%20من%20الإيمان">حب الوطن من الإيمان</a>
-          <a class="saying bad" href="/app?q=الجنة%20تحت%20أقدام%20الأمهات">الجنة تحت أقدام الأمهات</a>
-          <a class="saying ok" href="/app?q=فالزمها%20فإن%20الجنة%20تحت%20رجليها">فالزمها فإن الجنة تحت رجليها</a>
-          <a class="saying bad" href="/app?q=اختلاف%20أمتي%20رحمة">اختلاف أمتي رحمة</a>
-          <a class="saying check" href="/app?q=أنا%20مدينة%20العلم%20وعلي%20بابها">أنا مدينة العلم وعلي بابها</a>
-          <a class="saying bad" href="/app?q=صوموا%20تصحوا">صوموا تصحوا</a>
-          <a class="saying ok" href="/app?q=الدين%20النصيحة">الدين النصيحة</a>
-          <a class="saying bad" href="/app?q=Cleanliness%20is%20part%20of%20faith">Cleanliness is part of faith</a>
-          <a class="saying ok" href="/app?q=The%20strong%20man%20is%20not%20the%20one%20who%20wrestles">The strong man is not the one who wrestles…</a>
-          <a class="saying bad" href="/app?q=Surga%20di%20bawah%20telapak%20kaki%20ibu">Surga di bawah telapak kaki ibu</a>
-        </div>
-        <div class="gap">
-          <div class="gap-item">
-            <h3 data-en="Asking a scholar">سؤال طالب علم</h3>
-            <p data-en="Reliable, but slow, not available to everyone, and it takes up specialists' time with the same questions again and again.">موثوق، لكنه بطيء ولا يتاح للجميع، ويستهلك وقت المختصين في أسئلة مكررة.</p>
-          </div>
-          <div class="gap-item">
-            <h3 data-en="Searching hadith websites">البحث في المواقع الحديثية</h3>
-            <p data-en="Needs the exact wording. Fails on typos, translations and screenshots, which is how most forwards arrive.">يحتاج اللفظ الدقيق، ويفشل مع الأخطاء الإملائية والترجمات ولقطات الشاشة، وهي الصورة التي تصل بها أغلب الرسائل.</p>
-          </div>
-          <div class="gap-item">
-            <h3 data-en="Asking a general chatbot">سؤال روبوت محادثة عام</h3>
-            <p data-en="Fast, but it can invent a reference or a grading: the “hallucination” risk this challenge was created to address.">سريع، لكنه قد يخترع مصدرًا أو حكمًا، وهو خطر «الهلوسة» الذي أُنشئ هذا التحدي لمعالجته.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- HOW -->
-    <section class="band how" id="how" aria-labelledby="hTitle">
-      <div class="wrap">
-        <h2 id="hTitle" data-en="How a verdict is reached">كيف نصل إلى الحكم</h2>
-        <p class="sub" data-en="Five steps, from the message as it arrived to a reply you can send. The sources decide; the AI never writes the evidence.">خمس خطوات من الرسالة كما وصلت إلى ردّ جاهز للإرسال. المصادر هي التي تحكم، والذكاء الاصطناعي لا يكتب الدليل أبدًا.</p>
-        <ol class="steps">
-          <li>
-            <span class="step-n">١</span>
-            <h3 data-en="Read">قراءة</h3>
-            <p data-en="Text or screenshot. Screenshots are read by OCR on your own device; images never leave your phone.">نص أو لقطة شاشة. تُقرأ الصورة بتقنية التعرف الضوئي على جهازك، فلا تغادر الصورة هاتفك.</p>
-          </li>
-          <li>
-            <span class="step-n">٢</span>
-            <h3 data-en="Separate">فصل</h3>
-            <p data-en="Each quote is isolated from the framing (“the Prophet ﷺ said”), emojis and forwarding pressure, which is flagged separately.">يُفصل كل اقتباس عن المقدمات («قال رسول الله ﷺ») والرموز التعبيرية وعبارات الضغط على النشر، التي تُرصد وحدها.</p>
-          </li>
-          <li>
-            <span class="step-n">٣</span>
-            <h3 data-en="Search">بحث</h3>
-            <p data-en="Arabic is normalised (diacritics, hamza, ta marbuta), the chain is separated from the text, and 36,064 narrations and 6,236 verses are searched in milliseconds.">تُوحَّد الكتابة العربية (التشكيل والهمزات والتاء المربوطة)، ويُفصل الإسناد عن المتن، ويُبحث في ٣٦٬٠٦٤ رواية و٦٬٢٣٦ آية خلال أجزاء من الثانية.</p>
-          </li>
-          <li>
-            <span class="step-n">٤</span>
-            <h3 data-en="Align & decide">مطابقة وحكم</h3>
-            <p data-en="Character-level alignment tolerates typos and finds the exact words. Explicit rules decide, and gradings are combined as hadith scholars do: a sound route is not cancelled by weaker ones.">محاذاة على مستوى الحروف تتحمل الأخطاء وتحدد الكلمات بدقة، ثم قواعد صريحة تحكم، وتُجمع الأحكام كما يجمعها المحدّثون: الطريق الصحيح لا تُسقطه الطرق الضعيفة.</p>
-          </li>
-          <li>
-            <span class="step-n">٥</span>
-            <h3 data-en="Explain">بيان</h3>
-            <p data-en="Source, each grader by name, content level (A–D), an authentic alternative, and a gentle reply in five languages.">المصدر، وحكم كل محقق باسمه، ومستوى المحتوى (أ–د)، وبديل ثابت، وردّ لطيف بخمس لغات.</p>
-          </li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- ANATOMY -->
-    <section class="band anatomy" aria-labelledby="aTitle">
-      <div class="wrap anatomy-in">
-        <figure class="shot">
-          <img src="/assets/img/result-light.png" width="760" height="1095" loading="lazy" alt="نتيجة تحقق في ثَبَت: عبارة لا تثبت مع مصدرها وبديلها الثابت، وحديث ثابت مع حكم المحققين" data-en-alt="A Thabat result: a saying that is not established, with its source and an authentic alternative, and an authentic hadith with its gradings">
-        </figure>
-        <div>
-          <h2 id="aTitle" data-en="What every result shows">ماذا تعرض كل نتيجة</h2>
-          <dl class="parts">
-            <div><dt data-en="The source">المصدر</dt><dd data-en="Collection and standard number, or surah and ayah, with a link to an independent public copy so you can check in one click.">الكتاب ورقم الحديث المعتمد، أو السورة والآية، مع رابط لنسخة عامة مستقلة للتحقق بنقرة واحدة.</dd></div>
-            <div><dt data-en="Scholars, by name">المحققون بأسمائهم</dt><dd data-en="Al-Albani, Shuaib al-Arnaut, Zubair Ali Zai, Ahmad Shakir… each one's exact grading. Disagreement is shown, not hidden.">الألباني، شعيب الأرناؤوط، زبير علي زئي، أحمد شاكر… كل حكم بنصه، ويُعرض الخلاف ولا يُخفى.</dd></div>
-            <div><dt data-en="Word-level correction">تصحيح كلمةً كلمة</dt><dd data-en="Misquoted verses are compared with the Mushaf text, and added or changed words are struck through.">تُقارن الآيات المنقولة بنص المصحف، ويُشطب ما زِيد أو غُيّر.</dd></div>
-            <div><dt data-en="An authentic alternative">بديل ثابت</dt><dd data-en="If a saying is not established, you get an authentic text with the same meaning, so the sender's good intention still has an outlet.">إذا لم يثبت النص قدّمنا نصًا ثابتًا في معناه، حتى لا يُطفأ حرص الناشر على الخير.</dd></div>
-            <div><dt data-en="A reply you can send">ردّ جاهز</dt><dd data-en="Thanks the sender, gives the finding with its source, offers the alternative. Arabic, English, French, Indonesian, Turkish.">يشكر الناشر، ويذكر النتيجة ومصدرها، ويقدم البديل؛ بالعربية والإنجليزية والفرنسية والإندونيسية والتركية.</dd></div>
-            <div><dt data-en="Evidence search">البحث عن دليل</dt><dd data-en="Type a topic and get only authentic hadith and verses about it, or an honest “none found”, never an invented one.">اكتب موضوعًا لتحصل على الأحاديث الثابتة والآيات فيه فقط، أو «لم نجد» صريحة، دون أي دليل مختلق.</dd></div>
-          </dl>
-        </div>
-      </div>
-    </section>
-
-    <!-- LEVELS (scientific annex) -->
-    <section class="band levels" id="levels" aria-labelledby="lTitle">
-      <div class="wrap">
-        <h2 id="lTitle" data-en="Built on the challenge's scientific annex">مبني على الحزمة العلمية للتحدي</h2>
-        <p class="sub" data-en="Every result carries one of the annex's four content levels, and Thabat behaves as each level requires.">كل نتيجة تحمل أحد مستويات المحتوى الأربعة المعتمدة في الحزمة العلمية، ويتصرف «ثَبَت» بحسب ما يقتضيه كل مستوى.</p>
-        <div class="level-grid">
-          <article class="level" data-l="a">
-            <span class="lv">أ</span>
-            <h3 data-en="Stable original information">معلومة أصلية مستقرة</h3>
-            <p data-en="Exact verses, authentic hadith, corrected verse quotes → direct answer, documented with its source.">آية مطابقة، حديث ثابت، تصحيح آية محرّفة ← إجابة مباشرة موثقة بالمصدر.</p>
-          </article>
-          <article class="level" data-l="b">
-            <span class="lv">ب</span>
-            <h3 data-en="Explanation with reference">شرح مع المرجع</h3>
-            <p data-en="Weak or fabricated per named scholars, a Companion's words, a phrase graded differently from its full narration → reference shown, no overstated certainty.">ضعيف أو موضوع بحكم محققين مسمَّين، أو كلام صحابي، أو عبارة يختلف حكمها عن الرواية الكاملة ← مع إظهار المرجع ودون قطع في غير موضعه.</p>
-          </article>
-          <article class="level" data-l="c">
-            <span class="lv">ج</span>
-            <h3 data-en="Disputed or unresolved">خلافي أو غير محسوم</h3>
-            <p data-en="Graders disagree, similar wording only, or nothing found → the disagreement is shown, or Thabat abstains and refers you to a specialist.">اختلاف المحققين، أو لفظ مشابه فقط، أو عدم العثور ← يُعرض الخلاف، أو يمتنع «ثَبَت» ويحيل إلى مختص.</p>
-          </article>
-          <article class="level" data-l="d">
-            <span class="lv">د</span>
-            <h3 data-en="Fatwa or personal case">فتوى أو حالة شخصية</h3>
-            <p data-en="“Is it permissible for me to…” → no ruling. Thabat says it does not issue fatwas and refers you to an official fatwa body.">«هل يجوز لي أن…» ← لا حكم. يوضح «ثَبَت» أنه لا يُصدر فتاوى ويحيل إلى جهة إفتاء معتمدة.</p>
-          </article>
-        </div>
-        <ul class="pillars">
-          <li><b data-en="Sources decide, not AI.">المصادر تحكم لا الذكاء الاصطناعي.</b> <span data-en="Verdicts come only from verbatim source data and fixed, reviewable wording.">الأحكام من نصوص المصادر كما هي ومن صياغات ثابتة قابلة للمراجعة.</span></li>
-          <li><b data-en="Not found ≠ fabricated.">عدم العثور ليس حكمًا بالوضع.</b> <span data-en="When the indexed sources are silent, Thabat says so and refers you to a specialist.">إذا سكتت المصادر المفهرسة قال «ثَبَت» ذلك وأحال إلى مختص.</span></li>
-          <li><b data-en="Transparent.">شفافية.</b> <span data-en="Every result is labelled as an automated, AI-assisted result, not a human specialist's opinion.">كل نتيجة موسومة بأنها آلية من أداة مدعومة بالذكاء الاصطناعي، لا رأي مختص بشري.</span></li>
-          <li><b data-en="Private.">خصوصية.</b> <span data-en="Messages are not stored; screenshots are read on your device.">لا نحفظ الرسائل، وتُقرأ الصور على جهازك.</span> <a href="/privacy" data-en="Policy">السياسة</a></li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- EVIDENCE -->
-    <section class="band evidence" id="evidence" aria-labelledby="eTitle">
-      <div class="wrap">
-        <h2 id="eTitle" data-en="Measured, not claimed">نتائج مقيسة لا ادعاءات</h2>
-        <div class="stats">
-          <div class="stat"><b class="num" dir="ltr">0</b><span data-en="critical errors: a non-established text called authentic, or the reverse">أخطاء حرجة: وصف ما لا يثبت بالثبوت أو العكس</span></div>
-          <div class="stat"><b class="num" dir="ltr">98.5%</b><span data-en="correct on 65 curated cases in 9 categories">صحة الحكم على ٦٥ حالة في ٩ فئات</span></div>
-          <div class="stat"><b class="num" dir="ltr">98.5% <small>vs 0%</small></b><span data-en="true source found from a phrase typed with phone typos, vs exact search">العثور على المصدر من عبارة بأخطاء كتابة، مقابل البحث الحرفي</span></div>
-          <div class="stat"><b class="num" dir="ltr">~25 ms</b><span data-en="median time per message, CPU only, identical results on every run">متوسط زمن الرسالة، بلا معالج رسومي، ونتائج متطابقة في كل تشغيل</span></div>
-        </div>
-        <p class="footnote" data-en="These cases were written during development, so the figures are optimistic. A held-out test set written by a hadith specialist is the next benchmark. Full report and method on GitHub.">كُتبت هذه الحالات أثناء التطوير، فالأرقام متفائلة. المعيار التالي مجموعة اختبار محجوبة يكتبها مختص في الحديث. التقرير الكامل والمنهجية على GitHub.</p>
-      </div>
-    </section>
-
-    <!-- TRY -->
-    <section class="band try" id="try" aria-labelledby="tTitle">
-      <div class="wrap try-in">
-        <div>
-          <h2 id="tTitle" data-en="Try it here">جرّبه هنا</h2>
-          <p class="sub" data-en="Paste one line from a message you received. For screenshots, replies and evidence search, open the full checker.">الصق سطرًا من رسالة وصلتك. للصور والردود والبحث عن الأدلة افتح أداة التحقق الكاملة.</p>
-          <form id="tryForm" class="try-form">
-            <label for="tryText" class="sr" data-en="Text to check">النص المراد التحقق منه</label>
-            <textarea id="tryText" rows="3" maxlength="2000" placeholder="قال رسول الله ﷺ: …" data-en-ph="The Prophet ﷺ said: …"></textarea>
-            <div class="try-row">
-              <button class="btn accent" type="submit" data-en="Check">تحقّق</button>
-              <a class="btn ghost" href="/app" data-en="Full checker">الأداة الكاملة</a>
-            </div>
-          </form>
-        </div>
-        <div id="tryOut" class="try-out" aria-live="polite">
-          <p class="try-hint" data-en="Results appear here, each with its source and level.">تظهر النتائج هنا، مع مصدر كل نص ومستواه.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- SOURCES -->
-    <section class="band sources" aria-labelledby="sTitle">
-      <div class="wrap">
-        <h2 id="sTitle" data-en="What it searches">أين يبحث</h2>
-        <div class="src-grid">
-          <div class="src">
-            <h3 data-en="The Quran">القرآن الكريم</h3>
-            <p data-en="6,236 verses, Uthmani script following the Madinah Mushaf, from the Tanzil project (displayed verbatim).">٦٬٢٣٦ آية بالرسم العثماني وفق مصحف المدينة النبوية، من مشروع تنزيل، ويُعرض النص كما هو دون تعديل.</p>
-          </div>
-          <div class="src">
-            <h3 data-en="Nine hadith collections">تسعة كتب حديثية</h3>
-            <p data-en="Bukhari, Muslim, Abu Dawud, Tirmidhi, Nasa'i, Ibn Majah, Muwatta Malik, Nawawi's Forty, Forty Qudsi. Arabic plus English, French, Indonesian and Turkish.">البخاري، مسلم، أبو داود، الترمذي، النسائي، ابن ماجه، الموطأ، الأربعون النووية، الأحاديث القدسية؛ بالعربية مع الإنجليزية والفرنسية والإندونيسية والتركية.</p>
-          </div>
-          <div class="src">
-            <h3 data-en="Named gradings">أحكام محققين مسمَّين</h3>
-            <p data-en="Al-Albani, Shuaib al-Arnaut, Zubair Ali Zai, Ahmad Shakir, Bashar Awad Maarouf and others, shown word for word.">الألباني، شعيب الأرناؤوط، زبير علي زئي، أحمد شاكر، بشار عواد معروف وغيرهم، بنص أحكامهم.</p>
-          </div>
-          <div class="src">
-            <h3 data-en="A reviewed register">سجل مراجَع</h3>
-            <p data-en="Popular sayings that are not established, each with a scholarly reference and an authentic alternative, reviewed by a specialist before approval.">عبارات مشتهرة لا تثبت، لكل منها مرجع علمي وبديل ثابت، ويراجعها مختص قبل اعتمادها.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- AUDIENCE -->
-    <section class="band audience" aria-labelledby="auTitle">
-      <div class="wrap">
-        <h2 id="auTitle" data-en="Who it is for">لمن صُمّم</h2>
-        <div class="aud-grid">
-          <div class="aud"><h3 data-en="Da'wah workers and imams">الدعاة والأئمة والمعرّفون</h3><p data-en="Answer “is this hadith authentic?” in seconds, with a source you can cite and a reply you can send.">أجب عن سؤال «هل هذا الحديث صحيح؟» في ثوانٍ، بمصدر يمكن ذكره وردّ جاهز للإرسال.</p></div>
-          <div class="aud"><h3 data-en="Group moderators">مشرفو المجموعات</h3><p data-en="Catch fabricated sayings and misquoted verses before they spread, and correct them kindly.">أوقف الأقوال المختلقة والآيات المحرّفة قبل انتشارها، وصحّحها بلطف.</p></div>
-          <div class="aud"><h3 data-en="Every Muslim who forwards">كل من يعيد النشر</h3><p data-en="Keep the good intention, and share only what is established from the Prophet ﷺ.">احتفظ بنيتك الطيبة، وانشر ما ثبت عن النبي ﷺ فقط.</p></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ROADMAP -->
-    <section class="band roadmap" aria-labelledby="rTitle">
-      <div class="wrap">
-        <h2 id="rTitle" data-en="What comes next">ما القادم</h2>
-        <ol class="road">
-          <li><b data-en="Specialist review">مراجعة شرعية</b><span data-en="Every register entry approved by a named hadith specialist, with a public change log.">اعتماد كل مدخل في السجل من مختص حديث مسمّى، مع سجل تغييرات معلن.</span></li>
-          <li><b data-en="More collections">كتب أكثر</b><span data-en="Musnad Ahmad, al-Hakim and al-Bayhaqi, so fewer real narrations return “not found”.">مسند أحمد والمستدرك وسنن البيهقي، ليقل عدد الروايات الصحيحة التي لا نعثر عليها.</span></li>
-          <li><b data-en="Telegram & WhatsApp bot">بوت تيليجرام وواتساب</b><span data-en="Forward the message to the bot and get the verdict card back.">أعد توجيه الرسالة إلى البوت واستلم بطاقة الحكم.</span></li>
-          <li><b data-en="Open API">واجهة برمجية مفتوحة</b><span data-en="For content platforms and moderators to pre-check posts that quote hadith.">لمنصات المحتوى والمشرفين ليتحققوا من المنشورات قبل نشرها.</span></li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- FAQ -->
-    <section class="band faq" id="faq" aria-labelledby="fTitle">
-      <div class="wrap narrow">
-        <h2 id="fTitle" data-en="Questions">أسئلة شائعة</h2>
-        <details><summary data-en="Does Thabat issue fatwas?">هل يُصدر «ثَبَت» فتاوى؟</summary><p data-en="No. It checks whether a text is a verse or an established hadith and where it comes from. Questions asking for a ruling, especially about personal cases, receive a referral to an official fatwa body, as the scientific annex requires.">لا. يتحقق من كون النص آية أو حديثًا ثابتًا ومن مصدره فقط. أما أسئلة الأحكام، ولا سيما الحالات الشخصية، فيُحال صاحبها إلى جهة إفتاء معتمدة كما تنص الحزمة العلمية.</p></details>
-        <details><summary data-en="If it says “not found”, is the hadith fabricated?">إذا قال «لم نعثر عليه» فهل الحديث موضوع؟</summary><p data-en="Not necessarily. It means the text is not in the indexed sources. Many authentic narrations are in books not yet indexed. Until its source is known, it should not be attributed to the Prophet ﷺ; ask a specialist.">ليس بالضرورة. معناه أن النص غير موجود في المصادر المفهرسة، وقد تكون روايات صحيحة في كتب لم تُفهرس بعد. وإلى أن يُعرف مصدره لا يُنسب إلى النبي ﷺ، ويُسأل عنه المختص.</p></details>
-        <details><summary data-en="Where does AI come in?">أين دور الذكاء الاصطناعي؟</summary><p data-en="Language processing to normalise Arabic and separate chains from texts, fast retrieval, fuzzy alignment that tolerates typos, on-device OCR for screenshots, and (optionally) a language model that only helps locate quotes in messy messages. The model never judges authenticity or writes evidence.">معالجة لغوية لتوحيد الكتابة العربية وفصل الإسناد عن المتن، واسترجاع سريع، ومحاذاة تقريبية تتحمل الأخطاء، وتعرّف ضوئي على الصور في جهازك، ونموذج لغوي اختياري يساعد فقط في استخراج الاقتباسات من الرسائل المعقدة، ولا يحكم على الثبوت ولا يكتب الدليل.</p></details>
-        <details><summary data-en="Do you store my messages?">هل تحفظون رسائلي؟</summary><p data-en="No. Messages are processed in memory and discarded. Only a problem report you choose to send is stored, without any identifier.">لا. تُعالج الرسائل في الذاكرة ثم تُهمل. لا يُحفظ إلا بلاغ الخطأ الذي تختار إرساله، دون أي معرّف شخصي.</p></details>
-        <details><summary data-en="Who reviews the gradings?">من يراجع الأحكام؟</summary><p data-en="Gradings are shown exactly as published by named scholars. The register of popular sayings is marked “draft” until a hadith specialist approves each entry, and every result can be reported to the review queue.">تُعرض الأحكام كما نشرها المحققون بأسمائهم. وسجل العبارات المشتهرة موسوم «مسودة» حتى يعتمد مختص الحديث كل مدخل فيه، ويمكن الإبلاغ عن أي نتيجة لتصل إلى صفحة المراجعة.</p></details>
-      </div>
-    </section>
-
-    <section class="closing">
-      <div class="wrap">
-        <p class="closing-q">«كفى بالمرء كذبًا أن يحدّث بكل ما سمع»</p>
-        <p class="closing-src" data-en="Sunan Abi Dawud 4992 · graded sahih by al-Albani">سنن أبي داود ٤٩٩٢ · صححه الألباني</p>
-        <a class="btn accent" href="/app" data-en="Check a message now">تحقّق من رسالة الآن</a>
-      </div>
-    </section>
-  </main>
-
-  <footer class="foot">
-    <div class="wrap foot-in">
-      <div>
-        <span class="logo-mark small">ثَبَت</span>
-        <p data-en="An open-source entry to the AI in Service of Islamic Content Challenge 2026 (IslamicAIch.org), Track 04: knowledge and verification tools.">مشاركة مفتوحة المصدر في تحدي الذكاء الاصطناعي في خدمة المحتوى الإسلامي ٢٠٢٦ (IslamicAIch.org)، المسار الرابع: أدوات المعرفة والتحقق.</p>
-      </div>
-      <nav class="foot-links" aria-label="Footer">
-        <a href="/app" data-en="Checker">أداة التحقق</a>
-        <a href="/app?mode=search" data-en="Evidence search">البحث عن دليل</a>
-        <a href="/privacy" data-en="Privacy">الخصوصية</a>
-        <a href="https://github.com/youmrx3/islamicaich" target="_blank" rel="noopener">GitHub</a>
-        <a href="/api/docs" data-en="API">الواجهة البرمجية</a>
-      </nav>
+  </div>
+  <div class="browser">
+    <div class="bar"><span><i></i><i></i><i></i></span><span class="url" id="toolUrl">thabat · /app</span></div>
+    <div class="body">
+      <label class="sr" for="tq" data-en="Message">الرسالة</label>
+      <textarea class="tool-ta" id="tq" placeholder="قال رسول الله ﷺ: …" data-en-ph="The Prophet ﷺ said: …">قال رسول الله ﷺ: «إنما الأعمال بالنيات» وقال ﷺ: «اطلبوا العلم ولو بالصين». ومن نشرها «فُتح له باب من الجنة»</textarea>
+      <div class="tool-row"><button class="btn dark small" id="tgo" data-en="Verify the message">ثبّت الرسالة</button><a class="btn white small" href="/app" data-en="Full app">التطبيق الكامل</a></div>
+      <div class="res" id="tres" aria-live="polite"></div>
+      <div class="tool-row" id="tact" hidden><button class="btn white small" id="tlink" data-en="Copy result link">انسخ رابط النتيجة</button><a class="btn nur small" id="twa" target="_blank" rel="noopener" data-en="Send on WhatsApp">أرسلها على واتساب</a></div>
     </div>
-  </footer>
+  </div>
+</div></section>
 
-  <script src="/assets/landing.js" defer></script>
+<!-- QURAN -->
+<section class="quran" id="quran"><div class="quran-pin"><div class="wrap">
+  <span class="kicker" data-en="Verses · word by word">الآيات · كلمةً كلمة</span>
+  <h2 style="font-size:clamp(34px,4.6vw,60px);margin:0 0 30px" data-en="We turn every word over, and match it to the Mushaf.">نقلبُ كل كلمة، ونطابقها مع المصحف.</h2>
+  <div class="tiles" id="tiles" dir="rtl"></div>
+  <div style="margin-top:30px"><span class="quran-cap" id="qcap"></span></div>
+</div></div></section>
+
+<!-- GRADES RING -->
+<section class="ring" id="grades"><div class="wrap ring-pin" id="ringPin">
+  <div>
+    <span class="kicker" data-en="The grading scale">سُلّم الأحكام</span>
+    <h2 data-en="Six grades in calm colours — and the scholar's name always beside the verdict.">ستّ درجات بألوانٍ هادئة — واسم المحقّق دائمًا بجانب الحكم.</h2>
+    <p class="lede" data-en="We never pick for you. When scholars differ, we show every grading as it is.">لا نختار عنك: إذا اختلف المحققون عرضنا أحكامهم كما هي.</p>
+  </div>
+  <div class="carousel"><div class="carousel-in" id="carousel"></div></div>
+</div></section>
+
+<!-- AI -->
+<section class="sec dark" id="ai"><div class="wrap">
+  <span class="kicker" data-en="The AI behind Thabat">الذكاء الاصطناعي وراء ثَبَت</span>
+  <h2 data-en="AI that finds the source — not AI that invents one.">ذكاءٌ يجد المصدر… لا ذكاءٌ يخترعه.</h2>
+  <p class="lede" data-en="Generative chatbots can fabricate a reference. Thabat is built the other way round: retrieval-based verification with Arabic NLP. The sources decide; no model writes the evidence.">روبوتات المحادثة التوليدية قد تخترع مرجعًا. «ثَبَت» مبنيّ بالعكس: تحقّق قائم على الاسترجاع ومعالجة اللغة العربية. المصادر هي التي تحكم، ولا يكتب أي نموذج الدليل.</p>
+  <div class="ai-grid">
+    <div class="ai-step"><span class="n" data-en="1">١</span><h3 data-en="Reading images">قراءة الصور</h3><p data-en="Optical character recognition reads Arabic and English screenshots — on your device, so the image never leaves it.">التعرّف الضوئي على الحروف يقرأ لقطات الشاشة العربية والإنجليزية — على جهازك، فلا تغادره الصورة.</p><span class="tech">OCR · tesseract.js</span></div>
+    <div class="ai-step"><span class="n" data-en="2">٢</span><h3 data-en="Arabic language processing">معالجة اللغة العربية</h3><p data-en="Unifies spelling (diacritics, hamza, ta marbuta), strips prefixes, separates the chain of narrators from the text, and isolates each quote.">توحيد الإملاء (التشكيل والهمزات والتاء المربوطة)، ونزع السوابق، وفصل الإسناد عن المتن، وعزل كل اقتباس.</p><span class="tech">Arabic NLP</span></div>
+    <div class="ai-step"><span class="n" data-en="3">٣</span><h3 data-en="Retrieval">الاسترجاع</h3><p data-en="A TF-IDF inverted index over 36,064 narrations and 6,236 verses finds candidates in milliseconds.">فهرس TF-IDF مقلوب على ٣٦٬٠٦٤ رواية و٦٬٢٣٦ آية يجد المرشحين في أجزاء من الثانية.</p><span class="tech">Information retrieval</span></div>
+    <div class="ai-step"><span class="n" data-en="4">٤</span><h3 data-en="Fuzzy alignment">المحاذاة التقريبية</h3><p data-en="Character-level alignment tolerates typos, finds the exact matching words, and detects a misquoted verse word by word.">محاذاة على مستوى الحروف تتحمّل الأخطاء، وتحدد الكلمات المطابقة بدقة، وتكشف تحريف الآية كلمةً كلمة.</p><span class="tech">Fuzzy matching · word diff</span></div>
+    <div class="ai-step"><span class="n" data-en="5">٥</span><h3 data-en="Explicit decision rules">قواعد حكم صريحة</h3><p data-en="Gradings are combined as hadith scholars do: a sound route is not cancelled by weaker ones. Each result gets a content level A–D.">تُجمع الأحكام كما يفعل المحدّثون: الطريق الصحيح لا تُسقطه الطرق الضعيفة، ولكل نتيجة مستوى محتوى (أ–د).</p><span class="tech">Rule-based reasoning</span></div>
+    <div class="ai-step opt"><span class="n" data-en="6">٦</span><h3 data-en="Language model (optional)">نموذج لغوي (اختياري)</h3><p data-en="Claude may only locate quotes in a long, messy message. It never judges authenticity and never writes evidence.">قد يُستخدم Claude لاستخراج الاقتباسات من الرسائل الطويلة فقط، ولا يحكم على الثبوت ولا يكتب أي دليل.</p><span class="tech">LLM · extraction only</span></div>
+  </div>
+  <div class="notrag"><span class="big" data-en="Not RAG">ليس RAG</span><p style="margin:0" data-en="RAG retrieves sources and then lets a model write the answer — where invented references come from. Thabat retrieves and verifies; every sentence about a source is the source itself or a fixed, reviewable template.">نظام RAG يسترجع المصادر ثم يترك نموذجًا يكتب الإجابة — ومن هنا تأتي المراجع المختلقة. «ثَبَت» يسترجع ويتحقق: كل ما يُعرض عن المصدر هو نص المصدر نفسه أو صياغة ثابتة قابلة للمراجعة.</p></div>
+  <div class="ai-truths">
+    <div><b data-en="Deterministic">حتمي</b><span data-en="The same message gives the same result, every time.">الرسالة نفسها تعطي النتيجة نفسها في كل مرة.</span></div>
+    <div><b data-en="Abstains">يمتنع</b><span data-en="«Not found» is never «fabricated».">«لم نجد» لا تعني «موضوع» أبدًا.</span></div>
+    <div><b data-en="Fast">سريع</b><span data-en="~25 ms per message, no GPU.">نحو ٢٥ مللي ثانية للرسالة، بلا معالج رسومي.</span></div>
+    <div><b data-en="Measured">مُقاس</b><span data-en="0 critical errors on 73 test cases.">صفر أخطاء حرجة على ٧٣ حالة اختبار.</span></div>
+  </div>
+</div></section>
+
+<!-- LEVELS & PRINCIPLES -->
+<section class="sec raml" id="levels"><div class="wrap">
+  <span class="kicker" data-en="Built on the challenge's scientific annex">مبني على الحزمة العلمية للتحدي</span>
+  <h2 data-en="Four content levels. Each with its own behaviour.">أربعة مستويات للمحتوى… لكلٍّ سلوكه.</h2>
+  <div class="lvl-grid">
+    <div class="lvl"><span class="l" style="background:var(--g-sahih)">أ</span><h3 data-en="Stable original information">معلومة أصلية مستقرة</h3><p data-en="Exact verse, authentic hadith, corrected verse → a direct answer with its source.">آية مطابقة، حديث ثابت، تصحيح آية ← إجابة مباشرة موثقة بالمصدر.</p></div>
+    <div class="lvl"><span class="l" style="background:var(--g-hasan)">ب</span><h3 data-en="Explanation with reference">شرح مع المرجع</h3><p data-en="Weak or fabricated per named scholars, a Companion's words → reference shown, no overstated certainty.">ضعيف أو موضوع بحكم محققين مسمَّين، أو كلام صحابي ← مع المرجع ودون قطع في غير موضعه.</p></div>
+    <div class="lvl"><span class="l" style="background:var(--g-khilaf)">ج</span><h3 data-en="Disputed or unresolved">خلافي أو غير محسوم</h3><p data-en="Graders disagree or nothing found → the disagreement is shown, or we abstain and refer.">اختلاف المحققين أو عدم العثور ← يُعرض الخلاف، أو نمتنع ونحيل إلى مختص.</p></div>
+    <div class="lvl"><span class="l" style="background:var(--g-mawdu)">د</span><h3 data-en="Fatwa or personal case">فتوى أو حالة شخصية</h3><p data-en="«Is it permissible for me to…» → no ruling; a referral to an official fatwa body.">«هل يجوز لي…» ← لا حكم؛ إحالة إلى جهة إفتاء معتمدة.</p></div>
+  </div>
+  <div class="prin">
+    <div style="background:#CFF7E6"><span class="n" data-en="1">١</span><h3 data-en="The source before the verdict">المصدر قبل الحكم</h3><p data-en="Every result points to the book and the number, so you can check it yourself.">كل نتيجة تحيل إلى الكتاب والرقم، لتراجعها بنفسك.</p></div>
+    <div style="background:#E4DCFF"><span class="n" data-en="2">٢</span><h3 data-en="Disagreement is shown">الخلاف يُعرض</h3><p data-en="When scholars differ we show their statements, and never choose for you.">إذا اختلف المحققون عرضنا الأقوال، ولم نختر عنك.</p></div>
+    <div style="background:#FFE3C7"><span class="n" data-en="3">٣</span><h3 data-en="Your messages are yours">رسائلك لك</h3><p data-en="We don't keep the message after checking it — unless you save it on your device.">لا نحفظ الرسالة بعد الفحص إلا إذا حفظتها أنت على جهازك.</p></div>
+  </div>
+</div></section>
+
+<!-- RESULTS -->
+<section class="sec dark"><div class="wrap">
+  <span class="kicker" data-en="Results">النتائج</span>
+  <h2 data-en="Measured, not claimed.">نتائج مقيسة… لا ادعاءات.</h2>
+  <div class="stats">
+    <div class="stat"><b data-en="0">صفر</b><span data-en="critical errors: a non-established text called authentic, a fatwa answered, or evidence invented">أخطاء حرجة: وصف ما لا يثبت بالثبوت، أو إجابة طلب فتوى، أو اختلاق دليل</span></div>
+    <div class="stat"><b>٩٨٫٦٪</b><span data-en="correct on 73 curated cases, including the annex's own test types">صحة الحكم على ٧٣ حالة، منها أنواع اختبارات الحزمة العلمية</span></div>
+    <div class="stat"><b>٩٨٫٥٪</b><span data-en="true source found from phrases typed with phone typos — exact search finds 0%">العثور على المصدر من عبارات بأخطاء كتابة — والبحث الحرفي ٠٪</span></div>
+    <div class="stat"><b>٢٥ms</b><span data-en="per message, with identical results on every run">للرسالة الواحدة، ونتائج متطابقة في كل تشغيل</span></div>
+  </div>
+  <p class="foot-note" data-en="The curated cases were written during development, so these figures are optimistic. An independent test set written by a hadith specialist is the next benchmark. Full report and method are public on GitHub.">كُتبت الحالات أثناء التطوير، فالأرقام متفائلة؛ والمعيار التالي مجموعة اختبار مستقلة يكتبها مختص في الحديث. التقرير الكامل والمنهجية منشوران على GitHub.</p>
+</div></section>
+
+<!-- BUBBLE -->
+<section class="sec" id="bubble"><div class="wrap split">
+  <div>
+    <span class="kicker" data-en="The floating bubble">الفقاعة العائمة</span>
+    <h2 data-en="Thabat with you, over every chat.">ثَبَت معك، فوق كل محادثة.</h2>
+    <p class="lede" data-en="A small bubble floats at the edge of the screen. Copy any message, the bubble glows, tap it — and the result appears over the chat without leaving it.">فقاعة صغيرة تطفو على حافة الشاشة. انسخ أي رسالة، تلمع الفقاعة، المسها — والنتيجة فوق المحادثة دون أن تغادرها.</p>
+    <div class="steps3">
+      <div><span class="n" data-en="1">١</span><span data-en="Copy the message from any app">انسخ الرسالة من أي تطبيق</span></div>
+      <div><span class="n" data-en="2">٢</span><span data-en="Tap the bubble — a small panel with the results">المس الفقاعة — لوحة صغيرة بالنتائج</span></div>
+      <div><span class="n" data-en="3">٣</span><span data-en="Send the card kindly to whoever sent it">أرسل البطاقة بلطف لمن أرسلها</span></div>
+    </div>
+    <p class="muted" style="font-size:14px;color:var(--muted)" data-en="Android: floating bubble · iOS: the share menu and the Dynamic Island. Today: try it as a simulation, running the real engine.">على Android فقاعة عائمة · على iOS عبر قائمة المشاركة والجزيرة التفاعلية. اليوم: جرّبها كمحاكاة تعمل بالمحرك الحقيقي.</p>
+    <a class="btn dark" href="/mobile" data-en="Try it in the app simulator">جرّبها في محاكي التطبيق</a>
+  </div>
+  <div class="mock" id="bubbleMock"><div class="scr">
+    <div class="head"><i></i><b data-en="Family group">مجموعة العائلة</b></div>
+    <div class="chat"><div class="b">↪ صيام يوم ٢٧ رجب يعدل صيام ستين شهرًا…</div><div class="b on" id="bmsg">قال ﷺ: «من قال سبحان الله وبحمده في يوم مئة مرة حطت خطاياه»</div><div class="b" data-en="May Allah reward you">جزاكم الله خيرًا</div></div>
+    <div class="fb" id="bfb" style="top:440px"><img src="/assets/brand/mark-dark.svg" alt=""></div>
+    <div class="pnl" id="bpnl"><b id="bsum" data-en="One hadith">حديث واحد</b><div id="bres" style="margin-top:8px"></div></div>
+  </div></div>
+</div></section>
+
+<!-- WIDGETS + WHATSAPP -->
+<section class="sec raml"><div class="wrap split">
+  <div class="wbox" id="widgets">
+    <div class="w g"><img src="/assets/brand/mark-dark.svg" alt="" style="width:44px"><h3 style="margin-top:30px" data-en="Check the clipboard">ثبّت ما في الحافظة</h3></div>
+    <div class="w c"><span style="font-size:13px;color:var(--muted)" data-en="This week">هذا الأسبوع</span><div class="big">١٢</div><div class="mini-bar" style="margin:6px 0"><i style="background:var(--g-mawdu)"></i><i style="background:var(--g-daif)"></i><i style="background:var(--g-sahih)"></i></div><span style="font-size:13px" data-en="messages checked">رسالة تحقّقت منها</span></div>
+    <div class="w d"><div style="display:flex;justify-content:space-between"><span data-en="Hadith of the day">حديث اليوم</span><span id="dchip"></span></div><div class="sacred" id="dtext" style="font-size:24px;margin:6px 0">…</div><span id="dcite" style="font-size:13px;color:#C9C5DE"></span></div>
+  </div>
+  <div>
+    <span class="kicker" data-en="Widgets · WhatsApp">الودجت · واتساب</span>
+    <h2 data-en="On the home screen. And in WhatsApp too.">على الشاشة الرئيسية. وفي واتساب أيضًا.</h2>
+    <p class="lede" data-en="A widget that checks the clipboard in one tap, and an authentic hadith every day. Or forward the message to Thabat's number on WhatsApp and get the answer in the same chat.">ودجت يتحقق من الحافظة بلمسة واحدة، وحديثٌ صحيح كل يوم. أو وجّه الرسالة إلى رقم ثَبَت على واتساب ويصلك الرد في المحادثة نفسها.</p>
+    <div class="wa"><div class="b">↪ «اطلبوا العلم ولو بالصين»…</div><div class="b bot" id="botReply">…</div></div>
+    <p style="font-size:14px;color:var(--muted);margin-top:12px" data-en="The hadith of the day above is loaded live from the verified data. Widgets and the WhatsApp number are coming with the native app; try both now in the simulator.">«حديث اليوم» أعلاه يُحمَّل مباشرة من البيانات الموثقة. الودجت ورقم واتساب قادمان مع التطبيق الأصلي، وجرّبهما الآن في المحاكي.</p>
+    <a class="btn white" href="/mobile" data-en="Open the simulator">افتح المحاكي</a>
+  </div>
+</div></section>
+
+<!-- SOURCES -->
+<section class="sec"><div class="wrap">
+  <span class="kicker" data-en="Sources">المصادر</span>
+  <h2 data-en="Where every verdict comes from.">من أين يأتي كل حكم.</h2>
+  <div class="cards4">
+    <div><h3 data-en="The Holy Quran">القرآن الكريم</h3><p data-en="6,236 verses in Uthmani script following the Madinah Mushaf (Tanzil project), displayed verbatim, with recitation.">٦٬٢٣٦ آية بالرسم العثماني وفق مصحف المدينة (مشروع تنزيل)، تُعرض بلفظها مع التلاوة.</p></div>
+    <div><h3 data-en="Nine hadith collections">تسعة كتب حديثية</h3><p data-en="Bukhari, Muslim, Abu Dawud, Tirmidhi, Nasa'i, Ibn Majah, al-Muwatta, Nawawi's Forty and the Qudsi hadith.">البخاري، مسلم، أبو داود، الترمذي، النسائي، ابن ماجه، الموطأ، الأربعون النووية، والقدسية.</p></div>
+    <div><h3 data-en="Named gradings">أحكام محققين مسمَّين</h3><p data-en="Al-Albani, Shuaib al-Arnaut, Zubair Ali Zai, Ahmad Shakir and others — each shown word for word.">الألباني، شعيب الأرناؤوط، زبير علي زئي، أحمد شاكر وغيرهم — كل حكم بنصه.</p></div>
+    <div><h3 data-en="A reviewed register">سجل يراجعه مختص</h3><p data-en="Popular sayings that are not established, each with a scholarly reference and an authentic alternative.">عبارات مشتهرة لا تثبت، لكل منها مرجع علمي وبديل ثابت، ويعتمدها مختص.</p></div>
+  </div>
+</div></section>
+
+<!-- SOON -->
+<section class="sec raml"><div class="wrap">
+  <span class="kicker" data-en="Coming soon">قريبًا</span>
+  <h2 data-en="What's next.">ما القادم.</h2>
+  <div class="soon">
+    <div><b data-en="Native apps">التطبيقات الأصلية</b><span data-en="App Store and Google Play, with the real bubble and widgets.">على متجرَي App Store و Google Play، مع الفقاعة والودجت الحقيقية.</span></div>
+    <div><b data-en="WhatsApp & Telegram bot">بوت واتساب وتيليجرام</b><span data-en="Forward the message, get the verdict.">وجّه الرسالة واستلم الحكم.</span></div>
+    <div><b data-en="More books">كتب أكثر</b><span data-en="Musnad Ahmad, al-Hakim, al-Bayhaqi.">مسند أحمد والمستدرك وسنن البيهقي.</span></div>
+    <div><b data-en="Open API">واجهة برمجية مفتوحة</b><span data-en="For content platforms and moderators.">لمنصات المحتوى ومشرفي المجموعات.</span></div>
+  </div>
+</div></section>
+
+<!-- FAQ -->
+<section class="sec"><div class="narrow">
+  <h2 data-en="Questions">أسئلة</h2>
+  <details><summary data-en="Does Thabat issue fatwas?">هل يُصدر «ثَبَت» فتاوى؟</summary><p data-en="No. It checks whether a text is a verse or an established hadith and where it comes from. Personal ruling requests receive a referral to an official fatwa body, as the challenge's scientific annex requires.">لا. يتحقق من كون النص آية أو حديثًا ثابتًا ومن مصدره فقط. أما طلبات الأحكام الشخصية فيُحال صاحبها إلى جهة إفتاء معتمدة، كما تنص الحزمة العلمية للتحدي.</p></details>
+  <details><summary data-en="If it says «not found», is the hadith fabricated?">إذا قال «لم نجد» فهل الحديث موضوع؟</summary><p data-en="Not necessarily. It means the text isn't in the indexed sources. Until its source is known it should not be attributed to the Prophet ﷺ; ask a specialist.">ليس بالضرورة. معناه أن النص ليس في المصادر المفهرسة، وإلى أن يُعرف مصدره لا يُنسب إلى النبي ﷺ، ويُسأل عنه المختص.</p></details>
+  <details><summary data-en="Do you store my messages?">هل تحفظون رسائلي؟</summary><p data-en="No. Messages are processed in memory and discarded. History is kept only on your own device. Only a problem report you choose to send is stored, without any identifier.">لا. تُعالج الرسائل في الذاكرة ثم تُهمل، ويُحفظ السجل على جهازك فقط. لا يُخزَّن إلا بلاغ الخطأ الذي تختار إرساله، دون أي معرّف شخصي.</p></details>
+  <details><summary data-en="Who reviews the gradings?">من يراجع الأحكام؟</summary><p data-en="Gradings are shown exactly as published by named scholars. The register of popular sayings stays «draft» until a hadith specialist approves each entry in the review queue.">تُعرض الأحكام كما نشرها المحققون بأسمائهم. وسجل العبارات المشتهرة يبقى «مسودة» حتى يعتمد مختص الحديث كل مدخل في صفحة المراجعة.</p></details>
+</div></section>
+
+<!-- CTA -->
+<section class="cta" id="cta">
+  <div class="stack" aria-hidden="true"><div class="stack-in" id="stack"></div></div>
+  <h2 data-en="The next message — verify it first.">الرسالة القادمة، ثبّتها أولًا.</h2>
+  <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+    <a class="btn nur" href="/app" data-en="Open Thabat">افتح ثَبَت</a>
+    <a class="btn line" href="/mobile" data-en="The app on your phone">التطبيق على جوالك</a>
+  </div>
+</section>
+</main>
+
+<footer class="foot"><div class="wrap foot-in">
+  <div class="challenge"><img src="/assets/brand/challenge.svg" alt="تحدي الذكاء الاصطناعي في خدمة المحتوى الإسلامي"><span data-en="An entry to the AI in Service of Islamic Content Challenge 2026 · Track 04">مشاركة في تحدي الذكاء الاصطناعي في خدمة المحتوى الإسلامي ٢٠٢٦ · المسار ٠٤</span></div>
+  <nav class="foot-links"><a href="https://github.com/youmrx3/islamicaich" target="_blank" rel="noopener" data-en="Methodology & sources">المنهجية والمصادر</a><a href="/privacy" data-en="Privacy">الخصوصية</a><a href="/review" data-en="Review queue">صفحة المراجعة</a><a href="/api/docs" data-en="API">الواجهة البرمجية</a></nav>
+</div></footer>
+
+<script src="/assets/site.js" defer></script>
 </body>
 </html>

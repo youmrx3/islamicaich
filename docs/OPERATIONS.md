@@ -10,13 +10,13 @@ Maps to "Operational realism and continuation" (final, 10%).
 | Cold start | ~0.3 s to load the corpus (~1.5 s including Python imports) |
 | Latency | median ≈ 25 ms per message; evidence search ≈ 10–55 ms |
 | Deployed bundle | ≈ 220 MB (111 MB data + ~110 MB Python packages), under Vercel's 500 MB limit |
-| External calls at runtime | none (LLM optional; Upstash only when a report is sent) |
+| External calls at runtime | none for verification (LLM optional; Supabase only when a report or review decision is saved; verse audio streams from everyayah.com in the browser) |
 
 ## Monthly cost estimates
 
 | Scenario | Hosting | LLM | Total |
 |---|---|---|---|
-| Pilot (≤ 10k checks/month) | Vercel Hobby (free) + Upstash free tier | off | **$0** |
+| Pilot (≤ 10k checks/month) | Vercel Hobby (free) + Supabase free tier | off | **$0** |
 | Pilot with LLM assist | free | ~10k × ≈1.2k tokens on Claude ≈ $10–15 (estimate at $5 / $25 per M input / output tokens) | **≈ $15** |
 | Production (≤ 300k checks/month) | Vercel Pro ($20/month), ~25 ms CPU per check | LLM only on messages the core cannot resolve (~20%), ≈ $60–90 | **≈ $80–110** |
 
@@ -29,6 +29,8 @@ The LLM figures are estimates to be replaced by measured token counts during the
 | Tanzil / hadith-api downloads | only at build time | Raw files can be vendored; the index is built once and cached |
 | Claude API | no | Deterministic pipeline runs without it |
 | tesseract.js CDN | for screenshots only | Self-host the script and trained data (Apache-2.0) |
+| Supabase | no | Reports and decisions fall back to a local file store; verification never depends on the database |
+| everyayah.com audio | no (listen button only) | The verse text and source are shown regardless; the button shows an error if audio fails |
 | Hosting provider (Vercel) | yes | Same code runs from the included Dockerfile on Render, HF Spaces, Fly.io or any VM (~120 MB RAM) |
 
 ## Maintenance and content review

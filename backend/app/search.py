@@ -139,3 +139,25 @@ def search_evidence(c: Corpus, query: str, only_authentic: bool = True, k: int =
         result["message_en"] = ("We found no authentic hadith or verse matching this topic in the indexed sources. "
                                 "We will not invent evidence; please consult scholars or approved references (dorar.net).")
     return result
+
+
+# ---------------------------------------------------------------- daily hadith
+import datetime as _dt
+import json as _json
+from pathlib import Path as _Path
+
+_DAILY = _Path(__file__).resolve().parents[2] / "data" / "curated" / "daily.json"
+
+
+def daily_hadith(c: Corpus, day: int | None = None) -> dict:
+    from .verify import _snippet
+    items = _json.loads(_DAILY.read_text(encoding="utf-8"))["items"]
+    n = day if day is not None else _dt.date.today().toordinal()
+    item = items[n % len(items)]
+    r = c.by_id.get(item["id"])
+    g = summarize(r["grades"], r.get("implicit")).to_dict()
+    d = HadithHit(r["id"], 1.0, r, g).to_dict("eng")
+    snip = _snippet(r["ar"], item["quote"], pad=0)
+    d["text"] = snip["match"].strip(" ،,.؛:\"«»‏")  # exact words from the source record
+    d.pop("ar", None)
+    return d

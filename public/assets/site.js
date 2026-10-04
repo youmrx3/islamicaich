@@ -1,0 +1,238 @@
+"use strict";
+/* ثَبَت — website interactions. Every verdict, citation and grading shown on this
+   page is fetched live from the API (never typed into the page), so the website can
+   never claim something the engine does not actually return. */
+const $ = (s, r = document) => r.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const store = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} } };
+const params = new URLSearchParams(location.search);
+let ui = params.get("lang") === "en" ? "en" : store.get("thabat.ui", "ar");
+const AR = () => ui === "ar";
+const clip = (t, n) => { t = String(t || ""); if (t.length <= n) return t; t = t.slice(0, n); const cut = Math.max(t.lastIndexOf(". "), t.lastIndexOf("، "), t.lastIndexOf(" ")); return t.slice(0, cut > n * 0.6 ? cut : n).replace(/[\s.،,:؛]+$/, "") + "…"; };
+const dg = (s) => AR() ? String(s).replace(/\d/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d]) : String(s);
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- language */
+function applyLang() {
+  document.documentElement.lang = ui; document.documentElement.dir = AR() ? "rtl" : "ltr";
+  document.title = AR() ? "ثَبَت — تحقّق قبل أن تنشر" : "Thabat — verify before you forward";
+  document.querySelectorAll("[data-en]").forEach((el) => { if (el.dataset.ar === undefined) el.dataset.ar = el.innerHTML; el.innerHTML = AR() ? el.dataset.ar : esc(el.getAttribute("data-en")); });
+  document.querySelectorAll("[data-en-ph]").forEach((el) => { if (el.dataset.arph === undefined) el.dataset.arph = el.placeholder; el.placeholder = AR() ? el.dataset.arph : el.getAttribute("data-en-ph"); });
+  $("#lang").textContent = AR() ? "EN" : "ع";
+  rerender.forEach((f) => f());
+}
+const rerender = [];
+$("#lang").onclick = () => { ui = AR() ? "en" : "ar"; store.set("thabat.ui", ui); applyLang(); };
+
+/* ---------- grading style (same scale as the app) */
+const STY = {
+  sahih: ["var(--g-sahih-bg)", "var(--g-sahih-ink)", "var(--g-sahih)", "#22B07D"], hasan: ["var(--g-hasan-bg)", "var(--g-hasan-ink)", "var(--g-hasan)", "#3D8DE0"],
+  daif: ["var(--g-daif-bg)", "var(--g-daif-ink)", "var(--g-daif)", "#F0B020"], vdaif: ["var(--g-vdaif-bg)", "var(--g-vdaif-ink)", "var(--g-vdaif)", "#F07A2A"],
+  mawdu: ["var(--g-mawdu-bg)", "var(--g-mawdu-ink)", "var(--g-mawdu)", "#EB4858"], none: ["var(--g-none-bg)", "var(--g-none-ink)", "var(--g-none)", "#9A96AA"],
+  khilaf: ["var(--g-khilaf-bg)", "var(--g-khilaf-ink)", "var(--g-khilaf)", "#8E7BEA"],
+};
+function grade(v) {
+  const L = (a, e) => (AR() ? a : e), labels = (v.evidence?.[0]?.grade?.grades || []).map((x) => x.label.toLowerCase());
+  switch (v.status) {
+    case "quran_exact": return ["sahih", L("آية مطابقة", "Exact verse")];
+    case "quran_variant": return ["daif", L("آية مُحرّفة", "Misquoted verse")];
+    case "authentic": return ["sahih", L("صحيح", "Sahih")];
+    case "authentic_by_routes": return ["hasan", L("ثابت بمجموع طرقه", "Authentic via routes")];
+    case "authentic_mawquf": return ["khilaf", L("ليس من كلامه ﷺ", "Not the Prophet's words")];
+    case "disputed": return ["khilaf", L("مختلف فيه", "Disputed")];
+    case "needs_review": return ["vdaif", L("لفظ مشابه", "Similar wording")];
+    case "weak": return labels.some((x) => x.includes("very")) ? ["vdaif", L("ضعيف جدًا", "Very weak")] : ["daif", L("ضعيف", "Weak")];
+    case "fabricated": return ["mawdu", L("موضوع", "Fabricated")];
+    case "baseless": return ["mawdu", L("لا أصل له", "No basis")];
+    default: return ["none", L("لم نجد", "Not found"), true];
+  }
+}
+const chip = (v) => { const [k, l, dashed] = grade(v), s = STY[k]; return `<span class="chip${dashed ? " dashed" : ""}" style="--c-bg:${s[0]};--c-ink:${s[1]};--c-dot:${s[2]}">${esc(l)}</span>`; };
+const BOOK = { bukhari: ["البخاري", "Bukhari"], muslim: ["مسلم", "Muslim"], abudawud: ["أبو داود", "Abu Dawud"], tirmidhi: ["الترمذي", "Tirmidhi"], nasai: ["النسائي", "Nasa'i"], ibnmajah: ["ابن ماجه", "Ibn Majah"], malik: ["الموطأ", "Muwatta"], nawawi: ["النووية", "Nawawi"], qudsi: ["القدسية", "Qudsi"] };
+function by(v) {
+  if (v.quran) return esc(AR() ? dg(v.quran.citation_ar) : v.quran.citation_en);
+  if (v.registry) return esc((v.registry.sources || []).map((s) => (AR() ? s.ar : s.en).split("،")[0]).slice(0, 2).join(" · "));
+  const ev = v.evidence || [];
+  if (ev.length && v.status !== "needs_review") return esc(ev.slice(0, 2).map((e) => `${BOOK[e.book]?.[AR() ? 0 : 1] || e.book} ${dg(e.number)}`).join(" · "));
+  if (v.status === "needs_review") return esc(AR() ? "لفظ مشابه بنص آخر — يحتاج تحقق" : "Similar text with other wording — needs checking");
+  return esc(AR() ? "لا مصدر في القرآن والكتب التسعة" : "No source in the Quran or the 9 books");
+}
+const kind = (v) => v.kind === "quran" ? (AR() ? "آية" : "Verse") : v.kind === "none" ? (AR() ? "نص منسوب" : "Attributed") : (AR() ? "حديث" : "Hadith");
+
+async function verify(text) {
+  const r = await fetch("/api/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text, reply_lang: AR() ? "ar" : "en", use_llm: false }) });
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  return r.json();
+}
+const STORY_MSG = "قال رسول الله ﷺ: «إنما الأعمال بالنيات» وقال تعالى: «وقل ربي زدني علما». وقال ﷺ: «اطلبوا العلم ولو بالصين». ومن نشرها «فُتح له باب من الجنة»";
+const storyP = verify(STORY_MSG).catch(() => null);
+
+/* ---------- hero */
+$("#ask").addEventListener("submit", (e) => { e.preventDefault(); const q = $("#q").value.trim(); location.href = q ? "/app?q=" + encodeURIComponent(q) : "/app"; });
+if (!reduce) window.addEventListener("mousemove", (e) => {
+  const mx = e.clientX / innerWidth - .5, my = e.clientY / innerHeight - .5, st = $("#stageIn");
+  st.style.setProperty("--ry", `${-16 + mx * 18}deg`); st.style.setProperty("--rx", `${6 - my * 10}deg`);
+}, { passive: true });
+function heroFill(r) {
+  if (!r) return;
+  const vs = r.results, ok = vs.filter((v) => ["quran_exact", "authentic", "authentic_by_routes"].includes(v.status)).length;
+  $("#heroTitle").innerHTML = AR() ? `${dg(vs.length)} نصوص، <span style="background:var(--g-sahih-bg);border-radius:8px;padding:0 6px">${ok === 1 ? "واحد فقط ثابت" : dg(ok) + " ثابتة"}</span>` : `${vs.length} quotes, <span style="background:var(--g-sahih-bg);border-radius:8px;padding:0 6px">${ok} established</span>`;
+  $("#heroBar").innerHTML = vs.map((v) => `<i style="background:${STY[grade(v)[0]][3]}"></i>`).join("");
+  $("#heroCards").innerHTML = vs.map((v) => `<div class="mini-card">${chip(v)}<div class="q">«${esc(v.quote)}»</div><div class="by">${by(v)}</div></div>`).join("");
+}
+storyP.then((r) => { heroFill(r); storyCards(r); rerender.push(() => { heroFill(r); storyCards(r); }); });
+
+/* ---------- scroll helpers */
+const clamp = (v) => Math.max(0, Math.min(1, v));
+const sticky = (el) => { const b = el.getBoundingClientRect(); return clamp(-b.top / Math.max(1, b.height - innerHeight)); };
+const pass = (el) => { const b = el.getBoundingClientRect(); return clamp((innerHeight - b.top) / (innerHeight + b.height)); };
+const wide = () => innerWidth > 1000;
+
+/* ---------- story */
+let storyData = null;
+const POS = [[150, -110], [-150, -110], [150, 110], [-150, 110]];
+function storyCards(r) {
+  storyData = r;
+  if (!r) return;
+  $("#storyCards").innerHTML = r.results.slice(0, 4).map((v) => `<div class="scard"><span class="kind">${esc(kind(v))}</span>${chip(v)}<div class="q">«${esc(v.quote)}»</div><div class="by">${by(v)}</div></div>`).join("");
+  onScroll();
+}
+function story() {
+  const sec = $("#how"); if (!sec) return;
+  const p = wide() ? sticky(sec) : 1;
+  const step = p < .3 ? 0 : p < .62 ? 1 : 2;
+  document.querySelectorAll(".cap").forEach((c, i) => c.classList.toggle("on", !wide() || i === step));
+  document.querySelectorAll("#capdots i").forEach((d, i) => d.classList.toggle("on", i === step));
+  const hl = clamp(p / .25);
+  $("#storyMsg").style.setProperty("--hlw", `${hl * 100}%`);
+  const k = clamp((p - .3) / .3);
+  $("#scene").style.setProperty("--k", wide() ? k : 1);
+  document.querySelectorAll(".scard").forEach((c, i) => {
+    const rise = wide() ? clamp((p - .32 - i * .05) / .25) : 1;
+    if (innerWidth < 620) { c.style.opacity = ""; c.style.transform = ""; return; }
+    const sc = 1;
+    const [x, y] = POS[i] || [0, 0];
+    c.style.opacity = rise;
+    c.style.transform = `translate(-50%,-50%) translate(${x * rise * sc}px, ${(y * rise + 40 * (1 - rise)) * sc}px) scale(${(.7 + .3 * rise) * sc})`;
+  });
+}
+
+/* ---------- live tool */
+let toolResult = null;
+async function runTool() {
+  const text = $("#tq").value.trim(); if (text.length < 2) return;
+  const box = $("#tres"); box.innerHTML = `<div class="res-item">…</div>`;
+  try {
+    toolResult = await verify(text); drawTool();
+  } catch { box.innerHTML = `<div class="res-item">${AR() ? "تعذر التحقق الآن، أعد المحاولة." : "The check failed; please retry."}</div>`; }
+}
+function drawTool() {
+  const r = toolResult; if (!r) return;
+  const box = $("#tres");
+  const scope = r.scope ? `<div class="res-item"><b>${esc(AR() ? r.scope.level : r.scope.level_latin)} · </b>${esc(AR() ? r.scope.message_ar : r.scope.message_en)}</div>` : "";
+  box.innerHTML = `<b>${AR() ? `وجدنا ${dg(r.results.length)} نصوص` : `We found ${r.results.length} quote(s)`}</b>` + scope +
+    r.results.map((v) => `<div class="res-item"><span class="lv" title="${esc(AR() ? v.level_ar : v.level_en)}">${esc(AR() ? v.level : v.level_latin)}</span>${chip(v)}<div class="q">«${esc(v.quote)}»</div><div class="by">${by(v)}</div></div>`).join("") +
+    `<p style="font-size:12px;color:var(--muted);margin:0">${esc(AR() ? r.transparency_ar : r.transparency_en)}</p>`;
+  $("#tact").hidden = false;
+  $("#twa").href = "https://wa.me/?text=" + encodeURIComponent(r.reply || "");
+}
+$("#tgo").onclick = runTool;
+$("#tlink").onclick = async () => { const u = location.origin + "/app?q=" + encodeURIComponent($("#tq").value.trim()); try { await navigator.clipboard.writeText(u); $("#tlink").textContent = AR() ? "نُسخ ✓" : "Copied ✓"; } catch { prompt("", u); } };
+$("#toolUrl").textContent = location.host + "/app";
+rerender.push(drawTool);
+
+/* ---------- quran tiles (from the live engine) */
+let tiles = [];
+verify("قال تعالى: وقل ربي زدني علما").then((r) => {
+  const v = r.results.find((x) => x.quran); if (!v) return;
+  const ops = v.quran.diff;
+  ops.forEach((o) => {
+    if (o.op === "equal" || o.op === "minor") (o.text || o.correct).split(/\s+/).forEach((w) => tiles.push({ m: w.replace(/[ً-ْٰۖ-ۭ]/g, ""), k: w, bad: false }));
+    if (o.op === "wrong") tiles.push({ m: o.quoted, k: o.correct, bad: true });
+  });
+  drawTiles(v);
+  rerender.push(() => drawTiles(v));
+}).catch(() => {});
+function drawTiles(v) {
+  $("#tiles").innerHTML = tiles.map((t) => `<div class="tile${t.bad ? " bad" : ""}"><div class="front"><span class="lbl">${AR() ? "في الرسالة" : "In the message"}</span><span class="w">${esc(t.m)}</span></div><div class="back"><span class="lbl">${t.bad ? (AR() ? "مختلفة" : "different") : (AR() ? "مطابقة" : "matches")}</span><span class="w">${esc(t.k)}</span></div></div>`).join("");
+  const bad = tiles.find((t) => t.bad);
+  $("#qcap").textContent = bad ? (AR() ? `كلمة واحدة مختلفة: «${bad.m}» والصواب ﴿${bad.k}﴾ — ${dg(v.quran.citation_ar)}` : `One word differs: "${bad.m}" — the Mushaf has ﴿${bad.k}﴾ — ${v.quran.citation_en}`) : "";
+  onScroll();
+}
+function quran() {
+  const sec = $("#quran"); if (!sec) return;
+  const q = wide() ? sticky(sec) : pass(sec) * 1.6;
+  document.querySelectorAll(".tile").forEach((t, i) => t.classList.toggle("flip", q > .12 + i * .14));
+  $("#qcap").classList.toggle("on", q > .12 + tiles.length * .14);
+}
+
+/* ---------- grades ring */
+const RING = () => AR() ? [
+  ["sahih", "صحيح", "ثابت بإسناد متصل، ونذكر من صحّحه.", "«إنما الأعمال بالنيات» — البخاري ١ ومسلم ١٩٠٧"],
+  ["hasan", "حسن", "مقبول دون الصحيح.", "نذكر من حسّنه باسمه دائمًا"],
+  ["daif", "ضعيف", "في إسناده علّة.", "نذكر من ضعّفه وحكمه بنصه"],
+  ["vdaif", "ضعيف جدًا", "علّة شديدة.", "يُنقل حكم المحقق كما هو"],
+  ["mawdu", "موضوع", "مكذوب أو باطل.", "«اطلبوا العلم ولو بالصين» — حكم عليه الألباني بأنه باطل"],
+  ["none", "لم نجد", "نقولها بصراحة.", "لا نخمّن ولا نلفّق مصدرًا"],
+] : [
+  ["sahih", "Sahih", "Established with a connected chain; we name who graded it.", "“Actions are by intentions” — Bukhari 1, Muslim 1907"],
+  ["hasan", "Hasan", "Acceptable, below sahih.", "We always name who graded it hasan"],
+  ["daif", "Weak", "A defect in the chain.", "We name who graded it weak, word for word"],
+  ["vdaif", "Very weak", "A severe defect.", "The grader's verdict, as published"],
+  ["mawdu", "Fabricated", "Forged or baseless.", "“Seek knowledge even in China” — al-Albani: baseless"],
+  ["none", "Not found", "We say so plainly.", "We never guess or invent a source"],
+];
+function drawRing() {
+  $("#carousel").innerHTML = RING().map(([k, n, d, ex], i) => `<div class="gcard" data-i="${i}"><span class="chip${k === "none" ? " dashed" : ""}" style="--c-bg:${STY[k][0]};--c-ink:${STY[k][1]};--c-dot:${STY[k][2]}">${esc(n)}</span><span class="nm">${esc(n)}</span><p>${esc(d)}</p><div class="ex">${esc(ex)}</div></div>`).join("");
+  ring();
+}
+function ring() {
+  const sec = $("#grades"); if (!sec) return;
+  const p = wide() ? sticky(sec) : pass(sec);
+  const R = innerWidth < 620 ? 230 : 300, active = Math.round(p * 5);
+  $("#carousel").style.transform = `translateZ(${-R}px) rotateY(${(AR() ? 1 : -1) * p * 300}deg)`;
+  document.querySelectorAll(".gcard").forEach((c, i) => { c.style.transform = `rotateY(${(AR() ? -1 : 1) * i * 60}deg) translateZ(${R}px) scale(${i === active ? 1.06 : .92})`; });
+}
+rerender.push(drawRing);
+
+/* ---------- bubble mock + widgets + bot (live) */
+let bubbleDone = false;
+function bubble() {
+  const m = $("#bubbleMock"); if (!m || bubbleDone) return;
+  if (pass(m) > .45) {
+    bubbleDone = true;
+    $("#bfb").style.top = "250px";
+    verify("قال ﷺ: «من قال سبحان الله وبحمده في يوم مئة مرة حطت خطاياه»").then((r) => {
+      const v = r.results[0]; if (!v) return;
+      $("#bres").innerHTML = `${chip(v)}<div class="sacred" style="font-size:16px;margin:6px 0 2px">«${esc(v.quote)}»</div><div style="font-size:12px;color:var(--muted)">${by(v)}</div>`;
+      setTimeout(() => $("#bpnl").classList.add("on"), 500);
+    }).catch(() => {});
+  }
+}
+fetch("/api/daily").then((r) => r.json()).then((d) => {
+  const draw = () => { $("#dtext").textContent = "«" + d.text + "»"; $("#dcite").textContent = AR() ? dg(d.citation_ar) : d.citation_en; $("#dchip").innerHTML = chip({ status: "authentic", evidence: [d] }); };
+  draw(); rerender.push(draw);
+}).catch(() => {});
+verify("«اطلبوا العلم ولو بالصين»").then((r) => {
+  const draw = () => { const v = r.results[0]; $("#botReply").innerHTML = v ? `${chip(v)} ${esc(clip(AR() ? v.explanation_ar : v.explanation_en, 160))}` : ""; };
+  draw(); rerender.push(draw);
+}).catch(() => {});
+
+/* ---------- CTA layered mark */
+(function stack() {
+  const s = $("#stack");
+  s.innerHTML = Array.from({ length: 9 }, (_, i) => `<span style="transform:translateZ(${-(9 - i) * 3}px)"></span>`).join("") + `<img src="/assets/brand/mark.svg" alt="">`;
+})();
+function cta() {
+  const c = $("#cta"); if (!c) return; const p = pass(c);
+  $("#stack").style.setProperty("--sy", `${(p - .5) * 120}deg`); $("#stack").style.setProperty("--sx", `${(.5 - p) * 36}deg`);
+}
+
+/* ---------- loop */
+let raf = 0;
+function onScroll() { if (raf) return; raf = requestAnimationFrame(() => { raf = 0; story(); quran(); ring(); bubble(); cta(); }); }
+addEventListener("scroll", onScroll, { passive: true });
+addEventListener("resize", onScroll);
+drawRing();
+applyLang();
+onScroll();

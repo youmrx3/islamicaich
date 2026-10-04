@@ -1,0 +1,30 @@
+{
+  "name": "ثَبَت — تحقّق قبل أن تنشر",
+  "short_name": "ثَبَت",
+  "description": "تحقّق من الآيات والأحاديث في الرسائل المتداولة قبل نشرها: المصدر وحكم المحققين، وامتناع صريح حين لا يوجد مصدر.",
+  "id": "/app",
+  "start_url": "/app?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "dir": "rtl",
+  "lang": "ar",
+  "background_color": "#FFF7EC",
+  "theme_color": "#FFF7EC",
+  "categories": ["education", "books", "utilities"],
+  "icons": [
+    { "src": "/assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "share_target": {
+    "action": "/app",
+    "method": "GET",
+    "params": { "title": "title", "text": "q", "url": "url" }
+  },
+  "shortcuts": [
+    { "name": "تحقّق من رسالة", "url": "/app#/", "icons": [{ "src": "/assets/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "ابحث عن دليل", "url": "/app#/search", "icons": [{ "src": "/assets/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "السجل", "url": "/app#/history", "icons": [{ "src": "/assets/icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

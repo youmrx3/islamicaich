@@ -160,9 +160,12 @@ def segment(text: str) -> list[Segment]:
             if stripped == t or len(stripped.split()) < 2:
                 break
             t = stripped
+        # Drop only the forwarding-pressure clause ("انشرها تؤجر"), keep the claim itself.
+        if _FORWARD_PRESSURE.search(t):
+            t = "، ".join(c for c in re.split(r"[،,.!؟?]+", t) if c.strip() and not _FORWARD_PRESSURE.search(c))
         t = _clean(t)
         key = normalize_ar(t) if is_arabic(t) else normalize_latin(t)
-        if len(key.split()) < 2 or key in seen or _FORWARD_PRESSURE.search(t):
+        if len(key.split()) < 2 or key in seen:
             return
         if any(key in s for s in seen):  # already covered by a longer segment
             return
@@ -173,14 +176,17 @@ def segment(text: str) -> list[Segment]:
     for line in _SPLIT_RE.split(text):
         if not line.strip():
             continue
-        hint = _hint(line)
-        quoted = _QUOTE_RE.findall(line)
-        if quoted:
+        matches = list(_QUOTE_RE.finditer(line))
+        if matches:
             any_quoted = True
-            for q in quoted:
-                add(q, hint)
+            prev = 0
+            for m in matches:
+                # The attribution is whatever introduces this quote, not the whole line:
+                # «قال ﷺ: "…" وقال تعالى: "…"» holds a hadith and a verse.
+                add(m.group(1), _hint(line[prev:m.start()]))
+                prev = m.end()
         else:
-            add(line, hint)
+            add(line, _hint(line))
     # A short message is often a single quote split by punctuation; also try it whole.
     whole = _clean(text)
     if len(segs) > 1 and not any_quoted and len(whole.split()) <= 40:
@@ -294,7 +300,12 @@ def _from_registry(c: Corpus, seg: Segment, lang: str, entry: dict, score: float
         via=seg.via,
     )
     v.alternatives = [a for a in (_alternative(c, x, lang) for x in entry.get("alternatives", [])) if a]
-    if entry.get("review", {}).get("status") != "approved":
+    from . import flags as _store
+    decision = _store.decisions().get(entry["id"])
+    if decision and decision.get("decision") == "approved":
+        v.registry["review"] = {"status": "approved", "reviewer": decision["reviewer"], "at": decision.get("created_at")}
+        v.notes.append("registry_reviewed")
+    else:
         v.notes.append("registry_pending_review")
     return v
 

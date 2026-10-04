@@ -23,7 +23,7 @@ The challenge terms (§8 and FAQ Q2) allow building on earlier work if the start
 
 ### Rights
 
-All code in the starting version was written by the team (with an AI coding assistant, disclosed in SOURCES.md). Third-party data and libraries, with their licences, are listed in SOURCES.md. There are no employer, university or client claims on it.
+All code in the starting version was written by the participant, Youcef Kouadria, with an AI coding assistant (disclosed in AI_USAGE.md). Third-party data and libraries, with their licences, are listed in SOURCES.md. There are no employer, university or client claims on it.
 
 ## Planned challenge-days work (4–6 October 2026)
 
@@ -40,3 +40,5 @@ This is the part to be judged. Each item has a measurable definition of done.
 | 7 | **Shareable verdict card image** (PNG) for replying in groups | Card renders for every status in ar/en |
 
 The submission will list exactly which commits fall between `baseline-pre-challenge` and the final tag.
+
+> **Progress against this plan** is recorded day by day in [CHALLENGE_LOG.md](../CHALLENGE_LOG.md). On day 1 the plan was adjusted: the participant delivered a full brand identity and new website/app designs, so the redesigned website, the installable mobile app (PWA) with the `/mobile` simulator, Supabase storage and the review workflow (item 1) and verdict card (item 7) were prioritised. The Telegram bot (item 5) moved to *coming soon*.

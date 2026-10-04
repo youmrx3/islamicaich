@@ -135,3 +135,67 @@ def test_api_smoke():
     assert r.status_code == 200 and r.json()["results"][0]["status"] == "quran_variant"
     assert "Al-Anfal" in r.json()["reply"]
     assert c.get("/api/search", params={"q": "honesty"}).status_code == 200
+
+
+@pytest.fixture()
+def client(tmp_path, monkeypatch):
+    """API client whose report/decision store is an isolated temp folder (never Supabase)."""
+    from fastapi.testclient import TestClient
+    from app import flags
+    from app.main import app
+    for k in ("SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY", "SUPABASE_ANON_KEY"):
+        monkeypatch.delenv(k, raising=False)
+    monkeypatch.setattr(flags, "_file", lambda name: tmp_path / f"{name}.jsonl")
+    flags._cache.clear()
+    yield TestClient(app)
+    flags._cache.clear()
+
+
+def test_daily_hadith_is_authentic_and_quoted_from_source(client):
+    from app.normalize import normalize_ar
+    seen = set()
+    for day in range(18):
+        d = client.get("/api/daily", params={"day": day}).json()
+        assert d["grade"]["status"] == "authentic"
+        rec = get_corpus().by_id[d["id"]]
+        assert normalize_ar(d["text"]) in normalize_ar(rec["ar"])  # shown from the record, never retyped
+        assert d["citation_ar"] and d["source_url"].startswith("http")
+        seen.add(d["id"])
+    assert len(seen) == 18  # every curated entry resolves to a real record
+
+
+def test_verse_results_carry_recitation_audio(client):
+    r = client.post("/api/verify", json={"text": "قال تعالى: «وقل ربي زدني علما»"}).json()
+    q = r["results"][0]["quran"]
+    assert r["results"][0]["status"] == "quran_variant"
+    assert q["audio"] and all(a.startswith("https://everyayah.com/") for a in q["audio"])
+    assert q["audio"][0].endswith("020114.mp3")
+
+
+def test_review_requires_token_and_records_named_decision(client, monkeypatch):
+    monkeypatch.setenv("REVIEW_TOKEN", "t0k")
+    body = {"entry_id": "R001", "decision": "approved", "reviewer": "Test Reviewer", "note": "ok"}
+    assert client.post("/api/review", json=body).status_code == 401
+    assert client.post("/api/review", json=body, headers={"x-review-token": "bad"}).status_code == 401
+    assert client.post("/api/review", json={**body, "entry_id": "R999"}, headers={"x-review-token": "t0k"}).status_code == 404
+    assert client.post("/api/review", json={**body, "decision": "maybe"}, headers={"x-review-token": "t0k"}).status_code == 422
+    assert client.post("/api/review", json=body, headers={"x-review-token": "t0k"}).status_code == 200
+    e = next(e for e in client.get("/api/registry").json()["entries"] if e["id"] == "R001")
+    assert e["review"]["status"] == "approved" and e["review"]["reviewer"] == "Test Reviewer"
+
+
+def test_flags_are_write_only_for_the_public(client, monkeypatch):
+    monkeypatch.setenv("REVIEW_TOKEN", "t0k")
+    ok = client.post("/api/flag", json={"kind": "request_review", "quote": "نص للاختبار", "status": "not_found"})
+    assert ok.status_code == 200
+    assert client.post("/api/flag", json={"kind": "spam", "quote": "x", "status": "x"}).status_code == 422
+    assert client.get("/api/flags").status_code == 401
+    got = client.get("/api/flags", headers={"x-review-token": "t0k"}).json()["flags"]
+    assert any(f["quote"] == "نص للاختبار" for f in got)
+
+
+def test_pressure_line_is_removed_but_claim_is_kept():
+    segs = segment("قال رسول الله ﷺ: «إنما الأعمال بالنيات» انشرها ولك الأجر، أمانة في رقبتك")
+    texts = [s.text for s in segs]
+    assert any("إنما الأعمال بالنيات" in t for t in texts)
+    assert not any("أمانة في رقبتك" in t for t in texts)
