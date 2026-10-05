@@ -41,6 +41,11 @@ a { color: inherit; }
 .app { max-width: 480px; min-height: 100dvh; margin: 0 auto; background: var(--sabah); position: relative; display: flex; flex-direction: column; }
 @media (min-width: 560px) { body:not(.embed) .app { min-height: calc(100dvh - 48px); margin: 24px auto; border-radius: 36px; box-shadow: 0 30px 80px -40px rgba(29,27,51,.45); overflow: hidden; } }
 body.embed { background: var(--sabah); }
+/* the app never scrolls sideways; inside the /mobile frame it also hides desktop scrollbars like a real phone */
+html, body { overflow-x: hidden; }
+.app { overflow-x: clip; }
+html:has(> body.embed) { scrollbar-width: none; }
+html:has(> body.embed)::-webkit-scrollbar { display: none; }
 .screen { flex: 1; display: flex; flex-direction: column; padding: 18px 20px calc(110px + var(--safe-b)); animation: in .28s ease-out both; }
 .screen.dark { background: var(--layl); color: var(--sabah); }
 .screen.nopad { padding-bottom: calc(24px + var(--safe-b)); }
@@ -86,8 +91,8 @@ body.embed { background: var(--sabah); }
 .ocr { font-size: 13px; color: var(--muted); margin-top: 6px; }
 
 /* ---- list rows */
-.rows { display: grid; gap: 10px; }
-.row { background: var(--white); border-radius: 22px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 0; width: 100%; text-align: start; }
+.rows { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.row { min-width: 0; background: var(--white); border-radius: 22px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 0; width: 100%; text-align: start; }
 .row .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .row .meta { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex: none; }
 .dots { display: flex; gap: 4px; }
