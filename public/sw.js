@@ -1,6 +1,6 @@
 /* Thabat service worker: offline app shell. API calls always go to the network
    (verdicts must come from the live sources, never from a stale cache). */
-const VERSION = "thabat-v1.5";
+const VERSION = "thabat-v1.6";
 const SHELL = ["/app", "/assets/app.css", "/assets/app.js", "/assets/icon.svg",
   "/assets/brand/mark.svg", "/assets/brand/mark-dark.svg", "/assets/icons/icon-192.png", "/manifest.webmanifest"];
 
@@ -16,6 +16,14 @@ self.addEventListener("fetch", (e) => {
   if (e.request.method !== "GET" || url.origin !== location.origin || url.pathname.startsWith("/api/")) return;
   if (e.request.mode === "navigate" && url.pathname === "/app") {
     e.respondWith(fetch(e.request).catch(() => caches.match("/app")));
+    return;
+  }
+  if (url.pathname.startsWith("/assets/") && /\.(css|js)$/.test(url.pathname)) {
+    // code and styles: always the latest deploy; the cached copy is only for offline use
+    e.respondWith(fetch(e.request).then((res) => {
+      if (res.ok) { const copy = res.clone(); caches.open(VERSION).then((c) => c.put(url.pathname, copy)); }
+      return res;
+    }).catch(() => caches.match(url.pathname)));
     return;
   }
   if (url.pathname.startsWith("/assets/")) {
