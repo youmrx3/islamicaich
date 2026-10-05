@@ -72,6 +72,11 @@ $("#ask").addEventListener("submit", (e) => { e.preventDefault(); const q = $("#
 /* Hero depth: the pose is a pure function of (mouse, scroll) — eased toward its target every
    frame — so leaving the hero and coming back always lands on the same, clean layout. */
 const stage = $("#stage");
+function fitStage() {  // below 1000px: scale the fixed-size device scene to the available width
+  const box = $("#stageBox"); if (!box) return;
+  box.style.setProperty("--k", innerWidth <= 1000 ? Math.min(1, box.clientWidth / 600).toFixed(4) : 1);
+}
+fitStage(); addEventListener("resize", fitStage);
 const pose = { mx: 0, my: 0, tx: 0, ty: 0, sp: 0, run: false };
 function heroScroll() {
   const b = $(".hero").getBoundingClientRect();

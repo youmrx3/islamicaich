@@ -82,6 +82,7 @@ a { color: inherit; }
 .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; font-size: 14px; }
 .tags span, .tags a { background: var(--raml); border-radius: 999px; padding: 4px 12px; text-decoration: none; }
 
+.stage-box { display: contents; }
 .stage { position: relative; height: min(600px, 72svh); min-height: 470px; --mx: 0; --my: 0; --sp: 0; --dir: 1; }
 [dir="ltr"] .stage { --dir: -1; }
 /* Each layer has its own perspective (no shared 3D space), so devices and chips can never
@@ -348,7 +349,9 @@ details p { color: var(--layl-soft); margin: 10px 0 0; }
   .hero-in, .story-in, .tool-in, .ring-pin, .split, .join-in { grid-template-columns: 1fr; }
   .hero-in > *, .story-in > *, .tool-in > *, .ring-pin > *, .split > * { min-width: 0; }
   html, body { overflow-x: clip; }
-  .stage { height: 520px; min-height: 0; }
+  /* below 1000px the device scene keeps its desktop composition (600×540) and is scaled to fit */
+  .stage-box { display: block; position: relative; height: calc(540px * var(--k, 1)); margin-top: 8px; }
+  .stage { position: absolute; top: 0; left: 50%; width: 600px; height: 540px; min-height: 0; transform: translateX(-50%) scale(var(--k, 1)); transform-origin: top center; }
   .hero { min-height: 0; padding-top: 40px; }
   .nav-links { display: none; }
   .ai-grid, .lvl-grid, .stats, .cards4, .soon { grid-template-columns: 1fr 1fr; }
@@ -365,15 +368,20 @@ details p { color: var(--layl-soft); margin: 10px 0 0; }
   .sec { padding: 80px 0; }
   .ai-grid, .lvl-grid, .stats, .cards4, .soon, .ai-truths, .wbox { grid-template-columns: 1fr; }
   .w.d { grid-column: auto; }
-  .stage { height: 380px; } .ly-laptop { width: 94%; top: 0; } .ly-phone { width: 150px; height: 300px; bottom: -10px; inset-inline-end: 4px; } .phone3d { border-radius: 28px; } .phone3d .scr { border-radius: 22px; padding: 24px 10px 10px; } .ph-t { font-size: 12px; } .ly-f1, .ly-f2, .ly-mark { display: none; } .ly-stat { bottom: -6%; inset-inline-start: 6%; } .duo { grid-template-columns: 1fr; }
-  .lcards .mini-card:nth-child(n+3) { display: none; }
-  .layer { transform: none; } .lbase { margin: 0 -2%; } .ph-lv { display: none; }
+  .duo { grid-template-columns: 1fr; }
   .scene { height: auto; perspective: none; display: grid; gap: 12px; }
   .scene .msg { position: relative; left: auto; top: auto; width: auto; transform: none; opacity: 1; }
   #storyCards { display: grid; gap: 10px; }
   .scard { position: relative; left: auto; top: auto; width: auto; opacity: 1; transform: none; }
   .notrag { grid-template-columns: 1fr; }
-  .join-card.main { grid-template-columns: 48px 1fr; } .join-card .go { grid-column: 1 / -1; text-align: center; }
+  .join-in { gap: 26px; }
+  .join h2 { text-wrap: balance; }
+  .join-card, .join-card.main { grid-template-columns: 44px minmax(0, 1fr); grid-template-areas: "ico title" "desc desc" "go go"; column-gap: 12px; row-gap: 10px; padding: 18px; border-radius: 24px; }
+  .join-card > span:not(.jn-ico):not(.go) { display: contents; }
+  .join-card .jn-ico { grid-area: ico; width: 44px; height: 44px; border-radius: 14px; }
+  .join-card b { grid-area: title; align-self: center; font-size: 17px; line-height: 1.4; margin: 0; text-wrap: balance; }
+  .join-card small { grid-area: desc; font-size: 14px; line-height: 1.75; }
+  .join-card .go { grid-area: go; text-align: center; padding: 12px 16px; font-size: 15px; }
   .nav-cta .btn { padding: 0 14px; }
 }
 @media (prefers-reduced-motion: reduce) { .layer { transform: none !important; } html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; animation: none !important; } }
