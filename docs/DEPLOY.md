@@ -17,11 +17,11 @@ The repository is ready for Vercel as is:
    | Variable | Effect |
    |---|---|
    | `ANTHROPIC_API_KEY` | turns on optional LLM quote extraction (default model `claude-opus-5-5`; override with `THABAT_MODEL`) |
-   | `REVIEW_TOKEN` | enables `/review` and `GET /api/flags` (reviewers type this token) |
+   | `REVIEW_TOKEN` | the **admin** password for `/review`: approve or revoke reviewer accounts, read reports. Reviewers never use it; each gets a personal access code |
    | `SUPABASE_URL` (or `NEXT_PUBLIC_SUPABASE_URL`) | the Supabase project URL, e.g. `https://<project>.supabase.co` |
    | `SUPABASE_SERVICE_ROLE_KEY` | server-side key used by the API to store reports **and** reviewer decisions. Set it only as a Vercel environment variable; it is never sent to the browser and must never be committed. With only `SUPABASE_ANON_KEY`, reports are stored but review decisions are refused by row-level security. Without any key, data goes to the function's temporary `/tmp` and is lost on redeploy. |
    | `THABAT_RATE_PER_MIN` | requests per minute per client (default 40) |
-4. **Create the tables once:** Supabase dashboard → SQL Editor → paste and run [`supabase/schema.sql`](../supabase/schema.sql) (tables `reports` and `review_decisions`, with row-level security).
+4. **Create the tables once:** Supabase dashboard → SQL Editor → paste and run [`supabase/schema.sql`](../supabase/schema.sql) (tables `reports`, `review_decisions` and `reviewers`, with row-level security). If the project was created before 5 October, run [`supabase/migrations/002_reviewers.sql`](../supabase/migrations/002_reviewers.sql) instead.
 5. **Deploy.** Check `https://<your-app>.vercel.app/api/health`: it should return `"ok": true` and `"hadith_records": 36064`.
 
 ### After deploying

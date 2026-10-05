@@ -199,3 +199,45 @@ def test_pressure_line_is_removed_but_claim_is_kept():
     texts = [s.text for s in segs]
     assert any("إنما الأعمال بالنيات" in t for t in texts)
     assert not any("أمانة في رقبتك" in t for t in texts)
+
+
+def test_reviewer_accounts_apply_approve_sign_revoke(client, monkeypatch):
+    monkeypatch.setenv("REVIEW_TOKEN", "admin-pass")
+    admin = {"x-review-token": "admin-pass"}
+    app_ = {"name": "د. مراجع تجريبي", "email": "rev@example.org", "title": "دكتوراه في الحديث وعلومه",
+            "affiliation": "جامعة تجريبية", "profile_url": "", "note": ""}
+    assert client.post("/api/reviewers/apply", json={**app_, "email": "not-an-email"}).status_code == 422
+    assert client.post("/api/reviewers/apply", json={**app_, "website": "spam"}).status_code == 422  # honeypot
+    assert client.post("/api/reviewers/apply", json=app_).status_code == 200
+
+    # only the admin sees and manages applications; the public never sees emails
+    assert client.get("/api/reviewers").status_code == 401
+    rows = client.get("/api/reviewers", headers=admin).json()["reviewers"]
+    acc = next(r for r in rows if r["email"] == "rev@example.org")
+    assert acc["status"] == "pending" and "token_hash" not in acc
+
+    # a pending applicant cannot sign in
+    code = client.post(f"/api/reviewers/{acc['id']}", json={"action": "approve"}, headers=admin).json()["code"]
+    assert code.startswith("THB-")
+    me = client.get("/api/me", headers={"x-review-token": code}).json()
+    assert me["role"] == "reviewer" and me["name"] == app_["name"]
+
+    # a reviewer cannot manage accounts, and decisions are signed with the verified name
+    assert client.get("/api/reviewers", headers={"x-review-token": code}).status_code == 403
+    r = client.post("/api/review", json={"entry_id": "R002", "decision": "approved", "reviewer": "Someone Else"},
+                    headers={"x-review-token": code})
+    assert r.status_code == 200 and r.json()["reviewer"] == app_["name"]
+    e = next(e for e in client.get("/api/registry").json()["entries"] if e["id"] == "R002")
+    assert e["review"]["reviewer"] == app_["name"]
+
+    # re-issuing a code disables the old one; revoking disables the account
+    code2 = client.post(f"/api/reviewers/{acc['id']}", json={"action": "approve"}, headers=admin).json()["code"]
+    assert client.get("/api/me", headers={"x-review-token": code}).status_code == 401
+    assert client.post(f"/api/reviewers/{acc['id']}", json={"action": "revoke"}, headers=admin).status_code == 200
+    assert client.get("/api/me", headers={"x-review-token": code2}).status_code == 401
+
+
+def test_admin_must_sign_decisions_with_a_name(client, monkeypatch):
+    monkeypatch.setenv("REVIEW_TOKEN", "admin-pass")
+    r = client.post("/api/review", json={"entry_id": "R001", "decision": "approved"}, headers={"x-review-token": "admin-pass"})
+    assert r.status_code == 422

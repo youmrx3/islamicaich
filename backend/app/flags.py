@@ -1,4 +1,4 @@
-"""Storage for user reports and specialist review decisions.
+"""Storage for user reports, specialist review decisions and reviewer accounts.
 
 Production uses Supabase (PostgREST). Tables are defined in supabase/schema.sql.
   SUPABASE_URL (or NEXT_PUBLIC_SUPABASE_URL)
@@ -72,6 +72,40 @@ def _select(table: str, n: int = 200) -> list[dict]:
     return rows[-n:][::-1]
 
 
+def _rows(table: str) -> list[dict]:
+    p = _file(table)
+    return [json.loads(l) for l in p.read_text(encoding="utf-8").splitlines() if l.strip()] if p.exists() else []
+
+
+def _query(table: str, filters: dict[str, str], n: int = 200) -> list[dict]:
+    """Rows whose columns equal the given values, newest first."""
+    sb = _supabase()
+    if sb:
+        url, key = sb
+        params = {"select": "*", "order": "created_at.desc", "limit": str(n)} | {k: f"eq.{v}" for k, v in filters.items()}
+        r = httpx.get(f"{url}/rest/v1/{table}", headers=_headers(key), params=params, timeout=8)
+        r.raise_for_status()
+        return r.json()
+    rows = [r for r in _rows(table) if all(str(r.get(k)) == str(v) for k, v in filters.items())]
+    return rows[-n:][::-1]
+
+
+def _update(table: str, row_id: str, fields: dict) -> None:
+    sb = _supabase()
+    if sb:
+        url, key = sb
+        r = httpx.patch(f"{url}/rest/v1/{table}", headers=_headers(key) | {"Prefer": "return=minimal"},
+                        params={"id": f"eq.{row_id}"}, json=fields, timeout=8)
+        r.raise_for_status()
+        return
+    with _lock:
+        rows = _rows(table)
+        for row in rows:
+            if row.get("id") == row_id:
+                row.update(fields)
+        _file(table).write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows), encoding="utf-8")
+
+
 # ---- reports ("report a problem", "request review", "I know the source")
 def add(rec: dict) -> None:
     _insert("reports", rec)
@@ -100,3 +134,27 @@ def decisions() -> dict[str, dict]:
         log.warning("could not load review decisions; showing registry as-is")
     _cache["decisions"] = (time.time(), latest)
     return latest
+
+
+# ---- reviewer accounts (apply -> admin approves -> personal access code)
+def add_reviewer(rec: dict) -> None:
+    _insert("reviewers", rec)
+
+
+def reviewers(n: int = 500) -> list[dict]:
+    return _select("reviewers", n)
+
+
+def reviewer_by_id(row_id: str) -> dict | None:
+    rows = _query("reviewers", {"id": row_id}, 1)
+    return rows[0] if rows else None
+
+
+def reviewer_by_token_hash(token_hash: str) -> dict | None:
+    """Only approved accounts can sign in; revoked or rejected ones cannot."""
+    rows = _query("reviewers", {"token_hash": token_hash, "status": "approved"}, 1)
+    return rows[0] if rows else None
+
+
+def update_reviewer(row_id: str, fields: dict) -> None:
+    _update("reviewers", row_id, fields)

@@ -53,8 +53,9 @@ Maps to the rubric items "Reliability plan" (acceptance, 20%) and "Reliability a
 
 ## 5. Human review
 
-- **Register:** entries stay `draft` (with a visible badge) until a named hadith specialist approves them; decisions are logged (who, when, what, why).
-- **User reports:** any result can be reported; reports go to the token-protected review queue (`/review`), stored in Redis in production.
+- **Reviewers are verified:** specialists apply at `/join`, the admin checks their qualification before approving, and each receives a personal access code (stored only as a hash; revocable). There is no shared password for reviewers.
+- **Register:** entries stay `draft` (with a visible badge) until an approved hadith specialist approves them; every decision is signed with the reviewer's verified name and logged (who, when, what, note).
+- **User reports:** any result can be reported; reports go to the token-protected review queue (`/review`), stored in Supabase in production.
 
 ## 6. Expected errors and handling
 

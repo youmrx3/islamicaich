@@ -74,7 +74,21 @@ git log --oneline baseline-pre-challenge..HEAD
 ---
 
 ## Day 2 · Monday 5 October
-*(to be filled)*
+
+### Live deployment
+- Supabase database connected and the site deployed on Vercel with its environment variables; reports and review decisions verified end to end in production.
+
+### Verified reviewer accounts
+- **Problem:** with one shared password, anyone holding it could type any name, so a decision could not be proven to come from a real specialist.
+- **Now:**
+  - a specialist applies at **`/join`** (name, email, qualification, affiliation, profile link);
+  - the admin verifies and **approves** them on `/review`;
+  - the server issues a **personal access code** (shown once, stored only as a SHA-256 hash);
+  - the reviewer signs in with it and every decision is **signed with their verified name** (`reviewer_id` is linked to the account);
+  - the admin can re-issue a code or **revoke** an account at any time.
+- `/review` is now a sign-in screen: nothing is shown until the server accepts the code. Reviewers see the register and reports; only the admin sees reviewer applications and emails.
+- Database: new `reviewers` table, readable only by the server (row-level security, no public policies), in `supabase/migrations/002_reviewers.sql`. The privacy policy explains what reviewers' data is used for.
+- Tests: 23 → **25** (apply, approve, sign in, decision signed with the verified name, re-issued code disables the old one, revoke, the honeypot, the admin must sign with a name).
 
 ## Day 3 · Tuesday 6 October
 *(to be filled)*

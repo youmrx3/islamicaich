@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ثَبَت — انضم كمراجع</title>
+  <meta name="description" content="طلب الانضمام إلى فريق المراجعين المختصين في ثَبَت.">
+  <link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/site.css">
+  <style>
+    .jn { padding: 40px 0 90px; display: grid; grid-template-columns: 1fr 1.1fr; gap: 40px; align-items: start; }
+    .jn h1 { margin: 10px 0 12px; font-size: clamp(34px, 4.4vw, 54px); line-height: 1.15; }
+    .steps { display: grid; gap: 12px; margin-top: 22px; }
+    .steps > div { display: grid; grid-template-columns: 40px 1fr; gap: 12px; align-items: start; }
+    .steps .n { width: 40px; height: 40px; border-radius: 12px; background: var(--layl); color: var(--nur); display: grid; place-items: center; font-weight: 700; }
+    .steps b { display: block; }
+    .steps p { margin: 2px 0 0; color: var(--layl-soft); font-size: 15px; }
+    .card { background: var(--white); border-radius: 28px; padding: 26px 24px; box-shadow: 0 30px 60px -40px rgba(29,27,51,.45); display: grid; gap: 12px; }
+    .card label { font-size: 14px; font-weight: 600; display: grid; gap: 6px; }
+    .card label small { font-weight: 400; color: var(--muted); }
+    .card input, .card textarea { border: 1px solid var(--raml-2); background: var(--sabah); border-radius: 16px; padding: 12px 14px; font: inherit; font-weight: 400; }
+    .card textarea { min-height: 90px; resize: vertical; }
+    .card .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .card .fine { font-size: 13px; color: var(--muted); margin: 0; }
+    .card .err { color: var(--g-mawdu-ink); font-size: 14px; margin: 0; min-height: 18px; }
+    .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+    .done { text-align: center; padding: 30px 10px; }
+    .done .ok { width: 64px; height: 64px; border-radius: 50%; background: var(--g-sahih-bg); color: var(--g-sahih-ink); display: grid; place-items: center; margin: 0 auto 12px; font-size: 30px; }
+    [hidden] { display: none !important; }
+    @media (max-width: 860px) { .jn { grid-template-columns: 1fr; } .card .row2 { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="nav"><div class="wrap nav-in"><a class="logo" href="/"><img src="/assets/brand/mark-dark.svg" alt=""><span>ثَبَت</span></a><a class="btn dark small" href="/review">دخول المراجعين</a></div></header>
+  <main class="wrap jn">
+    <div>
+      <span class="kicker">المراجعة البشرية</span>
+      <h1>انضم إلى مراجعي ثَبَت.</h1>
+      <p class="lede">لا يُعتمد أي مدخل في سجل العبارات المشتهرة إلا بقرار مختص مسمّى. إن كنت مختصًا في الحديث وعلومه أو في الدراسات الشرعية، يسعدنا انضمامك.</p>
+      <div class="steps">
+        <div><span class="n">١</span><div><b>أرسل الطلب</b><p>اسمك وتخصصك وجهتك ورابط يعرّف بك.</p></div></div>
+        <div><span class="n">٢</span><div><b>نتحقق منه</b><p>تراجع إدارة المشروع الطلب، وقد نتواصل معك بالبريد.</p></div></div>
+        <div><span class="n">٣</span><div><b>تستلم رمزك الشخصي</b><p>بعد القبول يصلك رمز دخول خاص بك على البريد، فتدخل صفحة المراجعة.</p></div></div>
+        <div><span class="n">٤</span><div><b>تعتمد باسمك</b><p>كل قرار (اعتماد، تعديل، رفض) يُحفظ باسمك ووقته، ويظهر للمستخدمين بجانب الحكم.</p></div></div>
+      </div>
+    </div>
+
+    <form class="card" id="f" novalidate>
+      <div class="row2">
+        <label>الاسم الكامل<input name="name" required minlength="2" maxlength="120" autocomplete="name"></label>
+        <label>البريد الإلكتروني<input name="email" type="email" required maxlength="200" autocomplete="email" dir="ltr"></label>
+      </div>
+      <label>التخصص والمؤهل <small>مثال: دكتوراه في الحديث وعلومه</small><input name="title" required minlength="2" maxlength="200"></label>
+      <label>الجهة <small>(اختياري) جامعة، مركز، جهة دعوية…</small><input name="affiliation" maxlength="200"></label>
+      <label>رابط تعريفي <small>(اختياري) صفحة الجامعة، سيرة ذاتية، حساب مهني</small><input name="profile_url" type="url" maxlength="300" dir="ltr" placeholder="https://"></label>
+      <label>ملاحظة <small>(اختياري)</small><textarea name="note" maxlength="1000"></textarea></label>
+      <div class="hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+      <p class="fine">نستخدم هذه البيانات للتحقق من الطلب والتواصل معك فقط. يظهر للعامة اسمك بجانب القرارات التي تعتمدها، ولا يظهر بريدك. التفاصيل في <a href="/privacy">سياسة الخصوصية</a>.</p>
+      <p class="err" id="err" role="alert"></p>
+      <button class="btn dark" id="go">أرسل الطلب</button>
+    </form>
+
+    <div class="card done" id="done" hidden>
+      <div class="ok">✓</div>
+      <h2 style="margin:0 0 6px">وصل طلبك، جزاك الله خيرًا.</h2>
+      <p class="lede" style="margin:0 auto;max-width:420px">سنراجع الطلب ونتواصل معك على بريدك. عند القبول يصلك رمز دخول شخصي لصفحة المراجعة.</p>
+      <p style="margin-top:16px"><a class="btn white small" href="/">العودة إلى الموقع</a></p>
+    </div>
+  </main>
+  <script>
+    const f = document.getElementById("f"), err = document.getElementById("err"), go = document.getElementById("go");
+    f.onsubmit = async (e) => {
+      e.preventDefault(); err.textContent = "";
+      const d = Object.fromEntries(new FormData(f).entries());
+      for (const k in d) d[k] = String(d[k]).trim();
+      if (d.name.length < 2) return (err.textContent = "اكتب اسمك الكامل.");
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(d.email)) return (err.textContent = "اكتب بريدًا إلكترونيًا صحيحًا.");
+      if (d.title.length < 2) return (err.textContent = "اكتب تخصصك ومؤهلك.");
+      if (d.profile_url && !/^https?:\/\//.test(d.profile_url)) return (err.textContent = "الرابط يجب أن يبدأ بـ https://");
+      go.disabled = true; go.textContent = "يُرسل…";
+      try {
+        const r = await fetch("/api/reviewers/apply", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(d) });
+        if (!r.ok) throw new Error((await r.json().catch(() => ({}))).detail || r.status);
+        f.hidden = true; document.getElementById("done").hidden = false; scrollTo({ top: 0, behavior: "smooth" });
+      } catch (x) {
+        err.textContent = "تعذر إرسال الطلب الآن. حاول مرة أخرى بعد قليل.";
+        go.disabled = false; go.textContent = "أرسل الطلب";
+      }
+    };
+  </script>
+</body>
+</html>

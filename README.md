@@ -92,7 +92,7 @@ These cases were written during development, so the figures are optimistic. A he
 ## Why it can be trusted
 
 - **The sources decide, never the AI.** Quran text (Tanzil) and hadith text and gradings are shown verbatim. Sacred text is never typed by hand or generated.
-- **Human review.** Popular sayings in the register stay *draft* until a named specialist approves them on `/review`. Every decision is logged with the reviewer's name and time.
+- **Human review with verified reviewers.** Specialists apply at `/join`; the admin verifies and approves them, and each gets a personal access code (only its hash is stored). Popular sayings in the register stay *draft* until an approved specialist signs them on `/review`. Every decision is logged with the reviewer's verified name and time, and accounts can be revoked.
 - **Conflicts are shown, not hidden:** scholars who disagree; a phrase graded differently from its full narration; a Companion's words attributed to the Prophet ﷺ; a verse quoted as a hadith.
 - **Private by design:** messages are not stored; screenshots never leave the device; history stays on the phone. See the [privacy policy](public/privacy.html).
 
@@ -108,13 +108,13 @@ python -m uvicorn index:app --port 8000
 | `http://localhost:8000/` | website |
 | `/app` | the app (PWA) · demos: `/app?ex=0` … `/app?ex=5` · search: `/app?mode=search` |
 | `/mobile` | the app in a phone frame + QR code |
-| `/review` | specialist review page |
+| `/join` · `/review` | apply as a reviewer · reviewer and admin sign-in |
 | `/api/docs` | API (`/api/verify`, `/api/search`, `/api/daily`, `/api/reply`, `/api/flag`, `/api/review`…) |
 
 The compiled corpus is committed in `data/dist/`, so nothing needs to be downloaded. To rebuild it from the original sources: `python scripts/build_data.py && python scripts/build_index.py`.
 
 ```bash
-cd backend && python -m pytest tests -q && cd ..   # 23 tests
+cd backend && python -m pytest tests -q && cd ..   # 25 tests
 python eval/run_eval.py                             # evaluation report
 ```
 
@@ -124,9 +124,9 @@ Import the repository in Vercel (FastAPI is detected; no build step). Then set:
 
 | Variable | Purpose |
 |---|---|
-| `SUPABASE_URL` | Supabase project URL. Run [`supabase/schema.sql`](supabase/schema.sql) once in the SQL editor |
+| `SUPABASE_URL` | Supabase project URL. Run [`supabase/schema.sql`](supabase/schema.sql) once in the SQL editor (existing projects: `supabase/migrations/002_reviewers.sql`) |
 | `SUPABASE_SERVICE_ROLE_KEY` | Server-side key for storing reports and review decisions (never committed or sent to the browser) |
-| `REVIEW_TOKEN` | Enables `/review` and the report queue |
+| `REVIEW_TOKEN` | Admin password for `/review` (approves reviewer accounts, reads reports) |
 | `ANTHROPIC_API_KEY` | *Optional* LLM quote extraction |
 
 Full guide: [docs/DEPLOY.md](docs/DEPLOY.md).
@@ -137,12 +137,12 @@ Full guide: [docs/DEPLOY.md](docs/DEPLOY.md).
 index.py              ASGI entry point (Vercel) → backend.app.main:app
 backend/app/          normalize · corpus · matching · grades · verify · scope · search · replies · llm · flags · main
 backend/tests/        safety, annex and API tests
-public/               index.html (website) · app.html (PWA) · mobile.html · review.html · privacy.html
+public/               index.html (website) · app.html (PWA) · mobile.html · join.html · review.html · privacy.html
   assets/             site.* · app.* · brand/ · icons/
   manifest.webmanifest, sw.js
 data/dist/            compiled corpus (36,064 narrations + 6,236 verses)
 data/curated/         registry.json (popular sayings, under review) · daily.json (hadith of the day)
-supabase/schema.sql   reports + review decisions, row-level security
+supabase/             schema.sql + migrations/: reports, review decisions, reviewer accounts (RLS)
 eval/                 cases, runner, results
 docs/                 methodology · reliability · AI usage · sources · operations · baseline · deploy
 CHALLENGE_LOG.md      what was built during 4–6 October 2026
