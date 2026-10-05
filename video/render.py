@@ -16,7 +16,7 @@ import websocket
 part, seconds, out = sys.argv[1], float(sys.argv[2]), Path(sys.argv[3])
 FPS, W, H = 30, 1920, 1080
 CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
-page = (Path(__file__).parent / "film.html").resolve().as_uri() + f"?part={part}"
+page = (Path(__file__).parent / ("film60.html" if part == "film60" else "film.html")).resolve().as_uri() + f"?part={part}"
 
 port, prof = 9344, tempfile.mkdtemp()
 chrome = subprocess.Popen([CHROME, "--headless=new", f"--remote-debugging-port={port}", f"--user-data-dir={prof}",

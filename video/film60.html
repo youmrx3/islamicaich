@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Thabat — 60-second film</title>
+<!-- Rendered frame by frame by video/render.py (headless Chrome → MP4), music by video/score.py.
+     Every verdict, citation, grading, verse word and occurrence count is fetched live from the
+     Thabat API (http://localhost:8000). The only typed texts are the synthetic forwarded messages
+     the film checks, and the film's own captions. Scene clock (seconds, 120 BPM, 2 s per bar):
+     0 intro · 6 problem · 14 the tool · 24 verdicts · 32 honesty & similar verses · 40 the AI ·
+     48 everywhere & trust · 54 outro · 60 end. -->
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root { --layl: #1D1B33; --layl-2: #2C2948; --layl-soft: #4A4760; --muted: #6B6880; --nur: #2BD49A; --sabah: #FFF7EC; --raml: #F1E7D8; --raml-2: #EADFCF;
+    --khuzama: #CDBFFF; --mishmish: #FFC48A; --white: #fff;
+    --g-sahih: #22B07D; --g-sahih-bg: #D3F5E5; --g-sahih-ink: #0E6B48; --g-hasan: #3D8DE0; --g-hasan-bg: #D6EBFF; --g-hasan-ink: #1D5A94;
+    --g-daif: #F0B020; --g-daif-bg: #FFF0C7; --g-daif-ink: #8A5A00; --g-vdaif: #F07A2A; --g-vdaif-bg: #FFE0C9; --g-vdaif-ink: #9A4410;
+    --g-mawdu: #EB4858; --g-mawdu-bg: #FFD9DC; --g-mawdu-ink: #A3202E; --g-none: #9A96AA; --g-none-bg: #EDEAF2; --g-none-ink: #4E4A60;
+    --g-khilaf: #8E7BEA; --g-khilaf-bg: #E4DCFF; --g-khilaf-ink: #4B3B9A; --f-ui: "Alexandria", sans-serif; --f-text: "Amiri", serif; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--layl); color: var(--layl); font-family: var(--f-ui); }
+  .stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+  .lay { position: absolute; inset: 0; }
+  .abs { position: absolute; }
+  .c { left: 0; right: 0; text-align: center; }
+  .dark { color: var(--sabah); }
+
+  @keyframes in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes vis { from { opacity: 1; } to { opacity: 1; } }
+  .scene { opacity: 0; }
+  @keyframes out { from { opacity: 1; } to { opacity: 0; } }
+  @keyframes up { from { opacity: 0; transform: translateY(60px); } to { opacity: 1; transform: none; } }
+  @keyframes upBig { from { opacity: 0; transform: translateY(140px) scale(.92); } to { opacity: 1; transform: none; } }
+  @keyframes pop { 0% { opacity: 0; transform: scale(.4); } 65% { opacity: 1; transform: scale(1.08); } 100% { opacity: 1; transform: scale(1); } }
+  @keyframes slam { 0% { opacity: 0; transform: scale(2.4) rotate(-8deg); } 70% { opacity: 1; transform: scale(.94) rotate(-8deg); } 100% { opacity: 1; transform: scale(1) rotate(-8deg); } }
+  @keyframes fromL { from { opacity: 0; transform: translateX(-260px); } to { opacity: 1; transform: none; } }
+  @keyframes fromR { from { opacity: 0; transform: translateX(260px); } to { opacity: 1; transform: none; } }
+  @keyframes toL { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateX(-260px); } }
+  @keyframes flip { from { opacity: 0; transform: rotateY(90deg); } to { opacity: 1; transform: none; } }
+  @keyframes sweep { from { transform: translateX(-130%) skewX(-14deg); } to { transform: translateX(130%) skewX(-14deg); } }
+  @keyframes zoomOut { from { transform: scale(1.18); } to { transform: scale(1); } }
+  @keyframes drift { from { transform: translate(0, 0); } to { transform: translate(var(--dx), var(--dy)); } }
+  @keyframes hl { from { background-size: 0% 100%; } to { background-size: 100% 100%; } }
+  @keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes flash { 0% { opacity: 0; } 15% { opacity: .9; } 100% { opacity: 0; } }
+  @keyframes fly { from { opacity: 0; transform: translate(var(--fx), var(--fy)) rotate(var(--fr)) scale(.7); } to { opacity: 1; transform: rotate(var(--rr, 0deg)); } }
+  @keyframes tilt { from { transform: perspective(1800px) rotateX(24deg) rotateY(-14deg) translateY(160px); opacity: 0; } to { transform: perspective(1800px) rotateX(6deg) rotateY(-8deg); opacity: 1; } }
+  @keyframes scan { from { top: 0%; opacity: 1; } 90% { opacity: 1; } to { top: 100%; opacity: 0; } }
+  @keyframes bgShift { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
+
+  /* backgrounds */
+  .bg-dark { background: radial-gradient(1200px 700px at 70% 20%, #2C2948, var(--layl) 70%); }
+  .bg-light { background: var(--sabah); }
+  .blob { position: absolute; border-radius: 50%; filter: blur(70px); }
+  .grid { background-image: linear-gradient(rgba(255,247,236,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,247,236,.05) 1px, transparent 1px); background-size: 80px 80px; }
+  .dot { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: var(--nur); opacity: .55; }
+
+  /* transition panels */
+  .sw { position: absolute; top: -10%; height: 120%; width: 140%; left: -20%; z-index: 50; }
+  .sw.n { background: var(--nur); } .sw.k { background: var(--khuzama); } .sw.l { background: var(--layl); }
+
+  /* type */
+  .big { font-size: 140px; font-weight: 900; line-height: 1.12; letter-spacing: -.01em; }
+  .h { font-size: 92px; font-weight: 800; line-height: 1.18; }
+  .m { font-size: 52px; font-weight: 700; line-height: 1.35; }
+  .s { font-size: 34px; font-weight: 500; line-height: 1.5; }
+  .hl { background: var(--nur); color: var(--layl); border-radius: .25em; padding: 0 .22em; }
+  .hlr { background: var(--g-mawdu); color: #fff; border-radius: .25em; padding: 0 .22em; }
+  .w { display: inline-block; }
+
+  /* mark with real thickness */
+  .mk { position: relative; width: 300px; height: 300px; }
+  .mk .ly { position: absolute; inset: 0; border-radius: 26%; background: #15132a; }
+  .mk .tile { position: absolute; inset: 0; border-radius: 26%; background: var(--sabah); box-shadow: inset 0 2px 0 rgba(255,255,255,.6); }
+  .mk i { position: absolute; display: block; }
+  .mk .t1 { left: 30%; top: 25.5%; width: 50%; height: 9%; border-radius: 99px; background: var(--layl); }
+  .mk .t2 { left: 32%; top: 43%; width: 48%; height: 14%; border-radius: 99px; background: var(--nur); }
+  .mk .t3 { left: 14.35%; top: 44.35%; width: 11.3%; height: 11.3%; background: var(--nur); clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+  .mk .t4 { left: 50%; top: 65.5%; width: 30%; height: 9%; border-radius: 99px; background: var(--layl); }
+
+  /* bubbles */
+  .bub { position: absolute; background: var(--white); border-radius: 30px 30px 30px 8px; padding: 18px 24px; font-size: 26px; line-height: 1.7; box-shadow: 0 30px 60px -30px rgba(29,27,51,.45); max-width: 520px; }
+  .bub .fw { display: block; font-size: 17px; color: var(--muted); }
+  .bub.red { border: 3px solid var(--g-mawdu); }
+
+  /* chips & cards */
+  .chip { display: inline-flex; align-items: center; gap: 10px; border-radius: 999px; padding: 6px 20px; font-weight: 700; font-size: 26px; background: var(--c-bg); color: var(--c-ink); }
+  .chip::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--c-dot); }
+  .card { background: var(--white); border-radius: 40px; padding: 34px 38px; box-shadow: 0 40px 80px -50px rgba(29,27,51,.55); }
+  .sacred { font-family: var(--f-text); }
+  .card > .chip, .ph .chip { justify-self: start; align-self: start; }
+  .pill { display: inline-block; background: var(--raml); border-radius: 999px; padding: 8px 22px; font-size: 26px; font-weight: 600; }
+
+  /* laptop + phone */
+  .lap { width: 1180px; }
+  .lid { background: linear-gradient(160deg, #2C2948, var(--layl) 40%); border-radius: 30px 30px 14px 14px; padding: 18px; box-shadow: 0 80px 140px -60px rgba(29,27,51,.7), inset 0 1px 0 rgba(255,255,255,.12); position: relative; }
+  .scr { background: var(--raml); border-radius: 16px; height: 640px; overflow: hidden; display: flex; flex-direction: column; position: relative; }
+  .bar { display: flex; gap: 12px; align-items: center; background: var(--sabah); padding: 12px 18px; }
+  .bar i { width: 13px; height: 13px; border-radius: 50%; background: #D8CDBB; display: inline-block; }
+  .bar .u { flex: 1; text-align: center; background: var(--raml); border-radius: 999px; font-size: 18px; color: var(--muted); padding: 4px; direction: ltr; }
+  .body { flex: 1; display: grid; grid-template-columns: 1.15fr .85fr; gap: 14px; padding: 14px; min-height: 0; }
+  .pane { background: var(--white); border-radius: 20px; padding: 18px 20px; overflow: hidden; position: relative; }
+  .pane h4 { margin: 0 0 10px; font-size: 22px; }
+  .msgt { font-size: 22px; line-height: 2.1; color: var(--layl-soft); }
+  .mq { background: linear-gradient(var(--g-sahih-bg), var(--g-sahih-bg)) no-repeat right / 0% 100%; border-radius: 6px; padding: 0 3px; color: var(--layl); }
+  .beam { position: absolute; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, transparent, var(--nur), transparent); box-shadow: 0 0 24px var(--nur); }
+  .mini { background: var(--sabah); border-radius: 16px; padding: 10px 14px; margin-bottom: 9px; }
+  .mini .chip { font-size: 16px; padding: 2px 12px; } .mini .chip::before { width: 8px; height: 8px; }
+  .mini .q { font-family: var(--f-text); font-size: 22px; line-height: 1.6; }
+  .mini .by { font-size: 14px; color: var(--muted); }
+  .base { height: 26px; margin: 0 -7%; background: linear-gradient(#F3EADD, #E4D8C6 40%, #C9BBA6); border-radius: 3px 3px 26px 26px; }
+  .ph { width: 330px; height: 680px; background: var(--layl); border-radius: 54px; padding: 12px; box-shadow: 0 60px 100px -40px rgba(29,27,51,.65), inset 0 0 0 2px rgba(255,255,255,.1); }
+  .ph .in { width: 100%; height: 100%; background: var(--sabah); border-radius: 44px; padding: 54px 18px 18px; position: relative; display: grid; align-content: start; gap: 14px; }
+  .ph .isl { position: absolute; top: 14px; left: 50%; transform: translateX(-50%); width: 110px; height: 30px; border-radius: 20px; background: #0E0C1A; }
+
+  /* word tiles */
+  .tiles { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; perspective: 900px; }
+  .wt { background: var(--white); border-radius: 30px; padding: 20px 34px; display: grid; justify-items: center; min-width: 170px; }
+  .wt .k { font-family: var(--f-text); font-size: 74px; line-height: 1.45; }
+  .wt .x { font-size: 26px; color: var(--g-mawdu-ink); text-decoration: line-through; }
+  .wt.bad { background: var(--g-mawdu-bg); }
+
+  /* pipeline */
+  .pipe { display: flex; align-items: center; justify-content: center; gap: 0; }
+  .node { width: 230px; height: 230px; border-radius: 40px; background: var(--layl-2); border: 2px solid rgba(255,247,236,.12); display: grid; place-items: center; text-align: center; padding: 18px; color: var(--sabah); }
+  .node b { display: block; font-size: 30px; line-height: 1.3; }
+  .node small { font-size: 18px; color: var(--nur); font-weight: 600; direction: ltr; display: block; margin-top: 8px; }
+  .node.end { background: var(--nur); color: var(--layl); } .node.end small { color: var(--layl); }
+  .link { width: 60px; height: 6px; background: var(--nur); transform-origin: right center; border-radius: 3px; }
+  .stamp { border: 8px solid var(--g-mawdu); color: var(--g-mawdu); font-size: 84px; font-weight: 900; padding: 4px 40px; border-radius: 24px; background: rgba(29,27,51,.6); }
+  .stat b { display: block; font-size: 110px; font-weight: 900; color: var(--nur); line-height: 1; direction: ltr; }
+  .stat span { font-size: 28px; color: #C9C5DE; }
+
+  .lv { display: inline-grid; place-items: center; width: 74px; height: 74px; border-radius: 20px; font-size: 40px; font-weight: 800; color: #fff; }
+  .challenge { height: 80px; background: #fff; border-radius: 16px; padding: 8px 14px; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage"></div>
+<script>
+"use strict";
+const API = "http://localhost:8000";
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+// st(name, start, duration, easing) → an animation that the renderer pauses and seeks frame by frame
+const EASE = "cubic-bezier(.2,.8,.2,1)";
+const st = (n, t, d = .8, e = EASE) => `animation:${n} ${d}s ${e} ${t}s both`;
+const multi = (...xs) => "animation:" + xs.map(([n, t, d = .8, e = EASE]) => `${n} ${d}s ${e} ${t}s ${/^(out|toL)$/.test(n) ? "forwards" : "both"}`).join(",");
+// numbers that count up are driven by seek() too
+const ticks = [];
+const countUp = (id, from, to, t0, d, fmt = (x) => Math.round(x).toLocaleString("en-US")) => ticks.push((t) => {
+  const el = document.getElementById(id); if (!el) return;
+  const p = Math.max(0, Math.min(1, (t - t0) / d)), e = 1 - Math.pow(1 - p, 3);
+  el.textContent = fmt(from + (to - from) * e);
+});
+
+const STY = { sahih: ["--g-sahih-bg", "--g-sahih-ink", "--g-sahih"], hasan: ["--g-hasan-bg", "--g-hasan-ink", "--g-hasan"], daif: ["--g-daif-bg", "--g-daif-ink", "--g-daif"],
+  vdaif: ["--g-vdaif-bg", "--g-vdaif-ink", "--g-vdaif"], mawdu: ["--g-mawdu-bg", "--g-mawdu-ink", "--g-mawdu"], none: ["--g-none-bg", "--g-none-ink", "--g-none"], khilaf: ["--g-khilaf-bg", "--g-khilaf-ink", "--g-khilaf"] };
+function grade(v) {
+  const labels = (v.evidence?.[0]?.grade?.grades || []).map((x) => x.label.toLowerCase());
+  switch (v.status) {
+    case "quran_exact": return ["sahih", "آية مطابقة"]; case "quran_variant": return ["daif", "آية مُحرّفة"];
+    case "authentic": return ["sahih", "صحيح"]; case "authentic_by_routes": return ["hasan", "ثابت بمجموع طرقه"];
+    case "authentic_mawquf": return ["khilaf", "ليس من كلامه ﷺ"]; case "disputed": return ["khilaf", "مختلف فيه"];
+    case "needs_review": return ["vdaif", "لفظ مشابه"];
+    case "weak": return labels.some((x) => x.includes("very")) ? ["vdaif", "ضعيف جدًا"] : ["daif", "ضعيف"];
+    case "fabricated": return ["mawdu", "موضوع"]; case "baseless": return ["mawdu", "لا أصل له"];
+    default: return ["none", "لم نجد مصدرًا"];
+  }
+}
+const chip = (v, k2, l2) => { const [k, l] = k2 ? [k2, l2] : grade(v), s = STY[k]; return `<span class="chip" style="--c-bg:var(${s[0]});--c-ink:var(${s[1]});--c-dot:var(${s[2]})">${esc(l)}</span>`; };
+const BOOK = { bukhari: "البخاري", muslim: "مسلم", abudawud: "أبو داود", tirmidhi: "الترمذي", nasai: "النسائي", ibnmajah: "ابن ماجه", malik: "الموطأ", nawawi: "النووية", qudsi: "القدسية" };
+function by(v) {
+  if (v.quran) return v.quran.citation_ar;
+  if (v.registry) return (v.registry.sources || []).map((s) => s.ar.split("،")[0]).slice(0, 2).join(" · ");
+  const ev = v.evidence || [];
+  if (ev.length && v.status !== "needs_review") return ev.slice(0, 2).map((e) => `${BOOK[e.book] || e.book} ${e.number}`).join(" · ");
+  if (v.status === "needs_review") return "لفظ مشابه بنص آخر — يحتاج تحقق";
+  return "لا مصدر في القرآن والكتب التسعة";
+}
+function tilesOf(q) {
+  const out = [];
+  (q?.diff || []).forEach((o) => {
+    if (o.op === "equal" || o.op === "minor") (o.text || o.correct).split(/\s+/).filter(Boolean).forEach((w) => out.push([w, ""]));
+    else if (o.op === "wrong") { const x = o.correct.split(/\s+/), y = o.quoted.split(/\s+/); x.forEach((w, k) => out.push([w, y[k] || "", "bad"])); }
+    else if (o.op === "missing") o.correct.split(/\s+/).forEach((w) => out.push([w, "—", "bad"]));
+    else if (o.op === "extra") o.quoted.split(/\s+/).forEach((w) => out.push([w, "زيادة", "bad"]));
+  });
+  return out;
+}
+const verify = async (text) => (await fetch(API + "/api/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text, use_llm: false }) })).json();
+
+// synthetic forwarded messages the film checks (not source texts)
+const MSG = "قال رسول الله ﷺ: «إنما الأعمال بالنيات» وقال تعالى: «وقل ربي زدني علما». وقال ﷺ: «اطلبوا العلم ولو بالصين». ومن نشرها «فُتح له باب من الجنة»";
+const MADEUP = "صيام يوم 27 رجب يعدل صيام ستين شهرًا";
+
+function sweep(t, cls = "n") {  // brand-coloured wipe centred on a scene change at time t
+  return `<div class="sw ${cls}" style="${st("sweep", t - .45, .9, "cubic-bezier(.7,0,.3,1)")}"></div>`;
+}
+function mark(t0, dark = true) {
+  const layers = Array.from({ length: 7 }, (_, i) => `<span class="ly" style="inset:${(i + 1) * 3}px ${-(i + 1) * 3}px ${-(i + 1) * 3}px ${(i + 1) * 3}px;${st("pop", t0 + .05 * i, .6)}"></span>`).reverse().join("");
+  return `<div class="mk" style="${st("pop", t0, .8)}">${layers}<span class="tile" style="${dark ? "" : "background:var(--layl)"}"></span>
+    <i class="t1" style="${dark ? "" : "background:var(--sabah);"}${st("fromL", t0 + .5, .55)}"></i><i class="t2" style="${st("fromL", t0 + .65, .55)}"></i>
+    <i class="t3" style="${st("pop", t0 + .8, .45)}"></i><i class="t4" style="${dark ? "" : "background:var(--sabah);"}${st("fromL", t0 + .9, .55)}"></i></div>`;
+}
+const words = (txt, t0, step = .18, anim = "up", d = .6) => txt.split(" ").map((w, i) => `<span class="w" style="${st(anim, t0 + i * step, d)}">${w}</span>`).join(" ");
+const scene = (t0, t1, inner, bg = "") => `<div class="lay scene ${bg}" style="animation:vis ${t1 - t0}s linear ${t0}s">${inner}</div>`;
+
+async function build() {
+  const [r, rMade, rRep, rMix] = await Promise.all([verify(MSG + " انشرها ولا تجعلها تقف عندك"), verify(MADEUP), verify("قال تعالى: «فبأي آلاء ربكما تكذبان»"), verify("قال تعالى: «وما الحياة الدنيا إلا لهو ولعب»")]);
+  const vs = r.results, ok = vs.filter((v) => ["quran_exact", "authentic", "authentic_by_routes"].includes(v.status)).length;
+  const vHad = vs.find((v) => v.status === "authentic"), vQ = vs.find((v) => v.kind === "quran" && v.quran), vFab = vs.find((v) => ["fabricated", "baseless"].includes(v.status));
+  const nf = rMade.results[0], rep = rRep.results[0]?.quran, mix = rMix.results[0]?.quran;
+  let msg = esc(MSG);
+  vs.forEach((v, i) => { const q = esc(v.quote); msg = msg.replace(q, `<span class="mq" style="${st("hl", 16.0 + i * .42, .45, "linear")}">${q}</span>`); });
+  const dots = Array.from({ length: 34 }, (_, i) => { const x = (i * 137) % 1920, y = (i * 271) % 1080; return `<span class="dot" style="left:${x}px;top:${y}px;--dx:${(i % 5 - 2) * 40}px;--dy:${-60 - (i % 7) * 20}px;${st("drift", 0, 60, "linear")}"></span>`; }).join("");
+
+  document.getElementById("stage").innerHTML = `
+  <!-- 0 · INTRO (0–6) -->
+  ${scene(0, 6, `<div class="lay grid" style="${st("in", 0, 1.5)}"></div>${dots}
+    <div class="blob" style="width:900px;height:900px;left:-200px;top:-300px;background:rgba(43,212,154,.25);${st("in", .2, 2)}"></div>
+    <div class="blob" style="width:800px;height:800px;right:-200px;bottom:-300px;background:rgba(205,191,255,.25);${st("in", .4, 2)}"></div>
+    <div class="abs" style="left:810px;top:150px">${mark(.3)}</div>
+    <div class="lay" style="background:radial-gradient(circle at 50% 30%, #fff, transparent 55%);${st("flash", 1.9, .9, "linear")}"></div>
+    <div class="abs c dark big" style="top:500px">${words("ثَبَت", 2.1, .2, "upBig", .9)}</div>
+    <div class="abs c dark m" style="top:690px;${st("up", 3.0, .8)}">وصلتك رسالة؟ <span class="hl">ثبّتها.</span></div>
+    <div class="abs c s" style="top:800px;color:#C9C5DE;${st("in", 4.2, .8)}">أداة تحقّق من الآيات والأحاديث — بالذكاء الاصطناعي</div>`, "bg-dark")}
+  ${sweep(6)}
+
+  <!-- 1 · THE PROBLEM (6–14) -->
+  ${scene(6, 14, `
+    ${[["↪ مُعاد توجيهه كثيرًا", "«اطلبوا العلم ولو بالصين»", 140, 120, -6, "-500px", "-200px"],
+       ["↪ مُعاد توجيهه كثيرًا", "«" + MADEUP + "»", 1220, 90, 5, "500px", "-220px"],
+       ["↪ مُعاد توجيهه", "انشرها ولك الأجر 🙏", 120, 880, 4, "-520px", "260px"],
+       ["↪ مُعاد توجيهه كثيرًا", "لا تجعلها تقف عندك… أمانة في رقبتك", 1250, 890, -4, "520px", "260px"],
+       ["↪ مُعاد توجيهه", "«فُتح له باب من الجنة»", 760, 940, 2, "0px", "380px"]].map(([fw, tx, x, y, r, fx, fy], i) =>
+      `<div class="bub${i === 3 ? " red" : ""}" style="left:${x}px;top:${y}px;--fx:${fx};--fy:${fy};--fr:${r * 3}deg;--rr:${r}deg;${st("fly", 6.1 + i * .32, .9)}"><span class="fw">${fw}</span>${esc(tx)}</div>`).join("")}
+    <div class="abs c h" style="top:330px">${words("كل يوم… آلاف الرسائل", 6.6, .2)}</div>
+    <div class="abs c m" style="top:480px;${st("up", 8.6, .7)}">فيها آياتٌ وأحاديث… ودعوةٌ إلى النشر.</div>
+    <div class="abs c h" style="top:600px">${words("بعضها", 10.4, .2)} <span class="w hlr" style="${st("pop", 10.8, .7)}">لا يثبت.</span></div>
+    <div class="abs c" style="top:760px;${st("pop", 12.0, .6)}"><span class="pill" style="background:var(--g-mawdu);color:#fff;font-size:30px">ومن يتحقّق قبل أن يضغط «إعادة توجيه»؟</span></div>`, "bg-light")}
+  ${sweep(14, "l")}
+
+  <!-- 2 · THE TOOL (14–24) -->
+  ${scene(14, 24, `
+    <div class="blob" style="width:700px;height:700px;left:-150px;top:-200px;background:rgba(43,212,154,.22)"></div>
+    <div class="abs c h" style="top:50px">${words("الصق الرسالة…", 14.3, .2)} <span class="w hl" style="${st("pop", 16.2, .6)}">ثَبَت</span> ${words("يتحقّق.", 16.5, .2)}</div>
+    <div class="abs" style="left:370px;top:230px;${st("tilt", 14.2, 1.2)}"><div class="lap"><div class="lid"><div class="scr">
+      <div class="bar"><span><i></i> <i></i> <i></i></span><span class="u">islamicaich.vercel.app/verify</span></div>
+      <div class="body">
+        <div class="pane"><h4>${ok === 1 ? `${vs.length} نصوص، <span class="hl" style="font-size:18px">واحد فقط ثابت</span>` : `${vs.length} نصوص`}</h4>
+          ${vs.map((v, i) => `<div class="mini" style="${st("fromR", 17.4 + i * .35, .6)}">${chip(v)}<div class="q">«${esc(v.quote)}»</div><div class="by">${esc(by(v))}</div></div>`).join("")}</div>
+        <div class="pane"><h4>الرسالة</h4><div class="msgt">${msg}</div><div class="beam" style="${st("scan", 15.4, 1.8, "linear")}"></div></div>
+      </div></div></div><div class="base"></div></div></div>
+    <div class="abs" style="left:150px;top:330px;${st("upBig", 20.4, .9)}"><div class="ph"><div class="in"><span class="isl"></span>
+      ${vQ ? `${chip(vQ)}<div style="font-weight:800;font-size:24px;line-height:1.35">الآية صحيحة، لكنها نُقلت باختلاف ${vQ.quran.changed_words === 1 ? "كلمة" : vQ.quran.changed_words + " كلمات"}.</div>
+      <div style="background:var(--khuzama);border-radius:22px;padding:14px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center" dir="rtl">${tilesOf(vQ.quran).map(([k, x, c]) => `<span style="background:${c ? "var(--g-mawdu-bg)" : "#fff"};border-radius:14px;padding:6px 12px;font-family:var(--f-text);font-size:30px;line-height:1.4;display:grid;justify-items:center">${esc(k)}${x ? `<small style="font-family:var(--f-ui);font-size:13px;color:var(--g-mawdu-ink);text-decoration:line-through">${esc(x)}</small>` : ""}</span>`).join("")}</div>
+      <div style="background:var(--layl);color:var(--sabah);border-radius:999px;padding:12px;text-align:center;font-weight:700;font-size:20px">▶ استمع للآية</div>` : ""}</div></div></div>
+    <div class="abs" style="left:1500px;top:250px;${st("pop", 21.6, .6)}"><span class="pill" style="background:var(--layl);color:var(--nur);font-size:28px">على الحاسوب والجوال</span></div>`, "bg-light")}
+  ${sweep(24, "k")}
+
+  <!-- 3 · THE VERDICTS, ONE BY ONE (24–32) -->
+  ${scene(24, 32, `
+    <div class="abs" style="left:150px;right:150px;top:110px;${multi(["fromL", 24.1, .7], ["toL", 26.6, .5])}">
+      <div class="m" style="margin-bottom:26px"><span class="hl">المصدر</span> بالكتاب والرقم… <span class="hl">والحكم</span> باسم من قاله.</div>
+      ${vHad ? `<div class="card" style="display:grid;gap:18px">${chip(vHad)}<div class="sacred" style="font-size:76px;line-height:1.5">«${esc(vHad.quote)}»</div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px">${(vHad.evidence || []).slice(0, 4).map((e, i) => `<span class="pill" style="${st("pop", 24.9 + i * .18, .5)}">${esc(e.citation_ar)}</span>`).join("")}</div>
+        ${vHad.evidence?.[0]?.grade?.basis === "sahihayn" ? `<div class="s" style="color:var(--g-sahih-ink);${st("up", 25.7, .6)}">✓ في الصحيحين — ${esc(vHad.evidence[0].grade.note_ar || "")}</div>` : ""}</div>` : ""}</div>
+    <div class="abs" style="left:150px;right:150px;top:110px;${multi(["fromL", 26.9, .7], ["toL", 29.2, .5])}">
+      <div class="m" style="margin-bottom:26px">الآية… <span class="hl">كلمةً كلمة</span> مقابل المصحف.</div>
+      ${vQ ? `<div class="card" style="background:var(--khuzama)"><div class="s" style="display:flex;justify-content:space-between;font-weight:700;margin-bottom:22px"><span>في المصحف</span><span>${esc(vQ.quran.citation_ar)}</span></div>
+        <div class="tiles" dir="rtl">${tilesOf(vQ.quran).map(([k, x, c], i) => `<div class="wt ${c || ""}" style="${st("flip", 27.4 + i * .22, .55)}"><span class="k">${esc(k)}</span>${x ? `<span class="x">${esc(x)}</span>` : ""}</div>`).join("")}</div>
+        <div class="c s" style="margin-top:22px;font-weight:700;${st("up", 28.4, .6)}">تُنقل الآية بلفظ المصحف</div></div>` : ""}</div>
+    <div class="abs" style="left:150px;right:150px;top:110px;${st("fromL", 29.5, .7)}">
+      <div class="m" style="margin-bottom:26px">وما لا يثبت… <span class="hl">نقترح بديله الصحيح.</span></div>
+      ${vFab ? `<div class="card" style="display:grid;gap:16px">${chip(vFab)}<div class="sacred" style="font-size:64px;line-height:1.5">«${esc(vFab.quote)}»</div><div class="s" style="color:var(--muted)">${esc(by(vFab))}</div>
+        ${vFab.alternatives?.[0] ? `<div style="background:var(--g-sahih-bg);border-radius:28px;padding:22px 26px;${st("upBig", 30.4, .7)}"><div class="s" style="color:var(--g-sahih-ink);font-weight:700">بديلٌ صحيح بالمعنى نفسه</div>
+          <div class="sacred" style="font-size:44px;line-height:1.6">«${esc(vFab.alternatives[0].snippet?.match || vFab.alternatives[0].quote_ar || "")}»</div><div class="s" style="color:var(--g-sahih-ink)">${esc(vFab.alternatives[0].citation_ar)}</div></div>` : ""}</div>` : ""}</div>`, "bg-light")}
+  ${sweep(32, "n")}
+
+  <!-- 4 · HONESTY + REPEATED & SIMILAR VERSES (32–40) -->
+  ${scene(32, 40, `
+    <div class="abs c h" style="top:40px;font-size:76px">${words("لا نخترع… ولا نخلط.", 32.2, .2)}</div>
+    <div class="abs" style="left:150px;width:760px;top:230px;${st("upBig", 32.5, .8)}">
+      <div class="card" style="text-align:center;display:grid;gap:22px;justify-items:center">
+        <div style="width:150px;height:150px;border-radius:50%;border:5px dashed var(--g-none);display:grid;place-items:center;font-size:70px;color:var(--g-none)">؟</div>
+        ${chip(nf)}<div class="sacred" style="font-size:44px;line-height:1.5">«${esc(nf?.quote || MADEUP)}»</div>
+        <div class="m" style="font-size:40px">لم نجده… فلا نخترع له مرجعًا.</div></div></div>
+    <div class="abs" style="left:990px;width:780px;top:200px;${st("fromR", 34.6, .7)}">
+      <div class="card" style="display:grid;gap:16px"><div class="s" style="font-weight:700">آيةٌ تتكرّر بلفظها</div>
+        <div class="sacred" style="font-size:52px;line-height:1.4">«${esc(rRep.results[0]?.quote || "")}»</div>
+        <div style="display:flex;align-items:baseline;gap:16px"><b id="c31" style="font-size:150px;font-weight:900;color:var(--g-sahih);line-height:1;direction:ltr">0</b><span class="m" style="font-size:44px">موضعًا… نذكرها كلها.</span></div></div></div>
+    <div class="abs" style="left:990px;width:780px;top:700px;${st("fromR", 36.8, .7)}">
+      <div class="card" style="display:grid;gap:12px;background:var(--layl);color:var(--sabah)"><div class="s" style="font-weight:700;color:var(--nur)">آياتٌ متشابهة… لا تختلط</div>
+        ${mix ? `<div class="s" style="font-size:28px">الأقرب لفظًا: <b>${esc(mix.citation_ar)}</b> · والمتشابهة: <b>${esc(mix.similar?.[0]?.citation_ar || "")}</b></div>` : ""}</div></div>`, "bg-light")}
+  ${sweep(40, "l")}
+
+  <!-- 5 · THE AI (40–48) -->
+  ${scene(40, 48, `<div class="lay grid"></div>
+    <div class="abs c dark h" style="top:90px">${words("ذكاءٌ يجد المصدر…", 40.2, .18)} <span class="w hl" style="${st("pop", 40.9, .6)}">لا يخترعه.</span></div>
+    <div class="abs c" style="top:330px"><div class="pipe" dir="rtl">${[["قراءة الصور", "OCR"], ["معالجة العربية", "Arabic NLP"], ["الاسترجاع", "TF-IDF"], ["المحاذاة", "fuzzy + diff"], ["قواعد الحكم", "rules"], ["المصدر", "verdict"]].map(([a, b], i) =>
+      `${i ? `<span class="link" style="${st("grow", 41.2 + i * .42, .3)}"></span>` : ""}<div class="node${i === 5 ? " end" : ""}" style="${st("pop", 41.0 + i * .42, .5)}"><div><b>${a}</b><small>${b}</small></div></div>`).join("")}</div></div>
+    <div class="abs" style="left:150px;top:610px;${st("slam", 44.0, .5, "ease-out")}"><span class="stamp">ليس RAG</span></div>
+    <div class="abs" style="right:150px;top:650px;display:flex;gap:90px">
+      <div class="stat" style="${st("up", 44.8, .6)}"><b id="cAcc">0%</b><span>صحة الحكم</span></div>
+      <div class="stat" style="${st("up", 45.1, .6)}"><b>0</b><span>أخطاء حرجة</span></div>
+      <div class="stat" style="${st("up", 45.4, .6)}"><b id="cHad">0</b><span>رواية</span></div>
+      <div class="stat" style="${st("up", 45.7, .6)}"><b id="cAya">0</b><span>آية</span></div></div>`, "bg-dark")}
+  ${sweep(48, "n")}
+
+  <!-- 6 · EVERYWHERE + TRUST (48–54) -->
+  ${scene(48, 54, `
+    <div class="abs c h" style="top:70px">${words("على الحاسوب… وعلى الجوال.", 48.2, .16)}</div>
+    <div class="abs" style="left:130px;top:250px;${st("fromL", 48.4, .8)}">${["العربية", "English", "Français", "Indonesia", "Türkçe"].map((l, i) => `<span class="pill" style="margin:8px;display:inline-block;background:#fff;${st("pop", 48.9 + i * .14, .45)}">${l}</span>`).join("")}<div class="s" style="margin:10px 8px 0;${st("in", 49.7, .5)}">ردٌّ لطيف للمجموعة بخمس لغات</div></div>
+    <div class="abs" style="left:130px;top:520px;width:820px;${st("fromL", 50.0, .7)}"><div class="card" style="display:flex;gap:22px;align-items:center">
+      <span style="width:84px;height:84px;border-radius:24px;background:var(--nur);display:grid;place-items:center;font-size:46px">✓</span>
+      <div><div class="m" style="font-size:40px">مراجعون مختصّون</div><div class="s" style="color:var(--muted)">يعتمدون أحكام السجل… كلٌّ باسمه.</div></div></div></div>
+    <div class="abs" style="left:130px;top:780px;display:flex;gap:16px;align-items:center;${st("up", 51.0, .6)}">
+      ${[["أ", "var(--g-sahih)"], ["ب", "var(--g-hasan)"], ["ج", "var(--g-khilaf)"], ["د", "var(--g-mawdu)"]].map(([l, c], i) => `<span class="lv" style="background:${c};${st("pop", 51.1 + i * .12, .4)}">${l}</span>`).join("")}
+      <span class="s" style="margin-inline-start:12px">مستويات المحتوى… <b>وليس فتوى.</b></span></div>
+    <div class="abs" style="left:1120px;top:220px;${st("upBig", 48.6, .9)}"><div class="ph"><div class="in"><span class="isl"></span>
+      <div style="font-size:18px;color:var(--muted)">مشاركة إلى</div>
+      <div style="display:flex;gap:12px">${["ثَبَت", "الرسائل", "البريد"].map((n, i) => `<div style="display:grid;justify-items:center;gap:6px;font-size:15px"><span style="width:76px;height:76px;border-radius:20px;background:${i ? "var(--raml)" : "var(--layl)"};display:grid;place-items:center">${i ? "" : `<img src="${API}/assets/brand/mark.svg" style="width:56px">`}</span>${n}</div>`).join("")}</div>
+      ${vHad ? `<div style="background:#fff;border-radius:22px;padding:14px;${st("upBig", 50.4, .7)}">${chip(vHad)}<div class="sacred" style="font-size:26px;line-height:1.6;margin-top:6px">«${esc(vHad.quote)}»</div><div style="font-size:14px;color:var(--muted)">${esc(by(vHad))}</div></div>` : ""}</div></div></div>`, "bg-light")}
+  ${sweep(54, "l")}
+
+  <!-- 7 · OUTRO (54–60) -->
+  ${scene(54, 60.2, `<div class="lay grid"></div>${dots}
+    <div class="blob" style="width:900px;height:900px;right:-250px;top:-300px;background:rgba(43,212,154,.22)"></div>
+    <div class="abs" style="left:810px;top:110px;transform:scale(.85)">${mark(54.2)}</div>
+    <div class="abs c dark h" style="top:450px">${words("تحقّق قبل أن تنشر.", 55.2, .17, "upBig", .8)}</div>
+    <div class="abs c" style="top:610px;${st("pop", 56.4, .6)}"><span class="pill" style="background:var(--nur);font-size:46px;padding:14px 46px;direction:ltr">islamicaich.vercel.app</span></div>
+    <div class="abs c" style="top:740px;display:flex;justify-content:center;gap:18px;${st("up", 57.0, .6)}">${["على الحاسوب", "على الجوال", "مجانًا"].map((x) => `<span class="pill" style="background:transparent;color:var(--sabah);border:2px solid rgba(255,247,236,.35)">${x}</span>`).join("")}</div>
+    <div class="abs c" style="top:900px;display:flex;justify-content:center;align-items:center;gap:22px;color:#C9C5DE;font-size:26px;${st("in", 57.6, .8)}"><img class="challenge" src="${API}/assets/brand/challenge.svg" alt=""><span>تحدي الذكاء الاصطناعي في خدمة المحتوى الإسلامي 2026 · المسار 04</span></div>
+    <div class="lay" style="background:#000;${st("in", 59.2, .8, "linear")}"></div>`, "bg-dark")}`;
+
+  countUp("c31", 0, rep?.occurrence_count || 0, 35.2, 1.6);
+  countUp("cAcc", 0, 98.6, 44.9, 1.4, (x) => x.toFixed(1) + "%");
+  countUp("cHad", 0, 36064, 45.2, 1.6);
+  countUp("cAya", 0, 6236, 45.5, 1.6);
+}
+
+window.seek = (t) => { for (const an of document.getAnimations()) { an.pause(); an.currentTime = t * 1000; } ticks.forEach((f) => f(t)); };
+(async () => {
+  try { await build(); } catch (e) { document.title = "ERROR " + e; return; }
+  await document.fonts.ready;
+  await Promise.all([...document.images].map((im) => im.decode().catch(() => {})));
+  seek(0);
+  window.__ready = true;
+})();
+</script>
+</body>
+</html>
