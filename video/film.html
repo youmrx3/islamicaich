@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Thabat — animated intro / outro</title>
+<!-- Rendered frame by frame by video/render.py (headless Chrome → MP4).
+     Every verdict, citation and verse word shown here is fetched live from the Thabat API
+     (http://localhost:8000); nothing religious is typed into this file except the synthetic
+     forwarded message being checked. Open with ?part=intro or ?part=outro. -->
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root { --layl: #1D1B33; --layl-2: #2C2948; --layl-soft: #4A4760; --muted: #6B6880; --nur: #2BD49A; --sabah: #FFF7EC; --raml: #F1E7D8; --raml-2: #EADFCF;
+    --khuzama: #CDBFFF; --mishmish: #FFC48A; --white: #fff;
+    --g-sahih: #22B07D; --g-sahih-bg: #D3F5E5; --g-sahih-ink: #0E6B48; --g-hasan: #3D8DE0; --g-hasan-bg: #D6EBFF; --g-hasan-ink: #1D5A94;
+    --g-daif: #F0B020; --g-daif-bg: #FFF0C7; --g-daif-ink: #8A5A00; --g-vdaif: #F07A2A; --g-vdaif-bg: #FFE0C9; --g-vdaif-ink: #9A4410;
+    --g-mawdu: #EB4858; --g-mawdu-bg: #FFD9DC; --g-mawdu-ink: #A3202E; --g-none: #9A96AA; --g-none-bg: #EDEAF2; --g-none-ink: #4E4A60;
+    --g-khilaf: #8E7BEA; --g-khilaf-bg: #E4DCFF; --g-khilaf-ink: #4B3B9A;
+    --f-ui: "Alexandria", sans-serif; --f-text: "Amiri", serif; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--sabah); color: var(--layl); font-family: var(--f-ui); }
+  .stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+  .abs { position: absolute; }
+  .lay { position: absolute; inset: 0; }
+  /* every animation is paused and seeked frame by frame by the renderer */
+  .a { animation-fill-mode: both; animation-timing-function: cubic-bezier(.2, .8, .2, 1); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: none; } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+  @keyframes pop { 0% { opacity: 0; transform: scale(.6); } 70% { opacity: 1; transform: scale(1.06); } 100% { opacity: 1; transform: scale(1); } }
+  @keyframes slideFromEnd { from { opacity: 0; transform: translateX(-160px) scale(.9); } to { opacity: 1; transform: none; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(120px) rotate(-4deg); } to { opacity: 1; transform: none; } }
+  @keyframes drift { from { transform: translate(0, 0); } to { transform: translate(60px, -40px); } }
+  @keyframes hl { from { background-size: 0% 100%; } to { background-size: 100% 100%; } }
+  @keyframes flip { from { opacity: 0; transform: rotateX(90deg); } to { opacity: 1; transform: none; } }
+  @keyframes barIn { from { opacity: 0; transform: translateX(-60%); } to { opacity: 1; transform: none; } }
+  @keyframes shrinkLeft { to { transform: translateX(-60px) scale(.86); } }
+  @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(235,72,88,.0); } 50% { box-shadow: 0 0 0 16px rgba(235,72,88,.18); } }
+
+  /* background */
+  .blob { position: absolute; border-radius: 50%; filter: blur(60px); animation: drift 24s linear both; }
+  .b1 { width: 720px; height: 720px; background: rgba(43,212,154,.22); top: -200px; left: -160px; }
+  .b2 { width: 640px; height: 640px; background: rgba(205,191,255,.35); bottom: -220px; right: -120px; }
+
+  /* phone + forwarded message */
+  .phone { left: 150px; top: 80px; width: 520px; height: 920px; border-radius: 70px; background: var(--layl); padding: 14px; box-shadow: 0 60px 120px -50px rgba(29,27,51,.6), inset 0 0 0 2px rgba(255,255,255,.1); }
+  .pscr { width: 100%; height: 100%; border-radius: 58px; overflow: hidden; background: #EFE6D8; display: flex; flex-direction: column; }
+  .chathead { background: var(--sabah); padding: 64px 30px 22px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid var(--raml-2); }
+  .av { width: 60px; height: 60px; border-radius: 50%; background: var(--mishmish); }
+  .chathead b { font-size: 26px; display: block; } .chathead small { font-size: 18px; color: var(--muted); }
+  .island { position: absolute; top: 30px; left: 50%; transform: translateX(-50%); width: 150px; height: 40px; border-radius: 22px; background: #0E0C1A; }
+  .bubble { margin: 30px 24px; background: var(--white); border-radius: 30px 30px 30px 8px; padding: 22px 26px; font-size: 27px; line-height: 2.05; box-shadow: 0 10px 24px -16px rgba(29,27,51,.4); }
+  .bubble .fw { font-size: 19px; color: var(--muted); display: block; margin-bottom: 4px; }
+  .mq { background: linear-gradient(var(--g-sahih-bg), var(--g-sahih-bg)) no-repeat right / 0% 100%; border-radius: 8px; padding: 0 4px; }
+  .mp { background: linear-gradient(var(--g-mawdu-bg), var(--g-mawdu-bg)) no-repeat right / 0% 100%; border-radius: 8px; padding: 0 4px; }
+  .ptag { left: 330px; top: 760px; background: var(--g-mawdu); color: #fff; border-radius: 999px; padding: 12px 24px; font-size: 24px; font-weight: 700; }
+
+  /* headlines */
+  .head { right: 150px; top: 250px; width: 1000px; }
+  .head h1 { font-size: 96px; line-height: 1.2; margin: 0; font-weight: 800; }
+  .head h1 .w { display: inline-block; }
+  .head p { font-size: 38px; color: var(--layl-soft); margin: 26px 0 0; line-height: 1.6; }
+  .hlg { background: var(--nur); border-radius: 22px; padding: 0 22px; }
+
+  /* verdict cards */
+  .cards { right: 150px; top: 330px; width: 1000px; display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+  .vc { background: var(--white); border-radius: 34px; padding: 26px 30px; box-shadow: 0 30px 60px -40px rgba(29,27,51,.5); min-height: 228px; display: flex; flex-direction: column; gap: 10px; }
+  .chip { align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; border-radius: 999px; padding: 6px 20px; font-weight: 700; font-size: 24px; background: var(--c-bg); color: var(--c-ink); }
+  .chip::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--c-dot); }
+  .vc .q { font-family: var(--f-text); font-size: 38px; line-height: 1.6; }
+  .vc .by { font-size: 21px; color: var(--muted); }
+  .cardsHead { right: 150px; top: 170px; }
+  .cardsHead h2 { font-size: 72px; margin: 0; font-weight: 800; }
+
+  /* verse word by word */
+  .verse { right: 150px; top: 250px; width: 1000px; background: var(--khuzama); border-radius: 44px; padding: 40px 44px; }
+  .verse .vh { display: flex; justify-content: space-between; font-size: 26px; font-weight: 700; margin-bottom: 26px; }
+  .tiles { display: flex; flex-wrap: wrap; gap: 18px; perspective: 800px; }
+  .tile { background: var(--white); border-radius: 26px; padding: 18px 30px; display: grid; justify-items: center; min-width: 150px; }
+  .tile .k { font-family: var(--f-text); font-size: 60px; line-height: 1.5; }
+  .tile .m { font-size: 22px; color: var(--g-mawdu-ink); text-decoration: line-through; }
+  .tile.bad { background: var(--g-mawdu-bg); }
+  .verse .cap { margin-top: 26px; font-size: 28px; font-weight: 600; background: var(--sabah); border-radius: 999px; display: inline-block; padding: 12px 26px; }
+
+  /* logo */
+  .logo { left: 50%; top: 50%; width: 1100px; margin-left: -550px; margin-top: -250px; display: grid; justify-items: center; gap: 30px; }
+  .mark { position: relative; width: 260px; height: 260px; }
+  .mark .tile0 { position: absolute; inset: 0; border-radius: 26%; background: var(--layl); }
+  .mark i { position: absolute; display: block; }
+  .mark .t1 { left: 30%; top: 25.5%; width: 50%; height: 9%; border-radius: 99px; background: var(--sabah); }
+  .mark .t2 { left: 32%; top: 43%; width: 48%; height: 14%; border-radius: 99px; background: var(--nur); }
+  .mark .t3 { left: 16%; top: 46%; width: 8%; height: 8%; border-radius: 2px; background: var(--nur); transform: rotate(45deg); }
+  .mark .t4 { left: 50%; top: 65.5%; width: 30%; height: 9%; border-radius: 99px; background: var(--sabah); }
+  .word { font-size: 150px; font-weight: 800; line-height: 1; }
+  .tag { font-size: 54px; font-weight: 700; }
+  .tag .hlg { padding: 0 18px; }
+
+  /* outro */
+  body.outro { background: var(--layl); color: var(--sabah); }
+  .outro .b1 { background: rgba(43,212,154,.18); } .outro .b2 { background: rgba(205,191,255,.18); }
+  .outro .mark .tile0 { background: var(--sabah); } .outro .mark .t1, .outro .mark .t4 { background: var(--layl); }
+  .url { font-size: 44px; font-weight: 700; background: var(--nur); color: var(--layl); border-radius: 999px; padding: 14px 40px; direction: ltr; }
+  .pills { display: flex; gap: 18px; }
+  .pills span { font-size: 30px; border: 2px solid rgba(255,247,236,.35); border-radius: 999px; padding: 10px 28px; }
+  .foot { left: 0; right: 0; bottom: 60px; display: flex; justify-content: center; align-items: center; gap: 22px; font-size: 26px; color: #C9C5DE; }
+  .foot img { height: 66px; background: #fff; border-radius: 14px; padding: 6px 12px; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage"></div>
+<script>
+"use strict";
+const API = "http://localhost:8000";
+const part = new URLSearchParams(location.search).get("part") || "intro";
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+// a(name, start, duration) → inline animation (all paused + seeked by the renderer)
+const a = (name, t, d = .8, extra = "") => `class="a ${extra}" style="animation:${name} ${d}s ${t}s both cubic-bezier(.2,.8,.2,1)"`;
+const st = (name, t, d = .8) => `animation:${name} ${d}s ${t}s both cubic-bezier(.2,.8,.2,1)`;
+
+// same grading scale as the app and the website
+const STY = { sahih: ["--g-sahih-bg", "--g-sahih-ink", "--g-sahih"], hasan: ["--g-hasan-bg", "--g-hasan-ink", "--g-hasan"], daif: ["--g-daif-bg", "--g-daif-ink", "--g-daif"],
+  vdaif: ["--g-vdaif-bg", "--g-vdaif-ink", "--g-vdaif"], mawdu: ["--g-mawdu-bg", "--g-mawdu-ink", "--g-mawdu"], none: ["--g-none-bg", "--g-none-ink", "--g-none"], khilaf: ["--g-khilaf-bg", "--g-khilaf-ink", "--g-khilaf"] };
+function grade(v) {
+  const labels = (v.evidence?.[0]?.grade?.grades || []).map((x) => x.label.toLowerCase());
+  switch (v.status) {
+    case "quran_exact": return ["sahih", "آية مطابقة"];
+    case "quran_variant": return ["daif", "آية مُحرّفة"];
+    case "authentic": return ["sahih", "صحيح"];
+    case "authentic_by_routes": return ["hasan", "ثابت بمجموع طرقه"];
+    case "authentic_mawquf": return ["khilaf", "ليس من كلامه ﷺ"];
+    case "disputed": return ["khilaf", "مختلف فيه"];
+    case "needs_review": return ["vdaif", "لفظ مشابه"];
+    case "weak": return labels.some((x) => x.includes("very")) ? ["vdaif", "ضعيف جدًا"] : ["daif", "ضعيف"];
+    case "fabricated": return ["mawdu", "موضوع"];
+    case "baseless": return ["mawdu", "لا أصل له"];
+    default: return ["none", "لم نجد مصدرًا"];
+  }
+}
+const chip = (v) => { const [k, l] = grade(v), s = STY[k]; return `<span class="chip" style="--c-bg:var(${s[0]});--c-ink:var(${s[1]});--c-dot:var(${s[2]})">${esc(l)}</span>`; };
+const BOOK = { bukhari: "البخاري", muslim: "مسلم", abudawud: "أبو داود", tirmidhi: "الترمذي", nasai: "النسائي", ibnmajah: "ابن ماجه", malik: "الموطأ", nawawi: "النووية", qudsi: "القدسية" };
+function by(v) {
+  if (v.quran) return v.quran.citation_ar;
+  if (v.registry) return (v.registry.sources || []).map((s) => s.ar.split("،")[0]).slice(0, 2).join(" · ");
+  const ev = v.evidence || [];
+  if (ev.length && v.status !== "needs_review") return ev.slice(0, 2).map((e) => `${BOOK[e.book] || e.book} ${e.number}`).join(" · ");
+  if (v.status === "needs_review") return "لفظ مشابه بنص آخر — يحتاج تحقق";
+  return "لا مصدر في القرآن والكتب التسعة";
+}
+
+// the synthetic forwarded message being checked (not a source text)
+const MSG = "قال رسول الله ﷺ: «إنما الأعمال بالنيات» وقال تعالى: «وقل ربي زدني علما». وقال ﷺ: «اطلبوا العلم ولو بالصين». ومن نشرها «فُتح له باب من الجنة»";
+
+async function buildIntro() {
+  const r = await (await fetch(API + "/api/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: MSG + " انشرها ولا تجعلها تقف عندك", use_llm: false }) })).json();
+  const vs = r.results;
+  // message with each quote wrapped, so it can be highlighted in turn
+  let msg = esc(MSG);
+  vs.forEach((v, i) => { const q = esc(v.quote); msg = msg.replace(q, `<span class="mq" style="animation:hl .5s ${6.0 + i * .45}s both">${q}</span>`); });
+  const qv = vs.find((v) => v.kind === "quran" && v.quran);
+  const tiles = [];
+  (qv?.quran?.diff || []).forEach((o) => {
+    if (o.op === "equal" || o.op === "minor") (o.text || o.correct).split(/\s+/).filter(Boolean).forEach((w) => tiles.push([w, ""]));
+    else if (o.op === "wrong") { const x = o.correct.split(/\s+/), y = o.quoted.split(/\s+/); x.forEach((w, k) => tiles.push([w, y[k] || "", "bad"])); }
+    else if (o.op === "missing") o.correct.split(/\s+/).forEach((w) => tiles.push([w, "—", "bad"]));
+    else if (o.op === "extra") o.quoted.split(/\s+/).forEach((w) => tiles.push([w, "زيادة", "bad"]));
+  });
+  const ok = vs.filter((v) => ["quran_exact", "authentic", "authentic_by_routes"].includes(v.status)).length;
+  $s.innerHTML = `
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <!-- scene A/B/C: the phone with the forwarded message (stays until the logo) -->
+    <div class="lay" style="${st("fadeOut", 17.6, .6)}"><div class="phone abs a" style="${st("fadeUp", .1, 1)}"><div class="island"></div><div class="pscr">
+      <div class="chathead"><span class="av"></span><span><b>مجموعة العائلة</b><small>أم خالد، أبو سعد، +21</small></span></div>
+      <div class="bubble a" style="${st("pop", 1.0, .7)}"><span class="fw">↪ مُعاد توجيهه كثيرًا</span>${msg}
+        <span class="mp" style="animation:hl .5s 4.6s both">انشرها ولا تجعلها تقف عندك 🙏</span></div>
+    </div></div>
+    <div class="lay" style="${st("fadeOut", 8.4, .5)}"><div class="ptag abs a" style="${st("pop", 4.9, .6)}">ضغط لإعادة النشر</div></div></div>
+
+    <div class="head abs" style="${st("fadeOut", 5.6, .5)}">
+      <h1>${["وصلتك", "رسالة؟"].map((w, i) => `<span class="w a" style="${st("fadeUp", 1.4 + i * .3, .7)}">${w}</span>`).join(" ")}</h1>
+      <p class="a" style="${st("fadeUp", 2.4, .8)}">فيها أحاديث وآيات… ودعوة إلى النشر.<br>كم نصًا فيها يثبت حقًا؟</p></div>
+
+    <div class="head abs a" style="${st("fadeIn", 5.9, .4)}">
+      <div style="${st("fadeOut", 8.6, .5)}"><h1>${["قبل", "أن", "تنشرها…"].map((w, i) => `<span class="w a" style="${st("fadeUp", 6.0 + i * .22, .6)}">${w}</span>`).join(" ")}<br>
+        <span class="w a" style="${st("pop", 7.0, .7)}"><span class="hlg">ثبّتها.</span></span></h1></div></div>
+
+    <!-- scene C: the verdicts, live from the engine -->
+    <div class="lay" style="${st("fadeOut", 13.4, .5)}">
+      <div class="cardsHead abs a" style="${st("fadeUp", 8.9, .7)}"><h2>${vs.length} نصوص… ${ok === 1 ? "واحد فقط ثابت" : ok + " ثابتة"}.</h2></div>
+      <div class="cards abs">${vs.slice(0, 4).map((v, i) => `<div class="vc a" style="${st("slideFromEnd", 9.3 + i * .38, .8)}">${chip(v)}<div class="q">«${esc(v.quote)}»</div><div class="by">${esc(by(v))}</div></div>`).join("")}</div></div>
+
+    <!-- scene D: the misquoted verse, word by word against the Mushaf -->
+    ${qv ? `<div class="lay" style="${st("fadeOut", 17.6, .6)}"><div class="cardsHead abs a" style="${st("fadeUp", 13.7, .7)}"><h2>الآيات… كلمةً كلمة.</h2></div>
+      <div class="verse abs a" style="${st("fadeUp", 13.9, .8)}"><div class="vh"><span>في المصحف</span><span>${esc(qv.quran.citation_ar)}</span></div>
+        <div class="tiles" dir="rtl">${tiles.map(([k, m, c], i) => `<div class="tile ${c || ""} a" style="${st("flip", 14.4 + i * .28, .6)}"><span class="k">${esc(k)}</span>${m ? `<span class="m">${esc(m)}</span>` : ""}</div>`).join("")}</div>
+        <div class="cap a" style="${st("fadeUp", 15.9, .7)}">تُنقل الآية بلفظ المصحف</div></div></div>` : ""}
+
+    <!-- scene E: the logo -->
+    ${logo(18.2)}
+    <div class="abs" style="left:0;right:0;top:770px;text-align:center"><div class="tag a" style="${st("fadeUp", 20.6, .8)}">وصلتك رسالة؟ <span class="hlg">ثبّتها.</span></div></div>`;
+}
+
+function logo(t0) {
+  return `<div class="logo abs"><div class="mark a" style="${st("pop", t0, .8)}"><span class="tile0"></span>
+      <i class="t1 a" style="${st("barIn", t0 + .5, .6)}"></i><i class="t2 a" style="${st("barIn", t0 + .7, .6)}"></i>
+      <i class="t3 a" style="${st("pop", t0 + .9, .5)};transform:rotate(45deg)"></i><i class="t4 a" style="${st("barIn", t0 + 1.0, .6)}"></i></div>
+    <div class="word a" style="${st("fadeUp", t0 + 1.4, .8)}">ثَبَت</div></div>`;
+}
+
+function buildOutro() {
+  document.body.classList.add("outro");
+  $s.innerHTML = `<div class="blob b1"></div><div class="blob b2"></div>
+    <div class="logo abs" style="margin-top:-330px"><div class="mark a" style="${st("pop", .2, .8)}"><span class="tile0"></span>
+      <i class="t1 a" style="${st("barIn", .7, .6)}"></i><i class="t2 a" style="${st("barIn", .9, .6)}"></i>
+      <i class="t3 a" style="${st("pop", 1.1, .5)};transform:rotate(45deg)"></i><i class="t4 a" style="${st("barIn", 1.2, .6)}"></i></div>
+      <div class="tag a" style="${st("fadeUp", 1.7, .8)};font-size:76px">تحقّق قبل أن تنشر.</div>
+      <div class="url a" style="${st("pop", 2.6, .7)}">islamicaich.vercel.app</div>
+      <div class="pills a" style="${st("fadeUp", 3.3, .8)}"><span>على الحاسوب</span><span>على الجوال</span><span>مجانًا</span></div></div>
+    <div class="foot abs a" style="${st("fadeIn", 4.2, 1)}"><img src="${API}/assets/brand/challenge.svg" alt=""><span>مشاركة في تحدي الذكاء الاصطناعي في خدمة المحتوى الإسلامي 2026 · المسار 04</span></div>`;
+}
+
+const $s = document.getElementById("stage");
+window.seek = (t) => { for (const an of document.getAnimations()) { an.pause(); an.currentTime = t * 1000; } };
+(async () => {
+  try { part === "outro" ? buildOutro() : await buildIntro(); } catch (e) { document.title = "ERROR " + e; return; }
+  await document.fonts.ready;
+  await Promise.all([...document.images].map((im) => im.decode().catch(() => {})));
+  seek(0);
+  window.__ready = true;
+})();
+</script>
+</body>
+</html>
