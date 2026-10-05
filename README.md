@@ -106,6 +106,7 @@ python -m uvicorn index:app --port 8000
 | URL | |
 |---|---|
 | `http://localhost:8000/` | website |
+| `/verify` | the full desktop verification tool (message → results → details, evidence search, reply, card) |
 | `/app` | the app (PWA) · demos: `/app?ex=0` … `/app?ex=5` · search: `/app?mode=search` |
 | `/mobile` | the app in a phone frame + QR code |
 | `/join` · `/review` | apply as a reviewer · reviewer and admin sign-in |
@@ -137,7 +138,7 @@ Full guide: [docs/DEPLOY.md](docs/DEPLOY.md).
 index.py              ASGI entry point (Vercel) → backend.app.main:app
 backend/app/          normalize · corpus · matching · grades · verify · scope · search · replies · llm · flags · main
 backend/tests/        safety, annex and API tests
-public/               index.html (website) · app.html (PWA) · mobile.html · join.html · review.html · privacy.html
+public/               index.html (website) · verify.html (desktop tool) · app.html (PWA) · mobile.html · join.html · review.html · privacy.html
   assets/             site.* · app.* · brand/ · icons/
   manifest.webmanifest, sw.js
 data/dist/            compiled corpus (36,064 narrations + 6,236 verses)

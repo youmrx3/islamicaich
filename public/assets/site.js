@@ -9,7 +9,7 @@ const params = new URLSearchParams(location.search);
 let ui = params.get("lang") === "en" ? "en" : store.get("thabat.ui", "ar");
 const AR = () => ui === "ar";
 const clip = (t, n) => { t = String(t || ""); if (t.length <= n) return t; t = t.slice(0, n); const cut = Math.max(t.lastIndexOf(". "), t.lastIndexOf("، "), t.lastIndexOf(" ")); return t.slice(0, cut > n * 0.6 ? cut : n).replace(/[\s.،,:؛]+$/, "") + "…"; };
-const dg = (s) => AR() ? String(s).replace(/\d/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d]) : String(s);
+const dg = (s) => String(s);  // Western digits everywhere, easier to read in citations
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* ---------- language */
@@ -68,17 +68,37 @@ const STORY_MSG = "قال رسول الله ﷺ: «إنما الأعمال با�
 const storyP = verify(STORY_MSG).catch(() => null);
 
 /* ---------- hero */
-$("#ask").addEventListener("submit", (e) => { e.preventDefault(); const q = $("#q").value.trim(); location.href = q ? "/app?q=" + encodeURIComponent(q) : "/app"; });
+$("#ask").addEventListener("submit", (e) => { e.preventDefault(); const q = $("#q").value.trim(); location.href = q ? "/verify?q=" + encodeURIComponent(q) : "/verify"; });
 if (!reduce) window.addEventListener("mousemove", (e) => {
   const mx = e.clientX / innerWidth - .5, my = e.clientY / innerHeight - .5, st = $("#stageIn");
-  st.style.setProperty("--ry", `${-16 + mx * 18}deg`); st.style.setProperty("--rx", `${6 - my * 10}deg`);
+  st.style.setProperty("--ry", `${-8 + mx * 10}deg`); st.style.setProperty("--rx", `${4 - my * 6}deg`);
 }, { passive: true });
 function heroFill(r) {
   if (!r) return;
   const vs = r.results, ok = vs.filter((v) => ["quran_exact", "authentic", "authentic_by_routes"].includes(v.status)).length;
-  $("#heroTitle").innerHTML = AR() ? `${dg(vs.length)} نصوص، <span style="background:var(--g-sahih-bg);border-radius:8px;padding:0 6px">${ok === 1 ? "واحد فقط ثابت" : dg(ok) + " ثابتة"}</span>` : `${vs.length} quotes, <span style="background:var(--g-sahih-bg);border-radius:8px;padding:0 6px">${ok} established</span>`;
+  // laptop: the desktop tool — the message with its quotes marked, and the results list
+  let msg = esc(STORY_MSG);
+  vs.forEach((v) => { const q = esc(v.quote); if (q && msg.includes(q)) msg = msg.replace(q, `<mark>${q}</mark>`); });
+  $("#heroMsg").innerHTML = msg;
+  $("#heroTitle").innerHTML = AR() ? `${vs.length} نصوص، <span class="hl-s">${ok === 1 ? "واحد فقط ثابت" : ok + " ثابتة"}</span>` : `${vs.length} quotes, <span class="hl-s">${ok} established</span>`;
   $("#heroBar").innerHTML = vs.map((v) => `<i style="background:${STY[grade(v)[0]][3]}"></i>`).join("");
   $("#heroCards").innerHTML = vs.map((v) => `<div class="mini-card">${chip(v)}<div class="q">«${esc(v.quote)}»</div><div class="by">${by(v)}</div></div>`).join("");
+  // phone: the app's verse screen — the misquoted verse, word by word against the Mushaf
+  const qv = vs.find((v) => v.kind === "quran" && v.quran);
+  if (!qv) { $("#heroPhone").innerHTML = ""; return; }
+  const tiles = [];
+  (qv.quran.diff || []).forEach((o) => {
+    if (o.op === "equal" || o.op === "minor") (o.text || o.correct).split(/\s+/).filter(Boolean).forEach((w) => tiles.push([w, ""]));
+    else if (o.op === "wrong") { const a = o.correct.split(/\s+/), b = o.quoted.split(/\s+/); a.forEach((w, k) => tiles.push([w, b[k] || "", "bad"])); }
+    else if (o.op === "missing") o.correct.split(/\s+/).forEach((w) => tiles.push([w, "—", "bad"]));
+    else if (o.op === "extra") o.quoted.split(/\s+/).forEach((w) => tiles.push([w, AR() ? "زيادة" : "added", "bad"]));
+  });
+  const n = qv.quran.changed_words;
+  $("#heroPhone").innerHTML = `${chip(qv)}<div class="ph-t">${AR() ? `الآية صحيحة، لكنها نُقلت باختلاف ${n === 1 ? "كلمة" : n + " كلمات"}.` : `The verse is real, but ${n} word(s) differ.`}</div>
+    <div class="ph-w"><div class="ph-h"><span>${AR() ? "في المصحف" : "In the Mushaf"}</span><span>${by(qv).split(" — ")[0]}</span></div>
+    <div class="ph-tiles" dir="rtl">${tiles.map(([k, m, c]) => `<span class="wt ${c || ""}"><b>${esc(k)}</b>${m ? `<small>${esc(m)}</small>` : ""}</span>`).join("")}</div></div>
+    <div class="ph-btn">▶ ${AR() ? "استمع للآية" : "Listen"}</div>
+    <div class="ph-lv"><b>${esc(AR() ? qv.level : qv.level_latin)}</b><span>${esc(AR() ? qv.level_ar : qv.level_en)}</span></div>`;
 }
 storyP.then((r) => { heroFill(r); storyCards(r); rerender.push(() => { heroFill(r); storyCards(r); }); });
 
@@ -137,8 +157,8 @@ function drawTool() {
   $("#twa").href = "https://wa.me/?text=" + encodeURIComponent(r.reply || "");
 }
 $("#tgo").onclick = runTool;
-$("#tlink").onclick = async () => { const u = location.origin + "/app?q=" + encodeURIComponent($("#tq").value.trim()); try { await navigator.clipboard.writeText(u); $("#tlink").textContent = AR() ? "نُسخ ✓" : "Copied ✓"; } catch { prompt("", u); } };
-$("#toolUrl").textContent = location.host + "/app";
+$("#tlink").onclick = async () => { const u = location.origin + "/verify?q=" + encodeURIComponent($("#tq").value.trim()); try { await navigator.clipboard.writeText(u); $("#tlink").textContent = AR() ? "نُسخ ✓" : "Copied ✓"; } catch { prompt("", u); } };
+$("#toolUrl").textContent = location.host + "/verify";
 rerender.push(drawTool);
 
 /* ---------- quran tiles (from the live engine) */
@@ -168,7 +188,7 @@ function quran() {
 
 /* ---------- grades ring */
 const RING = () => AR() ? [
-  ["sahih", "صحيح", "ثابت بإسناد متصل، ونذكر من صحّحه.", "«إنما الأعمال بالنيات» — البخاري ١ ومسلم ١٩٠٧"],
+  ["sahih", "صحيح", "ثابت بإسناد متصل، ونذكر من صحّحه.", "«إنما الأعمال بالنيات» — البخاري 1 ومسلم 1907"],
   ["hasan", "حسن", "مقبول دون الصحيح.", "نذكر من حسّنه باسمه دائمًا"],
   ["daif", "ضعيف", "في إسناده علّة.", "نذكر من ضعّفه وحكمه بنصه"],
   ["vdaif", "ضعيف جدًا", "علّة شديدة.", "يُنقل حكم المحقق كما هو"],
@@ -236,3 +256,10 @@ addEventListener("resize", onScroll);
 drawRing();
 applyLang();
 onScroll();
+
+/* ---------- join: share the tool itself (never a verdict text) */
+$("#shareSite")?.addEventListener("click", async () => {
+  const url = location.origin + "/", text = AR() ? "قبل أن تنشر أي رسالة فيها آية أو حديث، تحقّق منها في «ثَبَت»:" : "Before you forward a message with a verse or hadith, check it on Thabat:";
+  if (navigator.share) { try { await navigator.share({ title: "Thabat", text, url }); return; } catch { return; } }
+  window.open("https://wa.me/?text=" + encodeURIComponent(text + " " + url), "_blank", "noopener");
+});

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ثَبَت — أداة التحقّق</title>
+  <meta name="description" content="أداة ثَبَت على الحاسوب: الصق رسالة أو لقطة شاشة، واعرف مصدر كل آية وحديث وحكم المحققين بأسمائهم.">
+  <meta name="theme-color" content="#FFF7EC">
+  <link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/site.css">
+  <link rel="stylesheet" href="/assets/verify.css">
+</head>
+<body class="vx">
+<header class="nav"><div class="wrap-wide nav-in">
+  <a class="logo" href="/"><img src="/assets/brand/mark-dark.svg" alt=""><span data-en="Thabat">ثَبَت</span></a>
+  <div class="vx-modes" role="tablist" aria-label="mode">
+    <button role="tab" id="mVerify" class="on" data-en="Check a message">تحقّق من رسالة</button>
+    <button role="tab" id="mSearch" data-en="Find evidence">ابحث عن دليل</button>
+  </div>
+  <div class="nav-cta">
+    <a class="navlink" href="/" data-en="Website">الموقع</a>
+    <a class="navlink" href="/mobile" data-en="Mobile app">تطبيق الجوال</a>
+    <button class="langbtn" id="lang">EN</button>
+  </div>
+</div></header>
+
+<main class="wrap-wide vx-main" id="main">
+  <!-- CHECK A MESSAGE -->
+  <section id="pVerify" class="vx-grid">
+    <!-- input -->
+    <aside class="vx-col vx-input">
+      <div class="vx-card">
+        <div class="vx-head"><h1 data-en="Check a message">تحقّق من رسالة</h1><span class="vx-hint" data-en="Ctrl + Enter">Ctrl + Enter</span></div>
+        <div class="vx-drop" id="drop">
+          <label class="sr" for="msg" data-en="Message">الرسالة</label>
+          <textarea id="msg" placeholder="الصق الرسالة المُعاد توجيهها هنا، أو اسحب لقطة شاشة وأفلتها…" data-en-ph="Paste the forwarded message here, or drop a screenshot…"></textarea>
+          <div class="vx-dropover" data-en="Drop the screenshot to read it">أفلت الصورة لقراءتها</div>
+        </div>
+        <p class="vx-ocr" id="ocr" aria-live="polite"></p>
+        <div class="vx-tools">
+          <button class="btn white small" id="paste" data-en="Paste">لصق</button>
+          <label class="btn white small" for="img"><span data-en="Screenshot">لقطة شاشة</span></label><input id="img" type="file" accept="image/*" hidden>
+          <button class="btn white small" id="clear" data-en="Clear">مسح</button>
+          <button class="btn dark vx-go" id="go" data-en="Verify">ثبّت</button>
+        </div>
+        <div class="vx-ex"><span data-en="Try:">جرّب:</span><div id="examples"></div></div>
+      </div>
+      <div class="vx-card vx-hist">
+        <div class="vx-head"><h2 data-en="Recent checks">آخر ما تحقّقت منه</h2><button class="vx-link" id="histClear" data-en="Clear">مسح</button></div>
+        <div id="hist"></div>
+        <p class="vx-fine" data-en="Stored in this browser only.">يُحفظ في هذا المتصفح فقط.</p>
+      </div>
+    </aside>
+
+    <!-- results list -->
+    <section class="vx-col vx-list" aria-live="polite">
+      <div class="vx-empty" id="welcome">
+        <img src="/assets/brand/mark-dark.svg" alt="">
+        <h2 data-en="Every verse and hadith, back to its source.">كل آية وحديث… إلى مصدره.</h2>
+        <p data-en="Paste a forwarded message. Thabat finds each quote, matches it against the Quran and 36,064 narrations, and shows each scholar's grading by name.">الصق رسالة معاد توجيهها، فيستخرج «ثَبَت» كل نص فيها، ويطابقه مع القرآن الكريم و36,064 رواية، ويعرض حكم المحققين بأسمائهم.</p>
+        <ul class="vx-feats">
+          <li data-en="Source with book and number">المصدر بالكتاب والرقم</li>
+          <li data-en="Misquoted verses, word by word">تحريف الآيات كلمةً كلمة</li>
+          <li data-en="Honest «no source found»">«لم نجد مصدرًا» بصراحة</li>
+          <li data-en="A kind reply in 5 languages">ردّ لطيف بخمس لغات</li>
+        </ul>
+      </div>
+      <div id="results" hidden></div>
+    </section>
+
+    <!-- detail -->
+    <section class="vx-col vx-detail" id="detail" hidden aria-live="polite"></section>
+  </section>
+
+  <!-- FIND EVIDENCE -->
+  <section id="pSearch" class="vx-search" hidden>
+    <div class="vx-card vx-sbox">
+      <h1 data-en="Find authentic evidence">ابحث عن دليل ثابت</h1>
+      <p data-en="Only authentic verses and hadith, with their source — or an honest «none found». Evidence is never invented.">نعرض الآيات والأحاديث الثابتة فقط مع مصدرها، أو نقول «لم نجد» دون اختلاق.</p>
+      <form class="vx-sform" id="sf"><label class="sr" for="sq" data-en="Topic">الموضوع</label><input id="sq" maxlength="300" placeholder="مثال: بر الوالدين، الرفق، الصدق" data-en-ph="e.g. kindness to parents, honesty"><button class="btn dark" data-en="Search">ابحث</button></form>
+      <div class="vx-ex" id="sexamples"></div>
+    </div>
+    <div id="sres"></div>
+  </section>
+
+  <p class="vx-transp" data-en="Automated result from an AI-assisted tool grounded in documented sources; not a fatwa or a human specialist's opinion.">نتيجة آلية من أداة مدعومة بالذكاء الاصطناعي تعتمد على مصادر موثقة، وليست فتوى ولا رأي مختص بشري.</p>
+</main>
+
+<div class="vx-modal" id="modal" hidden><div class="vx-sheet" role="dialog" aria-modal="true" id="sheet"></div></div>
+<div class="vx-toast" id="toast" role="status"></div>
+<script src="/assets/verify.js"></script>
+</body>
+</html>

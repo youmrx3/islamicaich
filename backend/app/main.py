@@ -351,7 +351,7 @@ async def _unhandled(request: Request, exc: Exception):
 # --------------------------------------------------------------- pages
 # On Vercel these files are served by the CDN (public/ + cleanUrls); the routes
 # below are a fallback and what serves them in local development.
-_PAGES = {"/": "index.html", "/app": "app.html", "/mobile": "mobile.html", "/review": "review.html", "/join": "join.html",
+_PAGES = {"/": "index.html", "/app": "app.html", "/mobile": "mobile.html", "/review": "review.html", "/join": "join.html", "/verify": "verify.html",
           "/privacy": "privacy.html"}
 
 

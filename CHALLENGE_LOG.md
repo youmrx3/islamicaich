@@ -91,5 +91,23 @@ git log --oneline baseline-pre-challenge..HEAD
 - Tests: 23 → **25** (apply, approve, sign in, decision signed with the verified name, re-issued code disables the old one, revoke, the honeypot, the admin must sign with a name).
 - Verified in production: migration applied, the full flow tested live (apply → approve → sign in with the personal code → signed decision), and the **Sharia mentor onboarded as the first approved reviewer**.
 
+### Website and desktop tool (UI round 1)
+- **New desktop verification page `/verify`**, separate from the mobile app:
+  - three columns: the message, the results list, and the full details of the selected result;
+  - full details include the source passage, each scholar's grading, verse word tiles with recitation, the content level, the authentic alternative, and reporting;
+  - evidence search mode;
+  - screenshots by drag-and-drop or paste (read on the device);
+  - Ctrl+Enter to verify;
+  - a kind reply in 5 languages, the verdict card image, and a result link;
+  - history shared with the app.
+- **Hero redesigned:**
+  - it fills the first screen;
+  - a balanced two-line headline;
+  - a laptop showing the desktop tool and a phone showing the app's verse screen, both filled live from the engine;
+  - two entry cards, «على الحاسوب» → `/verify` and «على الجوال» → `/mobile`.
+- **New «انضم إلى ثَبَت» section**: specialists apply as reviewers, users add a missing source, and anyone can share the tool.
+- **Western digits (0–9) everywhere** (site, app, desktop tool, dates) so book numbers and verse numbers read clearly.
+- The site's verify links (navigation, the ask bar, the tool section, the final call to action) now open `/verify`.
+
 ## Day 3 · Tuesday 6 October
 *(to be filled)*

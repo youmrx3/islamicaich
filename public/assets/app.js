@@ -14,7 +14,7 @@ if (params.get("embed")) document.body.classList.add("embed");
 
 let ui = params.get("lang") === "en" ? "en" : (params.get("lang") === "ar" ? "ar" : store.get("thabat.ui", "ar"));
 const AR = () => ui === "ar";
-const digits = (s) => AR() ? String(s).replace(/\d/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d]) : String(s);
+const digits = (s) => String(s);  // Western digits everywhere, easier to read in citations
 
 /* ------------------------------------------------------------------ copy */
 const T = {
@@ -24,7 +24,7 @@ const T = {
     clipCard: "نسختَ رسالة؟", clipCardB: "تحقّق مما في الحافظة", recent: "آخر ما تحقّقت منه", try: "جرّب رسالة:",
     searchCta: "ابحث عن دليل ثابت لموضوع", tabs: ["تحقّق", "السجل", "المحفوظ"],
     reading: "قراءة النص", extracting: "استخراج النصوص", extracted: (n) => `استخراج ${num(n)} ${n === 1 ? "نص" : "نصوص"}`,
-    matching: "المطابقة مع القرآن و٩ كتب حديثية", grading: "جمع أحكام المحققين", done: "تم", searchingFor: (n) => n ? `نبحث عن ${num(n)} ${n === 1 ? "نص" : "نصوص"}…` : "نقرأ الرسالة…", cancel: "إلغاء",
+    matching: "المطابقة مع القرآن و9 كتب حديثية", grading: "جمع أحكام المحققين", done: "تم", searchingFor: (n) => n ? `نبحث عن ${num(n)} ${n === 1 ? "نص" : "نصوص"}…` : "نقرأ الرسالة…", cancel: "إلغاء",
     save: "حفظ", saved: "محفوظ", shareKind: "شارك النتيجة بلطف",
     kind: { quran: "آية", hadith: "حديث", registry: "حديث", none: "نص منسوب" },
     noSource: "لا مصدر في القرآن والكتب التسعة", fwd: "في الرسالة ضغط لإعادة النشر («انشرها… أمانة في رقبتك»)، وهذا غالبًا علامة على رسالة غير موثقة.",
@@ -36,7 +36,7 @@ const T = {
     inMushaf: "في المصحف", inMsg: "كما ورد في الرسالة", matched: "كلمات مطابقة", diffType: "نوع الاختلاف", fix: "التصحيح", fixV: "تُنقل الآية بلفظ المصحف",
     listen: "استمع للآية", exactVerse: "الآية مطابقة لنص المصحف.", variantH: (n) => `الآية صحيحة، لكنها نُقلت باختلاف ${n === 1 ? "كلمة واحدة" : n === 2 ? "كلمتين" : num(n) + " كلمات"}.`,
     dt: { wrong: "تغيير كلمة", extra: "زيادة", missing: "نقص", minor: "حرف عطف" },
-    nfTitle: "لم نجد له مصدرًا", nfBody: "بحثنا في القرآن الكريم وتسعة كتب حديثية (٣٦٬٠٦٤ رواية) ولم نجد هذا النص. لا نصحّحه ولا نحكم بوضعه — فقط لم نجده، فلا يُنسب حتى يُعرف مصدره.",
+    nfTitle: "لم نجد له مصدرًا", nfBody: "بحثنا في القرآن الكريم وتسعة كتب حديثية (36,064 رواية) ولم نجد هذا النص. لا نصحّحه ولا نحكم بوضعه — فقط لم نجده، فلا يُنسب حتى يُعرف مصدره.",
     nrTitle: "وجدنا نصًا مشابهًا بلفظ آخر", nrBody: "قد يكون النص المتداول رواية بالمعنى أو محرّفًا. هذه أقرب النصوص، ولا نصدر حكمًا قبل مراجعة مختص.",
     askReview: "اطلب مراجعة من باحث", knowSource: "أعرف مصدره — أضفه", knowAsk: "اكتب المصدر الذي تعرفه (الكتاب والرقم):",
     replyT: "ردّ لطيف للمجموعة", copy: "انسخ", copied: "نُسخ ✓", wa: "أرسل إلى واتساب", card: "بطاقة صورة", shareCard: "بطاقة المشاركة",
@@ -210,7 +210,7 @@ function toast(msg) { const el = $("#toast"); el.textContent = msg; el.classList
 const DEMOS = [
   { ar: "رسالة «انشرها»", en: "\"Share this\" forward", text: "قال رسول الله ﷺ: «إنما الأعمال بالنيات»\nوقال تعالى: «وقل ربي زدني علما».\nوقال ﷺ: «اطلبوا العلم ولو بالصين». ومن نشرها «فُتح له باب من الجنة»\nانشرها ولا تجعلها تقف عندك 🙏" },
   { ar: "آية منقولة خطأ", en: "Misquoted verse", text: "قال تعالى: إن الله مع الصابرين إذا صبروا" },
-  { ar: "حديث غير موجود", en: "Made-up hadith", text: "صيام يوم ٢٧ رجب يعدل صيام ستين شهرًا، انشرها تؤجر" },
+  { ar: "حديث غير موجود", en: "Made-up hadith", text: "صيام يوم 27 رجب يعدل صيام ستين شهرًا، انشرها تؤجر" },
   { ar: "حكم مختلف فيه", en: "Disputed grading", text: "قال رسول الله ﷺ: «طلب العلم فريضة على كل مسلم»\nوقال: «أنا مدينة العلم وعلي بابها»" },
   { ar: "English forward", en: "English forward", text: "The Prophet (pbuh) said: \"Paradise lies under the feet of mothers.\" And: \"The strong man is not the one who wrestles, but the one who controls himself when angry.\"" },
   { ar: "طلب فتوى", en: "Fatwa request", text: "أنا أعيش في دولة أوروبية، هل يجوز لي أن أعقد زواجي في المحكمة فقط؟" },
@@ -556,7 +556,7 @@ function when(ts) {
   const d = new Date(ts), now = new Date(), day = 864e5;
   const diff = Math.floor((new Date(now.toDateString()) - new Date(d.toDateString())) / day);
   if (diff === 0) return t("today"); if (diff === 1) return t("yesterday");
-  return d.toLocaleDateString(AR() ? "ar" : "en", { day: "numeric", month: "long" });
+  return d.toLocaleDateString(AR() ? "ar-u-nu-latn" : "en", { day: "numeric", month: "long" });
 }
 function histRow(h) {
   const vs = h.result?.results || [];
@@ -621,7 +621,7 @@ function settings() {
     <div class="box" style="margin-top:10px"><b>${t("about")}</b><p class="small" style="margin:6px 0 0">${t("notFatwa")}</p></div>
     <h2 class="h-m">${t("soonT")} <span class="tag-soon">${t("soonT")}</span></h2>
     <div class="soon">${soon.map(([a, b]) => `<div><b>${esc(a)}</b>${esc(b)}</div>`).join("")}</div>
-    <p class="small" style="text-align:center;margin-top:18px">v1.1 · ${AR() ? "بيانات: القرآن الكريم + ٣٦٬٠٦٤ رواية من ٩ كتب" : "Data: the Quran + 36,064 narrations from 9 books"}</p>
+    <p class="small" style="text-align:center;margin-top:18px">v1.1 · ${AR() ? "بيانات: القرآن الكريم + 36,064 رواية من 9 كتب" : "Data: the Quran + 36,064 narrations from 9 books"}</p>
   </section>${tabbar(-1)}`;
   wire();
   $("#lang").onclick = () => { ui = AR() ? "en" : "ar"; store.set("thabat.ui", ui); render(); };
@@ -645,7 +645,7 @@ async function ocr(file, ta) {
    Native-app features shown inside the /mobile phone frame. They run the real
    verification API; only the surrounding OS chrome (chat app, home screen) is simulated. */
 const SIM_CHAT = [
-  { who: "أم خالد", text: "↪ مُعاد توجيهه كثيرًا\nصيام يوم ٢٧ رجب يعدل صيام ستين شهرًا، انشرها تؤجر…" },
+  { who: "أم خالد", text: "↪ مُعاد توجيهه كثيرًا\nصيام يوم 27 رجب يعدل صيام ستين شهرًا، انشرها تؤجر…" },
   { who: "أبو سعد", text: "قال ﷺ: «من قال سبحان الله وبحمده في يوم مئة مرة حطت خطاياه»" },
   { who: "خالد", text: "قال ﷺ: «اطلبوا العلم ولو بالصين»" },
   { me: true, text: "جزاكم الله خيرًا" },
@@ -653,7 +653,7 @@ const SIM_CHAT = [
 function simShell(inner) { return `<section class="sim"><span class="simtag">${t("sim")}</span>${inner}</section>`; }
 
 function simBubble() {
-  app.innerHTML = simShell(`<div class="chathead"><span class="av"></span><span><b>${AR() ? "مجموعة العائلة" : "Family group"}</b><span class="small">${AR() ? "أم خالد، أبو سعد، +٢١" : "+21 members"}</span></span></div>
+  app.innerHTML = simShell(`<div class="chathead"><span class="av"></span><span><b>${AR() ? "مجموعة العائلة" : "Family group"}</b><span class="small">${AR() ? "أم خالد، أبو سعد، +21" : "+21 members"}</span></span></div>
     <div class="chat" id="chat">${SIM_CHAT.map((m, i) => `<button class="bub${m.me ? " me" : ""}" data-m="${i}">${m.who ? `<div class="fw">${esc(m.who)}</div>` : ""}${esc(m.text).replace(/\n/g, "<br>")}</button>`).join("")}
     <span class="hint" id="hint">${t("tapToCopy")}</span></div>
     <button class="floatbub" id="fb" aria-label="Thabat"><img src="${MARK}" alt=""></button>
@@ -662,7 +662,7 @@ function simBubble() {
   app.querySelectorAll("[data-m]").forEach((b) => b.onclick = () => {
     app.querySelectorAll(".bub").forEach((x) => x.classList.remove("copied")); b.classList.add("copied");
     copied = SIM_CHAT[+b.dataset.m].text; $("#hint").textContent = t("copiedHint") + " · " + t("bubbleAsk");
-    const fb = $("#fb"); fb.classList.add("glow"); if (!fb.querySelector(".badge")) fb.insertAdjacentHTML("beforeend", '<span class="badge">١</span>');
+    const fb = $("#fb"); fb.classList.add("glow"); if (!fb.querySelector(".badge")) fb.insertAdjacentHTML("beforeend", '<span class="badge">1</span>');
   });
   $("#fb").onclick = async () => {
     if (!copied) { toast(t("tapToCopy")); return; }
