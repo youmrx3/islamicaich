@@ -69,10 +69,32 @@ const storyP = verify(STORY_MSG).catch(() => null);
 
 /* ---------- hero */
 $("#ask").addEventListener("submit", (e) => { e.preventDefault(); const q = $("#q").value.trim(); location.href = q ? "/verify?q=" + encodeURIComponent(q) : "/verify"; });
-if (!reduce) window.addEventListener("mousemove", (e) => {
-  const mx = e.clientX / innerWidth - .5, my = e.clientY / innerHeight - .5, st = $("#stageIn");
-  st.style.setProperty("--ry", `${-8 + mx * 10}deg`); st.style.setProperty("--rx", `${4 - my * 6}deg`);
-}, { passive: true });
+/* Hero depth: the pose is a pure function of (mouse, scroll) — eased toward its target every
+   frame — so leaving the hero and coming back always lands on the same, clean layout. */
+const stage = $("#stage");
+const pose = { mx: 0, my: 0, tx: 0, ty: 0, sp: 0, run: false };
+function heroScroll() {
+  const b = $(".hero").getBoundingClientRect();
+  pose.sp = clamp(-b.top / Math.max(1, b.height));
+  if (pose.sp >= 1) { pose.tx = pose.ty = 0; }
+  heroTick();
+}
+function heroTick() {
+  if (pose.run) return; pose.run = true;
+  requestAnimationFrame(function step() {
+    pose.mx += (pose.tx - pose.mx) * .09; pose.my += (pose.ty - pose.my) * .09;
+    stage.style.setProperty("--mx", pose.mx.toFixed(4)); stage.style.setProperty("--my", pose.my.toFixed(4)); stage.style.setProperty("--sp", pose.sp.toFixed(4));
+    if (Math.abs(pose.tx - pose.mx) > .001 || Math.abs(pose.ty - pose.my) > .001) requestAnimationFrame(step); else pose.run = false;
+  });
+}
+if (!reduce && matchMedia("(hover: hover)").matches) {
+  window.addEventListener("mousemove", (e) => {
+    if (pose.sp >= 1) return;  // hero off screen: stay still
+    pose.tx = e.clientX / innerWidth - .5; pose.ty = e.clientY / innerHeight - .5; heroTick();
+  }, { passive: true });
+  document.addEventListener("mouseleave", () => { pose.tx = pose.ty = 0; heroTick(); });
+  window.addEventListener("blur", () => { pose.tx = pose.ty = 0; heroTick(); });
+}
 function heroFill(r) {
   if (!r) return;
   const vs = r.results, ok = vs.filter((v) => ["quran_exact", "authentic", "authentic_by_routes"].includes(v.status)).length;
@@ -250,7 +272,7 @@ function cta() {
 
 /* ---------- loop */
 let raf = 0;
-function onScroll() { if (raf) return; raf = requestAnimationFrame(() => { raf = 0; story(); quran(); ring(); bubble(); cta(); }); }
+function onScroll() { if (raf) return; raf = requestAnimationFrame(() => { raf = 0; if (!reduce) heroScroll(); story(); quran(); ring(); bubble(); cta(); }); }
 addEventListener("scroll", onScroll, { passive: true });
 addEventListener("resize", onScroll);
 drawRing();
