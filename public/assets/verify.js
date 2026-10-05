@@ -25,6 +25,8 @@ const T = {
     open: "افتح المصدر", dorar: "تحقق في الدرر السنية", report: "أبلغ عن خطأ", reported: "شكرًا، وصل البلاغ للمراجعة.",
     pending: "مسودة بانتظار مراجعة مختص", reviewed: "راجعه مختص", wording: "لفظ الرسالة يختلف قليلًا عن لفظ المصدر",
     inMushaf: "في المصحف", inMsg: "↑ كما ورد في الرسالة", matched: "كلمات مطابقة", diffType: "نوع الاختلاف", fix: "التصحيح", fixV: "تُنقل الآية بلفظ المصحف",
+    occT: (n) => `ورد بلفظه في ${n === 2 ? "موضعين" : n <= 10 ? n + " مواضع" : n + " موضعًا"} من القرآن`, occSub: "الآيات المتكررة نذكر مواضعها كلها، ولا نختار واحدًا منها دون بيان.",
+    simT: "آيات متشابهة", simSub: "في القرآن آيات بلفظ قريب جدًا؛ نعرضها حتى لا تختلط آية بأخرى.", simDiff: (n) => (n === 1 ? "تختلف في كلمة واحدة" : n === 2 ? "تختلف في كلمتين" : `تختلف في ${n} كلمات`),
     listen: "استمع للآية", stop: "إيقاف", exactVerse: "الآية مطابقة لنص المصحف.", variantH: (n) => `الآية صحيحة، لكنها نُقلت باختلاف ${n === 1 ? "كلمة واحدة" : n === 2 ? "كلمتين" : n + " كلمات"}.`,
     dt: { wrong: "تغيير كلمة", extra: "زيادة", missing: "نقص", minor: "حرف عطف" }, added: "زيادة",
     nfTitle: "لم نجد له مصدرًا", nfBody: "بحثنا في القرآن الكريم وتسعة كتب حديثية (36,064 رواية) ولم نجد هذا النص. لا نصحّحه ولا نحكم بوضعه — فقط لم نجده، فلا يُنسب حتى يُعرف مصدره.",
@@ -46,6 +48,8 @@ const T = {
     open: "Open source", dorar: "Cross-check on Dorar", report: "Report a problem", reported: "Thanks — sent for review.",
     pending: "Draft — pending specialist review", reviewed: "Reviewed by a specialist", wording: "The circulating wording differs slightly from the source",
     inMushaf: "In the Mushaf", inMsg: "↑ As written in the message", matched: "Matching words", diffType: "Type of difference", fix: "Correction", fixV: "Quote the verse as in the Mushaf",
+    occT: (n) => `Occurs word for word in ${n} places in the Quran`, occSub: "For repeated verses we list every place instead of silently picking one.",
+    simT: "Similar verses", simSub: "The Quran has verses with very close wording; we show them so one is not confused with another.", simDiff: (n) => `${n} word(s) differ`,
     listen: "Listen to the verse", stop: "Stop", exactVerse: "The verse matches the Mushaf text.", variantH: (n) => `The verse is real, but ${n} word(s) were quoted differently.`,
     dt: { wrong: "changed word", extra: "addition", missing: "omission", minor: "conjunction" }, added: "added",
     nfTitle: "No source found", nfBody: "We searched the Quran and nine hadith collections (36,064 narrations) and did not find this text. We neither confirm nor call it fabricated — we just didn't find it, so don't attribute it until its source is known.",
@@ -281,7 +285,18 @@ function quranDetail(v) {
     ${v.status !== "quran_exact" ? `<div class="vx-kv"><div><span>${t("matched")}</span><b>${AR() ? `${good} من ${total}` : `${good} of ${total}`}</b></div><div><span>${t("diffType")}</span><b>${esc(kinds)}</b></div><div><span>${t("fix")}</span><b>${t("fixV")}</b></div></div>` : ""}
     <h3>${t("source")}</h3><div class="vx-box"><p class="sacred mushaf" dir="rtl">﴿${esc(q.text_uthmani)}﴾</p>
       <button class="btn dark small" id="play">▶ <span>${t("listen")}</span></button></div>
+    ${quranPlaces(q)}
     ${levelBox(v)}${links(v)}`;
+}
+/* repeated verses and near-identical (mutashabih) verses, straight from the engine */
+function quranPlaces(q) {
+  const occ = q.occurrences || [], sim = q.similar || [];
+  const occBox = occ.length > 1 ? `<h3>${t("occT")(occ.length)}</h3><p class="small">${t("occSub")}</p>
+    <div class="vx-places">${occ.map((o) => `<a href="https://quran.com/${o.surah}/${o.ayah}" target="_blank" rel="noopener">${esc(cite(o))}</a>`).join("")}</div>` : "";
+  const simBox = sim.length ? `<h3>${t("simT")}</h3><p class="small">${t("simSub")}</p>
+    ${sim.map((x) => `<div class="vx-box"><p class="sacred mushaf" dir="rtl" style="font-size:20px">﴿${esc(x.text_uthmani)}﴾</p>
+      <div class="vx-simf"><a href="https://quran.com/${x.surah}/${x.ayah}" target="_blank" rel="noopener">${esc(cite(x))} ↗</a><span>${esc(t("simDiff")(x.changed_words))}</span></div></div>`).join("")}` : "";
+  return occBox + simBox;
 }
 function playVerse(v, btn) {
   if (audio && !audio.paused) { audio.pause(); audio = null; btn.querySelector("span").textContent = t("listen"); return; }

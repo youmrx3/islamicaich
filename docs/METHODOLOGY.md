@@ -32,6 +32,16 @@ message / screenshot
                 authentic alternative, and a deterministic reply in ar / en / fr / id / tr
 ```
 
+## Repeated and similar verses (`backend/app/matching.py`)
+
+The Quran repeats some verses word for word (e.g. «فبأي آلاء ربكما تكذبان» 31 times in Surat al-Rahman, «ويل يومئذ للمكذبين» 11 times) and has many near-identical verses (mutashabihat), such as 6:32 / 29:64 / 47:36 / 57:20, or 2:173 / 16:115 / 5:3. Choosing one place by score alone would cite an arbitrary place for a repeated verse, or call a correct quote "misquoted" by comparing it with its twin. Three rules prevent this:
+
+1. **Exact first, every place.** Before any fuzzy matching, the normalized quote is searched as whole words in all 6,236 verses (a linear scan of about 1 ms). Every verse that contains it is reported (`occurrences`, `occurrence_count`); the first in Mushaf order is the primary citation.
+2. **Fewest changed words wins.** When there is no exact match, the closest fuzzy candidates (score within 0.06 of the best) are each word-diffed against the quote, and the verse with the fewest changed words is chosen (ties go to the higher score). A quote is therefore always judged against the wording it is closest to.
+3. **Near twins are shown, not merged.** Verses elsewhere that differ from the quote by 1–3 words (for quotes of 5+ words) are returned as `similar`, with their Mushaf text and the number of differing words, so a quote that mixes two similar verses is visible as such.
+
+Examples (all covered by tests): «فبأي آلاء ربكما تكذبان» → 55:13 plus 31 places; «إنما حرم عليكم الميتة والدم ولحم الخنزير» → 2:173 and 16:115, with 5:3 as a similar verse; «وما الحياة الدنيا إلا لهو ولعب» (a mix) → misquoted against 29:64 (1 word), with 6:32 shown as similar.
+
 ## Decision rules
 
 | Rule | Why |

@@ -34,6 +34,8 @@ const T = {
     reportAsk: "ما الخطأ في هذه النتيجة؟ (اختياري)", alsoIn: "ورد أيضًا في", sahihayn: "في الصحيحين",
     pending: "مسودة بانتظار مراجعة مختص", reviewed: "راجعه مختص", wording: "لفظ الرسالة يختلف قليلًا عن لفظ المصدر",
     inMushaf: "في المصحف", inMsg: "كما ورد في الرسالة", matched: "كلمات مطابقة", diffType: "نوع الاختلاف", fix: "التصحيح", fixV: "تُنقل الآية بلفظ المصحف",
+    occT: (n) => `ورد بلفظه في ${n === 2 ? "موضعين" : n <= 10 ? n + " مواضع" : n + " موضعًا"} من القرآن`, occSub: "الآيات المتكررة نذكر مواضعها كلها، ولا نختار واحدًا منها دون بيان.",
+    simT: "آيات متشابهة", simSub: "في القرآن آيات بلفظ قريب جدًا؛ نعرضها حتى لا تختلط آية بأخرى.", simDiff: (n) => (n === 1 ? "تختلف في كلمة واحدة" : n === 2 ? "تختلف في كلمتين" : `تختلف في ${n} كلمات`),
     listen: "استمع للآية", exactVerse: "الآية مطابقة لنص المصحف.", variantH: (n) => `الآية صحيحة، لكنها نُقلت باختلاف ${n === 1 ? "كلمة واحدة" : n === 2 ? "كلمتين" : num(n) + " كلمات"}.`,
     dt: { wrong: "تغيير كلمة", extra: "زيادة", missing: "نقص", minor: "حرف عطف" },
     nfTitle: "لم نجد له مصدرًا", nfBody: "بحثنا في القرآن الكريم وتسعة كتب حديثية (36,064 رواية) ولم نجد هذا النص. لا نصحّحه ولا نحكم بوضعه — فقط لم نجده، فلا يُنسب حتى يُعرف مصدره.",
@@ -70,6 +72,8 @@ const T = {
     reportAsk: "What is wrong with this result? (optional)", alsoIn: "Also in", sahihayn: "In Bukhari/Muslim",
     pending: "Draft — pending specialist review", reviewed: "Reviewed by a specialist", wording: "The circulating wording differs slightly from the source",
     inMushaf: "In the Mushaf", inMsg: "As written in the message", matched: "Matching words", diffType: "Type of difference", fix: "Correction", fixV: "Quote the verse as in the Mushaf",
+    occT: (n) => `Occurs word for word in ${n} places in the Quran`, occSub: "For repeated verses we list every place instead of silently picking one.",
+    simT: "Similar verses", simSub: "The Quran has verses with very close wording; we show them so one is not confused with another.", simDiff: (n) => `${n} word(s) differ`,
     listen: "Listen to the verse", exactVerse: "The verse matches the Mushaf text.", variantH: (n) => `The verse is real, but ${n} word(s) were quoted differently.`,
     dt: { wrong: "changed word", extra: "addition", missing: "omission", minor: "conjunction" },
     nfTitle: "No source found", nfBody: "We searched the Quran and nine hadith collections (36,064 narrations) and did not find this text. We neither confirm nor call it fabricated — we just didn't find it, so don't attribute it until its source is known.",
@@ -433,6 +437,7 @@ function quranDetail(v, i) {
       <div class="kv"><span>${t("diffType")}</span><b>${esc(kinds)}</b></div>
       <div class="kv"><span>${t("fix")}</span><b>${t("fixV")}</b></div>` : ""}
     <h2 class="h-m">${t("source")}</h2><div class="box"><p class="sacred" style="margin:0" dir="rtl">﴿${esc(q.text_uthmani)}﴾</p></div>
+    ${quranPlaces(q)}
     ${levelBox(v)}
     <div class="btns" style="margin-top:14px"><button class="btn layl" id="play">${I.play}<span>${t("listen")}</span></button></div>
     ${footLinks(v, i)}
@@ -445,6 +450,17 @@ function quranDetail(v, i) {
     const playNext = () => { if (idx >= list.length) return; audio = new Audio(list[idx++]); audio.onended = playNext; audio.play().catch(() => toast(t("err"))); };
     playNext();
   };
+}
+
+/* repeated verses and near-identical (mutashabih) verses, straight from the engine */
+function quranPlaces(q) {
+  const occ = q.occurrences || [], sim = q.similar || [];
+  const occBox = occ.length > 1 ? `<h2 class="h-m">${t("occT")(occ.length)}</h2><p class="small" style="margin:-4px 0 8px">${t("occSub")}</p>
+    <div class="places">${occ.map((o) => `<a href="https://quran.com/${o.surah}/${o.ayah}" target="_blank" rel="noopener">${esc(AR() ? o.citation_ar : o.citation_en)}</a>`).join("")}</div>` : "";
+  const simBox = sim.length ? `<h2 class="h-m">${t("simT")}</h2><p class="small" style="margin:-4px 0 8px">${t("simSub")}</p>
+    ${sim.map((x) => `<div class="box simv"><p class="sacred" dir="rtl">﴿${esc(x.text_uthmani)}﴾</p>
+      <div class="simf"><a href="https://quran.com/${x.surah}/${x.ayah}" target="_blank" rel="noopener">${esc(AR() ? x.citation_ar : x.citation_en)}</a><span>${esc(t("simDiff")(x.changed_words))}</span></div></div>`).join("")}` : "";
+  return occBox + simBox;
 }
 
 function notFound(v, i) {

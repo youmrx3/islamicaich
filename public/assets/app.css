@@ -106,6 +106,11 @@ html:has(> body.embed)::-webkit-scrollbar { display: none; }
 
 /* ---- bottom tab bar */
 .tabbar { position: fixed; bottom: calc(14px + var(--safe-b)); left: 50%; transform: translateX(-50%); width: min(440px, calc(100% - 28px)); background: var(--layl); border-radius: var(--r-pill); padding: 8px; display: flex; gap: 4px; z-index: 20; }
+.places { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+.places a { background: var(--white); border-radius: 999px; padding: 5px 12px; font-size: 13px; text-decoration: none; color: var(--layl); }
+.simv .sacred { margin: 0 0 6px; font-size: 19px; line-height: 1.9; }
+.simf { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
+.simf span { color: var(--g-daif-ink); background: var(--g-daif-bg); border-radius: 999px; padding: 1px 10px; }
 .tabfade { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: min(480px, 100%); height: calc(96px + var(--safe-b)); background: linear-gradient(to top, var(--sabah) 62%, rgba(255,247,236,0)); z-index: 19; pointer-events: none; }
 .tabbar a { flex: 1; text-align: center; text-decoration: none; color: var(--sabah); opacity: .82; padding: 10px 6px; border-radius: var(--r-pill); font-weight: 600; font-size: 16px; }
 .tabbar a.on { background: var(--nur); color: var(--layl); opacity: 1; }

@@ -241,3 +241,29 @@ def test_admin_must_sign_decisions_with_a_name(client, monkeypatch):
     monkeypatch.setenv("REVIEW_TOKEN", "admin-pass")
     r = client.post("/api/review", json={"entry_id": "R001", "decision": "approved"}, headers={"x-review-token": "admin-pass"})
     assert r.status_code == 422
+
+
+def test_repeated_verse_lists_every_place(corpus):
+    from app.matching import match_quran
+    m = match_quran(corpus, "فبأي آلاء ربكما تكذبان").to_dict()
+    assert m["status"] == "quran_exact" and m["ref"] == "55:13"          # first place is the primary citation
+    assert m["occurrence_count"] == 31 and m["occurrences"][-1]["ref"] == "55:77"
+    two = match_quran(corpus, "إنما حرم عليكم الميتة والدم ولحم الخنزير").to_dict()
+    assert [o["ref"] for o in two["occurrences"]] == ["2:173", "16:115"]
+    assert any(s["ref"] == "5:3" for s in two["similar"])                  # near twin shown, not merged
+
+
+def test_similar_verses_are_never_confused(corpus):
+    from app.matching import match_quran
+    # each twin quoted correctly is exact at its own place (not "misquoted" against the other)
+    assert match_quran(corpus, "وما الحياة الدنيا إلا لعب ولهو").ref == "6:32"
+    assert match_quran(corpus, "وما هذه الحياة الدنيا إلا لهو ولعب").ref == "29:64"
+    # a quote mixing the two is matched to the closest wording, with the twin listed
+    mix = match_quran(corpus, "وما الحياة الدنيا إلا لهو ولعب")
+    assert mix.status == "quran_variant" and mix.ref == "29:64" and mix.changed_words == 1
+    assert [s["ref"] for s in mix.similar][:1] == ["6:32"]
+
+
+def test_repeated_verse_is_explained_to_the_user():
+    r = verify_text("قال تعالى: «فبأي آلاء ربكما تكذبان»", use_llm=False)["results"][0]
+    assert "quran_repeated" in r["notes"] and "31 موضعًا" in r["explanation_ar"]

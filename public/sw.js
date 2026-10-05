@@ -1,6 +1,6 @@
 /* Thabat service worker: offline app shell. API calls always go to the network
    (verdicts must come from the live sources, never from a stale cache). */
-const VERSION = "thabat-v2.0";
+const VERSION = "thabat-v2.1";
 const SHELL = ["/app", "/assets/app.css", "/assets/app.js", "/assets/icon.svg",
   "/assets/brand/mark.svg", "/assets/brand/mark-dark.svg", "/assets/icons/icon-192.png", "/manifest.webmanifest"];
 

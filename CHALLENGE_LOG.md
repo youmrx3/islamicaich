@@ -109,5 +109,14 @@ git log --oneline baseline-pre-challenge..HEAD
 - **Western digits (0–9) everywhere** (site, app, desktop tool, dates) so book numbers and verse numbers read clearly.
 - The site's verify links (navigation, the ask bar, the tool section, the final call to action) now open `/verify`.
 
+### Repeated and similar Quran verses
+- **Problem:** repeated verses (e.g. «فبأي آلاء ربكما تكذبان» ×31) were cited at one arbitrary place. Near-identical verses (mutashabihat) could in principle be confused with their twin.
+- **Method** (`backend/app/matching.py`, documented in [METHODOLOGY](docs/METHODOLOGY.md)):
+  1. a whole-word scan of all 6,236 verses reports **every place** a quote occurs (about 1 ms);
+  2. among close candidates, the verse with the **fewest changed words** wins;
+  3. near twins (1–3 words apart) are shown as **«آيات متشابهة»** with their Mushaf text.
+- Shown in the app and the desktop tool («ورد بلفظه في N مواضع», «آيات متشابهة»), and in a new website section «الآيات المتكررة والمتشابهة» with two live examples.
+- Tests 25 → **28**; evaluation unchanged (98.6%, 0 critical errors).
+
 ## Day 3 · Tuesday 6 October
 *(to be filled)*

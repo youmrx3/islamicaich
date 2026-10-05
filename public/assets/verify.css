@@ -139,6 +139,13 @@ body.vx { background: var(--raml); }
 .sacred.mushaf { font-size: 24px; line-height: 2; margin: 0; }
 .vx-box .btn { justify-self: start; }
 
+/* repeated & similar verses */
+.vx-places { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; max-height: 150px; overflow: auto; }
+.vx-places a { background: var(--sabah); border-radius: 999px; padding: 5px 12px; font-size: 13px; text-decoration: none; color: var(--layl); }
+.vx-places a:hover { background: var(--raml); }
+.vx-simf { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 13px; }
+.vx-simf span { color: var(--g-daif-ink); background: var(--g-daif-bg); border-radius: 999px; padding: 2px 10px; }
+
 /* not found */
 .vx-nf { text-align: center; padding: 10px 0 6px; }
 .vx-nf .ring { width: 74px; height: 74px; border-radius: 50%; border: 2px dashed var(--g-none); display: grid; place-items: center; margin: 0 auto; }

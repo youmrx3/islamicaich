@@ -393,6 +393,23 @@ def verify_segment(c: Corpus, seg: Segment) -> Verdict:
             v.explanation_en = f"The verse exists ({qd['citation_en']}) but was quoted with {q.changed_words} word(s) different; see the correction."
             if seg.hint == "hadith":
                 v.notes.append("quran_attributed_as_hadith")
+        # Repeated verses / phrases: say how many places, never pick one silently.
+        n = qd.get("occurrence_count", 0)
+        if n > 1:
+            v.notes.append("quran_repeated")
+            first = qd["occurrences"][0]
+            places = "موضعين" if n == 2 else f"{n} مواضع" if n <= 10 else f"{n} موضعًا"
+            v.explanation_ar += f" وردت هذه الكلمات بلفظها في {places} من القرآن الكريم، أولها {first['citation_ar']}."
+            v.explanation_en += f" These exact words occur in {n} places in the Quran, the first being {first['citation_en']}."
+        # Near-identical verses (mutashabihat): show them so two similar verses are not confused.
+        if qd.get("similar"):
+            v.notes.append("quran_similar_verses")
+            if q.status == "quran_variant":
+                v.explanation_ar += " وفي القرآن آيات متشابهة بلفظ قريب؛ قد يكون النص خلطًا بين آيتين، فانظر الآيات المتشابهة."
+                v.explanation_en += " The Quran has similar verses with close wording; the quote may mix two of them — see the similar verses."
+            else:
+                v.explanation_ar += " وفي القرآن آيات متشابهة بلفظ قريب، فتأكد من الموضع المقصود."
+                v.explanation_en += " The Quran also has similar verses with close wording; check which place is meant."
         v.evidence = [{"type": "quran", "ref": q.ref, "text": q.text_uthmani,
                        "citation_ar": qd["citation_ar"], "citation_en": qd["citation_en"],
                        "source_url": f"https://quran.com/{q.surah}/{q.ayah_from}" + (f"-{q.ayah_to}" if q.ayah_to != q.ayah_from else "")}]

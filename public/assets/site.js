@@ -293,3 +293,26 @@ $("#shareSite")?.addEventListener("click", async () => {
 
 /* ---------- on a phone, "the app" means the real app, not the phone simulator */
 if (matchMedia("(max-width: 760px)").matches) document.querySelectorAll('a[href="/mobile"]').forEach((a) => { a.href = "/app"; });
+
+/* ---------- repeated & similar verses (live from the engine) */
+const placesTxt = (n) => AR() ? (n === 2 ? "موضعين" : n <= 10 ? n + " مواضع" : n + " موضعًا") : `${n} places`;
+const diffTxt = (n) => AR() ? (n === 1 ? "تختلف في كلمة" : n === 2 ? "تختلف في كلمتين" : `تختلف في ${n} كلمات`) : `${n} word(s) differ`;
+const qcite = (x) => esc(AR() ? x.citation_ar : x.citation_en);
+Promise.all([verify("قال تعالى: «فبأي آلاء ربكما تكذبان»"), verify("قال تعالى: «وما الحياة الدنيا إلا لهو ولعب»")]).then(([rep, mix]) => {
+  const draw = () => {
+    const a = rep.results[0], b = mix.results[0];
+    if (a?.quran) {
+      const q = a.quran, occ = q.occurrences || [];
+      $("#mutRep .mut-q").textContent = "«" + a.quote + "»";
+      $("#mutRep .mut-body").innerHTML = `<div class="mut-line">${chip(a)}<b>${AR() ? "ورد بلفظه في " + placesTxt(occ.length) : "Occurs word for word in " + placesTxt(occ.length)}</b></div>
+        <div class="mut-line">${occ.slice(0, 8).map((o) => `<span class="mut-chip">${qcite(o)}</span>`).join("")}${occ.length > 8 ? `<span class="mut-more">+${occ.length - 8}</span>` : ""}</div>`;
+    }
+    if (b?.quran) {
+      const q = b.quran, tw = (q.similar || [])[0];
+      $("#mutMix .mut-q").textContent = "«" + b.quote + "»";
+      $("#mutMix .mut-body").innerHTML = `<div class="mut-line">${chip(b)}<b>${AR() ? "الأقرب لفظًا: " : "Closest wording: "}${qcite(q)}</b><span class="mut-chip">${esc(diffTxt(q.changed_words))}</span></div>
+        ${tw ? `<div class="mut-twin"><span class="sacred" dir="rtl">﴿${esc(tw.text_uthmani)}﴾</span><span class="meta"><span>${AR() ? "آية متشابهة: " : "Similar verse: "}${qcite(tw)}</span><i>${esc(diffTxt(tw.changed_words))}</i></span></div>` : ""}`;
+    }
+  };
+  draw(); rerender.push(draw);
+}).catch(() => {});

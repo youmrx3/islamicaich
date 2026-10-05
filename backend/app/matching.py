@@ -74,13 +74,22 @@ class QuranMatch:
     text_uthmani: str
     diff: list[dict]
     changed_words: int
+    # The same words appear verbatim in other places (repeated verses / repeated phrases).
+    occurrences: list[tuple[int, int]] = field(default_factory=list)  # every (surah, ayah), incl. this one
+    # Near-identical verses elsewhere (mutashabihat): a few words differ.
+    similar: list[dict] = field(default_factory=list)
 
     def to_dict(self) -> dict:
         from .surahs import cite_ar, cite_en
-        d = self.__dict__.copy()
+        d = {k: v for k, v in self.__dict__.items() if k not in ("occurrences", "similar")}
         d["citation_ar"] = cite_ar(self.surah, self.ayah_from, self.ayah_to)
         d["citation_en"] = cite_en(self.surah, self.ayah_from, self.ayah_to)
         d["audio"] = [audio_url(self.surah, a) for a in range(self.ayah_from, self.ayah_to + 1)]
+        d["occurrences"] = [{"ref": f"{su}:{ay}", "surah": su, "ayah": ay, "citation_ar": cite_ar(su, ay, ay),
+                             "citation_en": cite_en(su, ay, ay)} for su, ay in self.occurrences]
+        d["occurrence_count"] = len(self.occurrences)
+        d["similar"] = [x | {"citation_ar": cite_ar(x["surah"], x["ayah"], x["ayah"]),
+                             "citation_en": cite_en(x["surah"], x["ayah"], x["ayah"])} for x in self.similar]
         return d
 
 
@@ -148,12 +157,76 @@ def _aligned_range(q_norm: str, norms: list[str]) -> tuple[int, int]:
     return (idx[0], idx[-1] + 1) if idx else (0, len(norms))
 
 
+# ------------------------------------------------- repeated & similar verses
+# The Quran repeats some verses verbatim (e.g. 55:13 thirty-one times in Surat al-Rahman)
+# and has many near-identical ones (mutashabihat, e.g. 6:32 / 29:64 / 47:36 / 57:20).
+# Three rules keep attribution honest:
+#   1. exact first: a whole-word scan of all 6,236 verses finds every place the quoted words
+#      occur verbatim; all of them are reported, the first one is the primary citation;
+#   2. fewest changed words wins: among close fuzzy candidates, the verse whose wording differs
+#      least from the quote is chosen, so a correct quote is never judged against its twin;
+#   3. near twins are listed as "similar verses", so a user who mixed two of them can see both.
+SIMILAR_MAX_CHANGED = 3
+
+
+def _padded_norms(c: Corpus) -> list[str]:
+    pad = getattr(c, "_quran_padded", None)
+    if pad is None:
+        pad = [f" {v['norm']} " for v in c.quran]
+        c._quran_padded = pad  # type: ignore[attr-defined]
+    return pad
+
+
+def find_verbatim(c: Corpus, q_norm: str) -> list[int]:
+    """Positions of every verse that contains the quote word-for-word (normalized)."""
+    needle = f" {q_norm.strip()} "
+    return [i for i, t in enumerate(_padded_norms(c)) if needle in t]
+
+
+def _similar_verses(c: Corpus, quote: str, q_norm: str, exclude: set[int], limit: int = 4) -> list[dict]:
+    """Single verses elsewhere whose wording differs from the quote by only a few words."""
+    q_words = len(q_norm.split())
+    if q_words < 5:  # very short phrases match too many verses loosely to be useful here
+        return []
+    out = []
+    for pos, _ in c.idx_quran.search(q_norm, k=16):
+        if pos in exclude:
+            continue
+        v = c.quran[pos]
+        if score_ar(q_norm, v["norm"]) < QURAN_VARIANT:
+            continue
+        tagged = _words_with_norm(v.get("simple") or v["uthmani"])
+        i, j = _aligned_range(q_norm, [n for _, n in tagged])
+        _, changed = word_diff(quote, " ".join(w for w, _ in tagged[i:j]))
+        if 0 < changed <= min(SIMILAR_MAX_CHANGED, max(1, q_words // 3)):
+            out.append({"ref": f"{v['surah']}:{v['ayah']}", "surah": v["surah"], "ayah": v["ayah"],
+                        "text_uthmani": v["uthmani"], "changed_words": changed})
+    out.sort(key=lambda x: (x["changed_words"], x["surah"], x["ayah"]))
+    return out[:limit]
+
+
+def _verbatim_match(c: Corpus, quote: str, q_norm: str, hits: list[int]) -> QuranMatch:
+    first = c.quran[hits[0]]
+    tagged = _words_with_norm(first.get("simple") or first["uthmani"])
+    i, j = _aligned_range(q_norm, [n for _, n in tagged])
+    diff, changed = word_diff(quote, " ".join(w for w, _ in tagged[i:j]))
+    m = QuranMatch("quran_exact" if changed == 0 else "quran_variant", 1.0, f"{first['surah']}:{first['ayah']}",
+                   first["surah"], first["ayah"], first["ayah"], first["uthmani"], diff, changed)
+    m.occurrences = [(c.quran[p]["surah"], c.quran[p]["ayah"]) for p in hits]
+    m.similar = _similar_verses(c, quote, q_norm, set(hits))
+    return m
+
+
 def match_quran(c: Corpus, quote: str) -> QuranMatch | None:
     q_norm = normalize_ar(quote, drop_honorifics=False)
     if len(q_norm.split()) < MIN_QUOTE_WORDS:
         return None
+    hits = find_verbatim(c, q_norm)
+    if hits:
+        return _verbatim_match(c, quote, q_norm, hits)
     cands = c.idx_quran.search(q_norm, k=12)
     best = None
+    scored = []
     for pos, _ in cands:
         for lo, hi in ((0, 0), (-1, 0), (0, 1), (-1, 1), (0, 2), (-2, 0), (0, 3), (-1, 2), (-2, 1), (-3, 0)):
             a, b = pos + lo, pos + hi
@@ -166,19 +239,40 @@ def match_quran(c: Corpus, quote: str) -> QuranMatch | None:
             s = score_ar(q_norm, text)
             # Prefer the shortest span that explains the quote.
             key = (round(s - 0.02 * (b - a), 3), -(b - a))
+            scored.append((key, s, a, b))
             if best is None or key > best[0]:
                 best = (key, s, a, b)
     if not best or best[1] < QURAN_PARTIAL:
         return None
-    _, s, a, b = best
-    span = c.quran[a:b + 1]
-    tagged = []  # (display word, norm word, ayah)
-    for v in span:
-        tagged += [(w, n, v["ayah"]) for w, n in _words_with_norm(v.get("simple") or v["uthmani"])]
-    i, j = _aligned_range(q_norm, [n for _, n, _ in tagged])
-    covered = tagged[i:j]
+
+    def explain(a: int, b: int):
+        span = c.quran[a:b + 1]
+        tagged = []  # (display word, norm word, ayah)
+        for v in span:
+            tagged += [(w, n, v["ayah"]) for w, n in _words_with_norm(v.get("simple") or v["uthmani"])]
+        i, j = _aligned_range(q_norm, [n for _, n, _ in tagged])
+        covered = tagged[i:j]
+        diff, changed = word_diff(quote, " ".join(w for w, _, _ in covered))
+        return span, covered, diff, changed
+
+    # Rule 2: among the close candidates, the verse that differs by the fewest words wins
+    # (ties keep the higher score), so a quote is never judged against a similar verse.
+    close, seen = [], set()
+    for key, s_, a_, b_ in sorted(scored, reverse=True):
+        if s_ < best[1] - 0.06 or (a_, b_) in seen:
+            continue
+        seen.add((a_, b_))
+        close.append((key, s_, a_, b_))
+        if len(close) == 6:
+            break
+    choice = None
+    for key, s_, a_, b_ in close:
+        span_, covered_, diff_, changed_ = explain(a_, b_)
+        rank = (changed_, -key[0], -key[1])
+        if choice is None or rank < choice[0]:
+            choice = (rank, s_, a_, b_, span_, covered_, diff_, changed_)
+    _, s, a, b, span, covered, diff, changed = choice
     a_from, a_to = covered[0][2], covered[-1][2]
-    diff, changed = word_diff(quote, " ".join(w for w, _, _ in covered))
     status = "quran_exact" if changed == 0 and s >= QURAN_EXACT - 0.05 else "quran_variant"
     if status == "quran_variant" and changed > max(3, len(covered) // 2):
         return None  # too different to claim it is this verse
@@ -192,8 +286,16 @@ def match_quran(c: Corpus, quote: str) -> QuranMatch | None:
     surah = span[0]["surah"]
     shown = [v for v in span if a_from <= v["ayah"] <= a_to]
     ref = f"{surah}:{a_from}" + (f"-{a_to}" if a_to != a_from else "")
-    return QuranMatch(status, round(s, 3), ref, surah, a_from, a_to,
-                      " ".join(v["uthmani"] for v in shown), diff, changed)
+    m = QuranMatch(status, round(s, 3), ref, surah, a_from, a_to,
+                   " ".join(v["uthmani"] for v in shown), diff, changed)
+    if a_from == a_to:
+        # the verse words the quote corresponds to may themselves occur in several places
+        core = " ".join(n for _, n, _ in covered)
+        here = [k for k, v in enumerate(c.quran) if v["surah"] == surah and v["ayah"] == a_from]
+        same = find_verbatim(c, core) if len(core.split()) >= MIN_QUOTE_WORDS else []
+        m.occurrences = [(c.quran[p]["surah"], c.quran[p]["ayah"]) for p in sorted(set(same) | set(here))]
+        m.similar = _similar_verses(c, quote, q_norm, set(same) | set(here))
+    return m
 
 
 # -------------------------------------------------------------------- Hadith
