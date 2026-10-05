@@ -89,6 +89,7 @@ git log --oneline baseline-pre-challenge..HEAD
 - `/review` is now a sign-in screen: nothing is shown until the server accepts the code. Reviewers see the register and reports; only the admin sees reviewer applications and emails.
 - Database: new `reviewers` table, readable only by the server (row-level security, no public policies), in `supabase/migrations/002_reviewers.sql`. The privacy policy explains what reviewers' data is used for.
 - Tests: 23 → **25** (apply, approve, sign in, decision signed with the verified name, re-issued code disables the old one, revoke, the honeypot, the admin must sign with a name).
+- Verified in production: migration applied, the full flow tested live (apply → approve → sign in with the personal code → signed decision), and the **Sharia mentor onboarded as the first approved reviewer**.
 
 ## Day 3 · Tuesday 6 October
 *(to be filled)*
