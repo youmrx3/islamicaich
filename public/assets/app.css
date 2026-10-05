@@ -85,8 +85,8 @@ html:has(> body.embed)::-webkit-scrollbar { display: none; }
 .clipcard { margin-top: 12px; display: flex; align-items: center; gap: 12px; background: var(--g-sahih-bg); border-radius: 22px; padding: 14px 16px; border: 0; width: 100%; text-align: start; }
 .clipcard img { width: 40px; height: 40px; }
 .clipcard b { font-weight: 700; }
-.examples { display: flex; gap: 8px; overflow-x: auto; padding: 4px 0 2px; scrollbar-width: none; }
-.examples::-webkit-scrollbar { display: none; }
+/* suggestions wrap onto several lines so every one is visible (no hidden sideways scroll) */
+.examples { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 0 2px; }
 .examples .chipbtn { white-space: nowrap; background: var(--white); }
 .ocr { font-size: 13px; color: var(--muted); margin-top: 6px; }
 
