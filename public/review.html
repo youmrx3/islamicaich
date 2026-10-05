@@ -27,19 +27,40 @@
     th, td { text-align: start; padding: 10px 12px; border-bottom: 1px solid var(--raml); vertical-align: top; }
     th { font-size: 13px; color: var(--muted); }
     .wrapt { overflow-x: auto; }
+    .gate { min-height: 70vh; display: grid; place-items: center; }
+    .gate-card { background: var(--white); border-radius: 28px; padding: 32px 28px; width: min(420px, 100%); display: grid; gap: 12px; box-shadow: 0 30px 60px -40px rgba(29,27,51,.5); }
+    .gate-card img { width: 56px; }
+    .gate-card h1 { margin: 4px 0 0; font-size: 28px; }
+    .gate-card p { margin: 0 0 6px; color: var(--layl-soft); font-size: 15px; }
+    .rv .gate-card input { border: 1px solid var(--raml-2); background: var(--sabah); border-radius: 999px; padding: 12px 16px; font: inherit; }
+    .gate-card .err { color: var(--g-mawdu-ink); font-size: 14px; min-height: 20px; margin: 0; }
+    .who { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    [hidden] { display: none !important; }
   </style>
 </head>
 <body>
-  <header class="nav"><div class="wrap nav-in"><a class="logo" href="/"><img src="/assets/brand/mark-dark.svg" alt=""><span>ثَبَت</span></a><span class="eyebrow">صفحة المراجعة للمختصين</span></div></header>
+  <header class="nav"><div class="wrap nav-in"><a class="logo" href="/"><img src="/assets/brand/mark-dark.svg" alt=""><span>ثَبَت</span></a><span class="who"><span class="eyebrow">صفحة المراجعة للمختصين</span><button class="btn white small" id="logout" hidden>خروج</button></span></div></header>
   <main class="wrap rv">
+    <section class="gate" id="gate">
+      <form class="gate-card" id="tokForm">
+        <img src="/assets/brand/mark.svg" alt="">
+        <h1>دخول المراجعين</h1>
+        <p>هذه الصفحة للمختصين فقط. أدخل رمز المراجعة واسمك، فكل قرار يُحفظ باسم صاحبه.</p>
+        <label class="sr" for="who">اسم المراجع</label><input id="who" type="text" placeholder="اسم المراجع" autocomplete="name" required minlength="2">
+        <label class="sr" for="tok">رمز المراجعة</label><input id="tok" type="password" placeholder="رمز المراجعة" autocomplete="current-password" required>
+        <p class="err" id="err" role="alert"></p>
+        <button class="btn dark">دخول</button>
+      </form>
+    </section>
+    <div id="panel" hidden>
     <h1 style="margin:0">مراجعة السجل والبلاغات</h1>
-    <p class="lede">لا يُعتمد أي مدخل في سجل العبارات المشتهرة إلا بعد قرار مختص مسمّى، ويُحفظ كل قرار مع اسم المراجع ووقته. هذه الصفحة محمية برمز المراجع.</p>
-    <form class="tok" id="tokForm"><label class="sr" for="tok">رمز المراجع</label><input id="tok" type="password" placeholder="رمز المراجع (REVIEW_TOKEN)" autocomplete="off"><input id="who" type="text" placeholder="اسم المراجع"><button class="btn dark small">دخول</button></form>
+    <p class="lede">لا يُعتمد أي مدخل في سجل العبارات المشتهرة إلا بعد قرار مختص مسمّى، ويُحفظ كل قرار مع اسم المراجع ووقته.</p>
     <p id="msg" class="lede" style="font-size:15px"></p>
     <h2 style="font-size:28px">سجل العبارات المشتهرة <span id="regv" class="st"></span></h2>
     <div id="reg"></div>
     <h2 style="font-size:28px;margin-top:40px">بلاغات المستخدمين</h2>
-    <div class="wrapt"><table><thead><tr><th>النوع</th><th>النص</th><th>الحكم</th><th>الدليل</th><th>ملاحظة</th><th>التاريخ</th></tr></thead><tbody id="flags"><tr><td colspan="6">أدخل الرمز لعرض البلاغات.</td></tr></tbody></table></div>
+    <div class="wrapt"><table><thead><tr><th>النوع</th><th>النص</th><th>الحكم</th><th>الدليل</th><th>ملاحظة</th><th>التاريخ</th></tr></thead><tbody id="flags"></tbody></table></div>
+    </div>
   </main>
   <script>
     const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -47,7 +68,20 @@
     const KIND = { problem: "خطأ في الحكم", request_review: "طلب مراجعة", suggest_source: "اقتراح مصدر" };
     const DEC = { approved: "معتمد", needs_edit: "يحتاج تعديل", rejected: "مرفوض", draft: "مسودة" };
     let token = S.get("thabat.tok"), who = S.get("thabat.who");
-    document.getElementById("tok").value = token; document.getElementById("who").value = who;
+    const $ = (id) => document.getElementById(id);
+    $("who").value = who;
+    async function unlock() {
+      const r = await fetch("/api/flags", { headers: { "x-review-token": token } }).catch(() => null);
+      if (!r || !r.ok) {
+        const j = r ? await r.json().catch(() => ({})) : {};
+        $("err").textContent = !r ? "تعذر الاتصال بالخادم." : r.status === 401 ? "رمز المراجعة غير صحيح." : (j.detail || "لا يمكن الدخول الآن.");
+        S.set("thabat.tok", ""); token = "";
+        return;
+      }
+      $("gate").hidden = true; $("panel").hidden = false; $("logout").hidden = false;
+      renderFlags(await r.json());
+      loadReg();
+    }
     async function loadReg() {
       const reg = await (await fetch("/api/registry")).json();
       document.getElementById("regv").textContent = "الإصدار " + reg.version;
@@ -59,23 +93,22 @@
       document.querySelectorAll("[data-d]").forEach((b) => b.onclick = () => decide(b.dataset.id, b.dataset.d));
     }
     async function decide(id, decision) {
-      if (!token || !who) { msg("أدخل الرمز واسم المراجع أولًا."); return; }
+      if (!token || !who) { location.reload(); return; }
       const note = document.querySelector(`[data-note="${id}"]`).value;
       const r = await fetch("/api/review", { method: "POST", headers: { "Content-Type": "application/json", "x-review-token": token }, body: JSON.stringify({ entry_id: id, decision, reviewer: who, note }) });
       const j = await r.json().catch(() => ({}));
+      if (r.status === 401) { S.set("thabat.tok", ""); location.reload(); return; }
       msg(r.ok ? `حُفظ القرار على ${id}: ${DEC[decision]}.` : (j.detail || "تعذر الحفظ"));
       if (r.ok) setTimeout(loadReg, 300);
     }
-    async function loadFlags() {
-      const r = await fetch("/api/flags", { headers: token ? { "x-review-token": token } : {} });
-      const j = await r.json().catch(() => ({}));
-      const tb = document.getElementById("flags");
-      if (!r.ok) { tb.innerHTML = `<tr><td colspan="6">${esc(j.detail || r.status)}</td></tr>`; return; }
+    function renderFlags(j) {
+      const tb = $("flags");
       tb.innerHTML = j.flags.length ? j.flags.map((f) => `<tr><td>${esc(KIND[f.kind] || f.kind || "")}</td><td style="font-family:var(--f-text);font-size:17px">${esc(f.quote)}</td><td>${esc(f.status)}</td><td>${esc(f.evidence_id || "—")}</td><td>${esc(f.comment || "—")}</td><td>${esc((f.created_at || f.at || "").slice(0, 16).replace("T", " "))}</td></tr>`).join("") : `<tr><td colspan="6">لا توجد بلاغات بعد.</td></tr>`;
     }
     function msg(t) { document.getElementById("msg").textContent = t; }
-    document.getElementById("tokForm").onsubmit = (e) => { e.preventDefault(); token = document.getElementById("tok").value; who = document.getElementById("who").value.trim(); S.set("thabat.tok", token); S.set("thabat.who", who); loadFlags(); };
-    loadReg(); if (token) loadFlags();
+    $("tokForm").onsubmit = (e) => { e.preventDefault(); $("err").textContent = ""; token = $("tok").value; who = $("who").value.trim(); S.set("thabat.tok", token); S.set("thabat.who", who); unlock(); };
+    $("logout").onclick = () => { S.set("thabat.tok", ""); location.reload(); };
+    if (token && who) unlock();
   </script>
 </body>
 </html>
