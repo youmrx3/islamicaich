@@ -104,7 +104,8 @@ a { color: inherit; }
 @keyframes bob { from { transform: translateY(-7px); } to { transform: translateY(7px); } }
 .ground { position: absolute; inset: auto 4% -4% 4%; height: 60px; border-radius: 50%; background: radial-gradient(closest-side, rgba(29,27,51,.28), transparent); filter: blur(8px); transform: translateX(calc(var(--mx) * 14px)) scaleX(calc(1 - var(--sp) * .2)); opacity: calc(1 - var(--sp) * .6); }
 
-@media (min-width: 1001px) { .stage { margin-inline-end: calc(-1 * clamp(0px, (100vw - 1200px) / 2, 36px)); } }
+@media (min-width: 1001px) { .stage { margin-inline-end: calc(-1 * clamp(0px, (100vw - 1280px) / 2 - 24px, 250px)); } }
+@media (min-width: 1600px) { .stage { height: min(660px, 74svh); } .ly-phone { width: 236px; height: min(480px, 86%); } .ly-laptop { width: 84%; } }
 
 /* laptop */
 .laptop { position: relative; width: 100%; }

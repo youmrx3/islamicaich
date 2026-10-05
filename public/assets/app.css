@@ -101,6 +101,7 @@ body.embed { background: var(--sabah); }
 
 /* ---- bottom tab bar */
 .tabbar { position: fixed; bottom: calc(14px + var(--safe-b)); left: 50%; transform: translateX(-50%); width: min(440px, calc(100% - 28px)); background: var(--layl); border-radius: var(--r-pill); padding: 8px; display: flex; gap: 4px; z-index: 20; }
+.tabfade { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: min(480px, 100%); height: calc(96px + var(--safe-b)); background: linear-gradient(to top, var(--sabah) 62%, rgba(255,247,236,0)); z-index: 19; pointer-events: none; }
 .tabbar a { flex: 1; text-align: center; text-decoration: none; color: var(--sabah); opacity: .82; padding: 10px 6px; border-radius: var(--r-pill); font-weight: 600; font-size: 16px; }
 .tabbar a.on { background: var(--nur); color: var(--layl); opacity: 1; }
 

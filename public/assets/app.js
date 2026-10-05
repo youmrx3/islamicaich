@@ -196,7 +196,7 @@ window.addEventListener("hashchange", render);
 
 function tabbar(active) {
   const [a, b, c] = t("tabs");
-  return `<nav class="tabbar" aria-label="tabs"><a href="#/" class="${active === 0 ? "on" : ""}">${a}</a><a href="#/history" class="${active === 1 ? "on" : ""}">${b}</a><a href="#/saved" class="${active === 2 ? "on" : ""}">${c}</a></nav>`;
+  return `<div class="tabfade" aria-hidden="true"></div><nav class="tabbar" aria-label="tabs"><a href="#/" class="${active === 0 ? "on" : ""}">${a}</a><a href="#/history" class="${active === 1 ? "on" : ""}">${b}</a><a href="#/saved" class="${active === 2 ? "on" : ""}">${c}</a></nav>`;
 }
 function backbar(right = "") {
   return `<div class="topbar"><button class="iconbtn" data-back aria-label="back">${I.back}</button>${right}</div>`;
