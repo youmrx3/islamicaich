@@ -290,3 +290,6 @@ $("#shareSite")?.addEventListener("click", async () => {
   if (navigator.share) { try { await navigator.share({ title: "Thabat", text, url }); return; } catch { return; } }
   window.open("https://wa.me/?text=" + encodeURIComponent(text + " " + url), "_blank", "noopener");
 });
+
+/* ---------- on a phone, "the app" means the real app, not the phone simulator */
+if (matchMedia("(max-width: 760px)").matches) document.querySelectorAll('a[href="/mobile"]').forEach((a) => { a.href = "/app"; });

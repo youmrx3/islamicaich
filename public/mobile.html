@@ -5,12 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ثَبَت — التطبيق</title>
   <meta name="description" content="جرّب تطبيق ثَبَت كاملًا في المتصفح: التحقق، والنتائج، والآية كلمة كلمة، والسجل، وبطاقة المشاركة، والفقاعة العائمة، والودجت، وبوت واتساب.">
+  <script>if (matchMedia("(max-width: 760px)").matches && !/[?&]preview/.test(location.search)) location.replace("/app");</script>
   <link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/site.css?v=20261005c">
+  <link rel="stylesheet" href="/assets/site.css?v=20261005d">
   <style>
     .mob { display: grid; grid-template-columns: 1fr auto; gap: 56px; align-items: start; padding: 40px 0 80px; }
     .mob h1 { font-size: clamp(38px, 5vw, 64px); line-height: 1.15; margin: 0 0 14px; }
@@ -22,15 +23,36 @@
     .screens button.on span { color: #C9C5DE; }
     .screens .sim b::after { content: " · محاكاة"; font-weight: 500; color: var(--khuzama-ink, #6B5BC4); font-size: 12px; }
     .screens button.on.sim b::after { color: var(--khuzama); }
-    .phone { width: 390px; height: 820px; border-radius: 56px; background: var(--layl); padding: 12px; box-shadow: 0 40px 90px -40px rgba(29,27,51,.55); position: sticky; top: 90px; }
-    .phone iframe { width: 100%; height: 100%; border: 0; border-radius: 46px; background: var(--sabah); display: block; }
+    /* device: sized to the screen height, with a real frame, status bar and depth */
+    .dev { position: sticky; top: 92px; display: grid; justify-items: center; padding: 6px 22px 70px; }
+    .dev .glow { position: absolute; inset: 8% -6% 12%; border-radius: 50%; background: radial-gradient(closest-side, rgba(43,212,154,.32), rgba(205,191,255,.28) 55%, transparent 72%); filter: blur(30px); z-index: 0; }
+    .phone { position: relative; z-index: 1; height: min(800px, calc(100svh - 170px)); min-height: 520px; aspect-ratio: 390 / 820; border-radius: 58px; padding: 11px;
+      background: linear-gradient(145deg, #3A3760 0%, #1D1B33 30%, #12101F 70%, #2C2948 100%);
+      box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.14), inset 0 0 0 4px #0E0C1A, 0 50px 90px -40px rgba(29,27,51,.65), 0 18px 30px -18px rgba(29,27,51,.5); }
+    .phone .pb { position: absolute; width: 4px; border-radius: 3px; background: linear-gradient(90deg, #2C2948, #0E0C1A); }
+    .phone .pb1 { inset-inline-start: -3px; top: 17%; height: 7%; } .phone .pb2 { inset-inline-start: -3px; top: 26%; height: 7%; } .phone .pb3 { inset-inline-end: -3px; top: 22%; height: 11%; }
+    .screen { position: relative; width: 100%; height: 100%; border-radius: 47px; overflow: hidden; background: var(--sabah); }
+    /* the app always renders at a real phone width (375px) and is scaled into the frame */
+    .vp { position: absolute; top: 0; left: 0; width: 375px; height: 100%; display: flex; flex-direction: column; transform-origin: top left; }
+    .status { flex: 0 0 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 26px; direction: ltr; font: 600 14px/1 var(--f-ui); color: var(--layl); background: var(--sabah); position: relative; }
+    .island { position: absolute; left: 50%; top: 9px; transform: translateX(-50%); width: 108px; height: 30px; border-radius: 20px; background: #0E0C1A; }
+    .status .icons { display: flex; gap: 6px; align-items: center; } .status svg { height: 12px; width: auto; }
+    .phone iframe { flex: 1; width: 100%; border: 0; background: var(--sabah); display: block; }
+    .screen .glare { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(118deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,0) 26%); }
+    .home-ind { position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%); width: 120px; height: 4px; border-radius: 3px; background: rgba(29,27,51,.35); pointer-events: none; }
+    .dev .floor { position: absolute; bottom: 8px; width: 70%; height: 40px; border-radius: 50%; background: radial-gradient(closest-side, rgba(29,27,51,.3), transparent); filter: blur(6px); }
+    .dev .tag { position: absolute; z-index: 2; background: var(--white); border-radius: 16px; padding: 9px 13px; font-size: 13px; font-weight: 600; box-shadow: 0 20px 36px -20px rgba(29,27,51,.5); white-space: nowrap; animation: bob 5s ease-in-out infinite alternate; }
+    .dev .tag i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--nur); margin-inline-end: 6px; }
+    .dev .t1 { top: 9%; left: calc(100% - 48px); } .dev .t2 { bottom: 14px; left: 50%; translate: -50% 0; animation-delay: -2.5s; }
+    @keyframes bob { from { transform: translateY(-6px); } to { transform: translateY(6px); } }
     .side { display: grid; gap: 16px; }
     .install { background: var(--white); border-radius: 26px; padding: 18px; display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center; }
     #qr { width: 132px; height: 132px; background: var(--sabah); border-radius: 16px; display: grid; place-items: center; overflow: hidden; }
     #qr svg, #qr img { width: 120px; height: 120px; }
     .install ol { margin: 6px 0 0; padding-inline-start: 18px; font-size: 14px; color: var(--layl-soft); }
     .note { font-size: 13px; color: var(--muted); }
-    @media (max-width: 960px) { .mob { grid-template-columns: 1fr; } .phone { position: relative; top: 0; margin: 0 auto; width: min(390px, 100%); height: 760px; } }
+    @media (max-width: 960px) { .mob { grid-template-columns: 1fr; } .dev { position: relative; top: 0; } .phone { height: 720px; } .dev .tag { display: none; } }
+    @media (prefers-reduced-motion: reduce) { .dev .tag { animation: none; } }
   </style>
 </head>
 <body>
@@ -54,7 +76,22 @@
       </div>
       <p class="note">الشاشات الموسومة «محاكاة» (الفقاعة العائمة، الودجت، مشاركة iOS، بوت واتساب) تعرض مزايا التطبيق الأصلي القادم داخل إطار مُحاكى، لكنها تستخدم محرك التحقق الحقيقي نفسه.</p>
     </div>
-    <div class="phone"><iframe id="ph" title="تطبيق ثَبَت" src="/app?embed=1#/" allow="clipboard-read; clipboard-write"></iframe></div>
+    <div class="dev">
+      <div class="glow" aria-hidden="true"></div>
+      <div class="phone">
+        <i class="pb pb1"></i><i class="pb pb2"></i><i class="pb pb3"></i>
+        <div class="screen" id="screen"><div class="vp" id="vp">
+          <div class="status" aria-hidden="true"><span>9:41</span><span class="island"></span>
+            <span class="icons"><svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/><rect x="5" y="5" width="3" height="7" rx="1" fill="currentColor"/><rect x="10" y="2" width="3" height="10" rx="1" fill="currentColor"/><rect x="15" y="0" width="3" height="12" rx="1" fill="currentColor"/></svg><svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="16" height="8" rx="2" fill="currentColor"/><rect x="23.5" y="4" width="2" height="4" rx="1" fill="currentColor" opacity=".5"/></svg></span></div>
+          <iframe id="ph" title="تطبيق ثَبَت" src="/app?embed=1#/" allow="clipboard-read; clipboard-write"></iframe>
+          <div class="home-ind" aria-hidden="true"></div></div>
+          <div class="glare" aria-hidden="true"></div>
+        </div>
+      </div>
+      <div class="floor" aria-hidden="true"></div>
+      <div class="tag t1" aria-hidden="true"><i></i>يعمل بالمصادر الحقيقية</div>
+      <div class="tag t2" aria-hidden="true"><i></i>نفس التطبيق على جوالك</div>
+    </div>
   </main>
   <footer class="foot"><div class="wrap foot-in"><span>ثَبَت — تحقّق قبل أن تنشر</span><nav class="foot-links"><a href="/">الموقع</a><a href="/privacy">الخصوصية</a></nav></div></footer>
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js" defer></script>
@@ -81,6 +118,10 @@
       box.querySelectorAll("button").forEach((x) => x.classList.remove("on")); btn.classList.add("on");
       ph.src = SCREENS[+btn.dataset.i][3] + (SCREENS[+btn.dataset.i][3].includes("#") ? "" : "") ;
     });
+    // scale the 375px-wide app viewport to whatever size the frame has on this screen
+    const vp = document.getElementById("vp"), scr = document.getElementById("screen");
+    function fitPhone() { const k = scr.clientWidth / 375; vp.style.transform = `scale(${k})`; vp.style.height = (scr.clientHeight / k) + "px"; }
+    fitPhone(); addEventListener("resize", fitPhone);
     const appUrl = location.origin + "/app";
     document.getElementById("url").textContent = appUrl;
     window.addEventListener("load", () => {
