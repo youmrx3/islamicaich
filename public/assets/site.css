@@ -65,7 +65,7 @@ a { color: inherit; }
 
 /* hero — fills the first screen; copy on one side, the laptop + phone on the other */
 .hero { min-height: calc(100svh - 88px); display: flex; align-items: center; padding: 28px 0 44px; }
-.hero-in { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); gap: 36px; align-items: center; width: min(1280px, 100% - 32px); }
+.hero-in { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); gap: clamp(56px, 6.5vw, 130px); align-items: center; width: min(1280px, 100% - 32px); }
 .hero h1 { font-weight: 800; font-size: clamp(44px, 5.4vw, 82px); line-height: 1.16; margin: 18px 0 18px; letter-spacing: -.01em; text-wrap: balance; }
 .hero h1 .l1 { white-space: nowrap; }
 .hero h1 .hl { display: inline-block; padding: 0 .28em .08em; margin-top: 6px; border-radius: .3em; }
@@ -94,9 +94,9 @@ a { color: inherit; }
     rotateX(calc(var(--rx0, 0deg) - var(--my) * 6deg + var(--sp) * 14deg)); }
 .ly-laptop { top: 7%; inset-inline-start: 0; width: 86%; z-index: 1; }
 .ly-phone { bottom: 0; inset-inline-end: 2%; width: 210px; height: min(430px, 86%); z-index: 3; }
-.ly-mark { top: -5%; inset-inline-start: 1%; z-index: 4; }
+.ly-mark { top: -5%; inset-inline-start: 6%; z-index: 4; }
 .ly-f1 { top: 1%; inset-inline-end: 10%; z-index: 4; }
-.ly-f2 { bottom: 17%; inset-inline-start: -3%; z-index: 4; }
+.ly-f2 { bottom: 17%; inset-inline-start: 5%; z-index: 4; }
 .ly-stat { bottom: 1%; inset-inline-start: 24%; z-index: 4; }
 .enter { height: 100%; animation: heroIn 1s cubic-bezier(.2, .8, .2, 1) both; animation-delay: var(--delay, 0s); }
 @keyframes heroIn { from { opacity: 0; transform: translateY(46px) scale(.94); } }
