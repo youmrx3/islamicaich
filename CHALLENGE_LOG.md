@@ -123,6 +123,13 @@ git log --oneline baseline-pre-challenge..HEAD
 ### Animated film
 - A 60-second animated film (8 scenes, brand transitions, kinetic Arabic type). Every verdict, citation and count on screen is fetched live from the engine. It has an original score synthesized in code (no samples). Source: `video/film60.html`, `video/score.py`, `video/render.py`.
 
-### «من صنع ثَبَت» — the maker and the brand identity
-- New website section about the participant (senior graphic designer, PhD student in NLP; research: multilingual chatbots for mental-health support), with a link to his Behance.
-- The full **brand identity**: 23 boards in an animated slider with chapters (strategy · the mark · colour & type · applications), thumbnails, swipe and keyboard navigation, a full-screen view and a PDF download.
+### `/about` — the maker, the idea, the brand
+- A standalone **About page** (navbar «عن ثَبَت»), written in the participant's own voice:
+  - a hook: speedcubing, second in Algeria, «every mess has a solution, piece by piece»;
+  - the story in three moments: the chaos, the idea, the making;
+  - **the idea of the logo**, an interactive mark: three lines for the forwarded message, the highlighted line for the verified text, the diamond for «here», the rounded square for safety and familiarity;
+  - the brand's purpose, mission, vision and promise;
+  - the palette and the typefaces;
+  - the 23-board brand-identity slider with a PDF download;
+  - the research (multilingual chatbots for mental-health support).
+- Home page: the grading-scale section now has its own apricot («مشمش») background from the palette; the final call to action is followed directly by the footer.

@@ -109,6 +109,7 @@ python -m uvicorn index:app --port 8000
 | `/verify` | the full desktop verification tool (message → results → details, evidence search, reply, card) |
 | `/app` | the app (PWA) · demos: `/app?ex=0` … `/app?ex=5` · search: `/app?mode=search` |
 | `/mobile` | the app in a phone frame + QR code |
+| `/about` | the maker, the idea of the logo, the brand identity (23 boards) |
 | `/join` · `/review` | apply as a reviewer · reviewer and admin sign-in |
 | `/api/docs` | API (`/api/verify`, `/api/search`, `/api/daily`, `/api/reply`, `/api/flag`, `/api/review`…) |
 

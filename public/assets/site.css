@@ -236,13 +236,12 @@ a { color: inherit; }
 .quran-cap::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--g-mawdu); }
 
 /* grades ring */
-.ring { height: 260vh; background: radial-gradient(900px 600px at 25% 55%, rgba(43,212,154,.16), transparent 70%), radial-gradient(800px 600px at 80% 20%, rgba(235,72,88,.10), transparent 70%), linear-gradient(180deg, #ECE6FF 0%, #F6F2FF 100%); position: relative; }
-.ring::before { content: ""; position: absolute; inset: 0 0 auto; height: 6px; background: linear-gradient(90deg, var(--g-sahih), var(--g-hasan), var(--g-daif), var(--g-vdaif), var(--g-mawdu), var(--g-none)); }
-.ring .kicker { background: var(--g-khilaf-ink); color: #fff; }
-.ring .gcard { box-shadow: 0 30px 60px -36px rgba(75,59,154,.45); }
+.ring { height: 260vh; background: var(--mishmish); position: relative; }
+.ring .lede { color: var(--layl); opacity: .8; }
+.ring .gcard { box-shadow: 0 30px 60px -34px rgba(29,27,51,.45); }
 .scale { display: flex; gap: 6px; margin-top: 26px; max-width: 420px; }
 .scale i { flex: 1; height: 12px; border-radius: 99px; background: var(--c); }
-.scale-l { display: flex; justify-content: space-between; max-width: 420px; font-size: 13px; color: var(--layl-soft); margin-top: 6px; font-weight: 600; }
+.scale-l { display: flex; justify-content: space-between; max-width: 420px; font-size: 13px; color: var(--layl); margin-top: 6px; font-weight: 600; }
 .ring-pin { position: sticky; top: 0; height: 100vh; display: grid; grid-template-columns: .8fr 1.2fr; align-items: center; gap: 30px; }
 .carousel { position: relative; height: 420px; perspective: 1500px; }
 .carousel-in { position: absolute; left: 50%; top: 50%; transform-style: preserve-3d; transition: transform .4s ease-out; }
