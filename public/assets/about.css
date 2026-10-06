@@ -74,7 +74,29 @@ body.about { background: var(--sabah); }
 .ab-book { background: var(--raml); }
 .ab-book h2 { font-size: clamp(28px, 3.2vw, 44px); margin: 0; }
 
-/* 6 · research */
+/* 6 · CV */
+.ab-cv { background: var(--sabah); }
+.cv-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 18px; margin-top: 26px; }
+.cv-col { background: var(--white); border-radius: 32px; padding: 26px 28px; border: 1px solid var(--raml-2); }
+.cv-col h3 { font-size: 15px; color: var(--muted); font-weight: 700; margin: 18px 0 10px; letter-spacing: .02em; }
+.cv-col h3:first-child { margin-top: 0; }
+.cv-item { display: grid; grid-template-columns: 110px 1fr; gap: 14px; padding: 12px 0; border-top: 1px solid var(--raml); }
+.cv-item:first-of-type { border-top: 0; }
+.cv-item .yr { font-weight: 800; color: var(--nur-ink); direction: ltr; text-align: end; font-size: 15px; padding-top: 2px; }
+.cv-item b { display: block; font-size: 17px; line-height: 1.5; }
+.cv-item small { display: block; font-size: 14px; color: var(--layl-soft); line-height: 1.7; margin-top: 2px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips span { background: var(--layl); color: var(--sabah); border-radius: 999px; padding: 6px 14px; font-size: 14px; font-weight: 600; }
+.chips.light span { background: var(--raml); color: var(--layl); }
+.cv-beyond { display: grid; grid-template-columns: 64px 1fr; gap: 14px; align-items: center; margin-top: 22px; background: var(--raml); border-radius: 22px; padding: 16px; }
+.cv-beyond b { display: block; font-size: 16px; } .cv-beyond small { font-size: 14px; line-height: 1.75; color: var(--layl-soft); }
+.cube { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; width: 64px; height: 64px; background: var(--layl); border-radius: 12px; padding: 5px; transform: rotate(-8deg); }
+.cube i { border-radius: 3px; background: var(--nur); }
+.cube i:nth-child(2), .cube i:nth-child(6), .cube i:nth-child(7) { background: var(--mishmish); }
+.cube i:nth-child(3), .cube i:nth-child(8) { background: var(--khuzama); }
+.cube i:nth-child(5) { background: var(--sabah); }
+
+/* 7 · research */
 .ab-research-in { display: grid; grid-template-columns: 90px 1fr; gap: 28px; align-items: start; background: var(--layl); color: var(--sabah); border-radius: 40px; padding: clamp(28px, 4vw, 54px); }
 .ab-research .lede { color: #C9C5DE; max-width: 44em; }
 .ab-research .kicker { background: var(--khuzama); color: var(--layl); }
@@ -85,11 +107,12 @@ body.about { background: var(--sabah); }
 @media (max-width: 1000px) {
   .ab-hero-in, .ab-logo-in, .ab-pal { grid-template-columns: 1fr; }
   .ab-photo { max-width: 420px; }
-  .ab-steps { grid-template-columns: 1fr; }
+  .ab-steps, .cv-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 620px) {
   .ab-grid, .type-row { grid-template-columns: 1fr; }
   .pal-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .pc { min-height: 110px; }
   .ab-research-in { grid-template-columns: 1fr; }
+  .cv-item { grid-template-columns: 1fr; gap: 2px; } .cv-item .yr { text-align: start; }
 }

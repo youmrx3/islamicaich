@@ -236,7 +236,8 @@ a { color: inherit; }
 .quran-cap::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--g-mawdu); }
 
 /* grades ring */
-.ring { height: 260vh; background: var(--mishmish); position: relative; }
+.ring { height: 260vh; background: var(--nur); position: relative; }
+.ring h2 { color: var(--layl); }
 .ring .lede { color: var(--layl); opacity: .8; }
 .ring .gcard { box-shadow: 0 30px 60px -34px rgba(29,27,51,.45); }
 .scale { display: flex; gap: 6px; margin-top: 26px; max-width: 420px; }

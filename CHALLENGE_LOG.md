@@ -125,11 +125,12 @@ git log --oneline baseline-pre-challenge..HEAD
 
 ### `/about` — the maker, the idea, the brand
 - A standalone **About page** (navbar «عن ثَبَت»), written in the participant's own voice:
-  - a hook: speedcubing, second in Algeria, «every mess has a solution, piece by piece»;
+  - a formal opening: «when design meets the understanding of language, verification becomes within everyone's reach»;
   - the story in three moments: the chaos, the idea, the making;
   - **the idea of the logo**, an interactive mark: three lines for the forwarded message, the highlighted line for the verified text, the diamond for «here», the rounded square for safety and familiarity;
   - the brand's purpose, mission, vision and promise;
   - the palette and the typefaces;
   - the 23-board brand-identity slider with a PDF download;
+  - a career section from the CV: education, experience, skills, tools, and speedcubing (second in Algeria);
   - the research (multilingual chatbots for mental-health support).
-- Home page: the grading-scale section now has its own apricot («مشمش») background from the palette; the final call to action is followed directly by the footer.
+- Home page: the grading-scale section now has its own green («نور») background from the palette; the final call to action is followed directly by the footer.
