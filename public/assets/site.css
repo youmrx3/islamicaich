@@ -236,9 +236,24 @@ a { color: inherit; }
 .quran-cap::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--g-mawdu); }
 
 /* grades ring */
-.ring { height: 260vh; background: var(--nur); position: relative; }
-.ring h2 { color: var(--layl); }
-.ring .lede { color: var(--layl); opacity: .8; }
+.ring { height: 260vh; background: var(--sabah); position: relative; }
+/* moving divider between «repeated & similar verses» and «the grading scale» */
+.sep-wrap { background: var(--sabah); padding: 6px 0 0; }
+.sep { width: min(1200px, 100% - 32px); margin: 0 auto; display: flex; align-items: center; gap: 22px; }
+.sep .ln { flex: 1; height: 2px; border-radius: 2px; background: var(--raml-2); position: relative; overflow: hidden; transform: scaleX(0); transition: transform 1.3s cubic-bezier(.2,.8,.2,1); }
+.sep .ln.a { transform-origin: left center; } .sep .ln.b { transform-origin: right center; }
+[dir="rtl"] .sep .ln.a { transform-origin: left center; } [dir="rtl"] .sep .ln.b { transform-origin: right center; }
+.sep.in .ln { transform: scaleX(1); }
+.sep .ln::after { content: ""; position: absolute; top: 0; bottom: 0; width: 140px; background: linear-gradient(90deg, transparent, var(--nur), transparent); animation: glint 3.4s linear infinite; }
+.sep .ln.a::after { animation-direction: reverse; }
+@keyframes glint { from { left: -140px; } to { left: 100%; } }
+.sep .mid { display: flex; align-items: center; gap: 10px; opacity: 0; transform: scale(.6); transition: opacity .6s .5s, transform .6s .5s cubic-bezier(.2,.8,.2,1); }
+.sep.in .mid { opacity: 1; transform: none; }
+.sep .dm { width: 18px; height: 18px; background: var(--nur); clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); animation: dmPulse 2.4s ease-in-out infinite; }
+.sep .pip { width: 7px; height: 7px; border-radius: 50%; background: var(--layl); opacity: .25; animation: pip 2.4s ease-in-out infinite; }
+.sep .pip.r { animation-delay: .3s; }
+@keyframes dmPulse { 0%, 100% { transform: scale(1) rotate(0deg); } 50% { transform: scale(1.35) rotate(90deg); } }
+@keyframes pip { 0%, 100% { opacity: .2; } 50% { opacity: .7; } }
 .ring .gcard { box-shadow: 0 30px 60px -34px rgba(29,27,51,.45); }
 .scale { display: flex; gap: 6px; margin-top: 26px; max-width: 420px; }
 .scale i { flex: 1; height: 12px; border-radius: 99px; background: var(--c); }

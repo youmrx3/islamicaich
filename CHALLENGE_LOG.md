@@ -133,4 +133,4 @@ git log --oneline baseline-pre-challenge..HEAD
   - the 23-board brand-identity slider with a PDF download;
   - a career section from the CV: education, experience, skills, tools, and speedcubing (second in Algeria);
   - the research (multilingual chatbots for mental-health support).
-- Home page: the grading-scale section now has its own green («نور») background from the palette; the final call to action is followed directly by the footer.
+- Home page: the grading-scale section is separated from the similar-verses section by an animated divider (lines drawing out from the brand diamond, with a travelling glint) from the palette; the final call to action is followed directly by the footer.

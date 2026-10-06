@@ -316,3 +316,10 @@ Promise.all([verify("قال تعالى: «فبأي آلاء ربكما تكذب�
   };
   draw(); rerender.push(draw);
 }).catch(() => {});
+
+/* ---------- divider: the lines draw out from the diamond when it comes into view */
+(function sep() {
+  const el = $("#sep"); if (!el) return;
+  if (reduce || !("IntersectionObserver" in window)) { el.classList.add("in"); return; }
+  new IntersectionObserver(([e]) => el.classList.toggle("in", e.isIntersecting), { threshold: .6 }).observe(el);
+})();
