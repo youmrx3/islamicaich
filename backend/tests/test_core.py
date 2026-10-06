@@ -267,3 +267,17 @@ def test_similar_verses_are_never_confused(corpus):
 def test_repeated_verse_is_explained_to_the_user():
     r = verify_text("قال تعالى: «فبأي آلاء ربكما تكذبان»", use_llm=False)["results"][0]
     assert "quran_repeated" in r["notes"] and "31 موضعًا" in r["explanation_ar"]
+
+
+def test_hero_snapshot_matches_the_engine():
+    """The website's instant hero snapshot must be exactly what the engine answers."""
+    import json, re
+    from pathlib import Path
+    js = (Path(__file__).resolve().parents[2] / "public/assets/site.js").read_text(encoding="utf-8")
+    msg = json.loads(re.search(r'const STORY_MSG = (".*?");', js).group(1))
+    snap = json.loads(re.search(r"const HERO_SNAPSHOT = (\{.*?\});\n", js).group(1))
+    live = verify_text(msg, use_llm=False)["results"]
+    assert [(v["status"], v["quote"]) for v in snap["results"]] == [(v["status"], v["quote"]) for v in live]
+    for s_, l_ in zip(snap["results"], live):
+        if l_.get("quran"):
+            assert s_["quran"]["citation_ar"] == l_["quran"]["citation_ar"] and s_["quran"]["diff"] == l_["quran"]["diff"]

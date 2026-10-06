@@ -65,6 +65,9 @@ async function verify(text) {
   return r.json();
 }
 const STORY_MSG = "قال رسول الله ﷺ: «إنما الأعمال بالنيات» وقال تعالى: «وقل ربي زدني علما». وقال ﷺ: «اطلبوا العلم ولو بالصين». ومن نشرها «فُتح له باب من الجنة»";
+/* The hero and the story render instantly from a snapshot of the engine's own answer to STORY_MSG
+   (regenerated from the engine whenever this message changes); the live answer then replaces it. */
+const HERO_SNAPSHOT = {"results":[{"status":"authentic","quote":"إنما الأعمال بالنيات","kind":"hadith","level":"أ","level_latin":"A","level_ar":"(أ) معلومة أصلية مستقرة — إجابة مباشرة موثقة بالمصدر","level_en":"(A) Stable original information — direct answer documented with its source","evidence":[{"book":"bukhari","number":"1","grade":{"grades":[]}},{"book":"abudawud","number":"2201","grade":{"grades":[{"label":"Sahih"},{"label":"Sahih"},{"label":"Sahih"},{"label":"Sahih Bukhari (1) Sahih Muslim (1907)"}]}},{"book":"ibnmajah","number":"4227","grade":{"grades":[{"label":"Sahih"},{"label":"Sahih"},{"label":"Sahih"},{"label":"Sahih - Agreed Upon"}]}}]},{"status":"quran_variant","quote":"وقل ربي زدني علما","kind":"quran","level":"أ","level_latin":"A","level_ar":"(أ) معلومة أصلية مستقرة — إجابة مباشرة موثقة بالمصدر","level_en":"(A) Stable original information — direct answer documented with its source","quran":{"citation_ar":"سورة طه، الآية 114","citation_en":"Quran 20:114 (Ta-Ha)","diff":[{"op":"equal","text":"وَقُل"},{"op":"wrong","quoted":"ربي","correct":"رَّبِّ"},{"op":"equal","text":"زِدْنِي عِلْمًا"}],"changed_words":1},"evidence":[{"book":null,"number":null,"grade":{"grades":[]}}]},{"status":"fabricated","quote":"اطلبوا العلم ولو بالصين","kind":"registry","level":"ب","level_latin":"B","level_ar":"(ب) شرح وتعريف — من مادة معتمدة مع إظهار المرجع وتجنب القطع فيما يحتمل الخلاف","level_en":"(B) Explanation — from approved material, reference shown, no certainty where scholars may differ","registry":{"sources":[{"ar":"الألباني، سلسلة الأحاديث الضعيفة والموضوعة، رقم 416","en":"al-Albani, Silsilat al-Ahadith al-Da'ifa, no. 416"},{"ar":"ابن الجوزي، الموضوعات","en":"Ibn al-Jawzi, al-Mawdu'at"}]},"evidence":[]},{"status":"needs_review","quote":"فُتح له باب من الجنة","kind":"hadith","level":"ج","level_latin":"C","level_ar":"(ج) مسألة خلافية أو غير محسومة — بيان الخلاف أو الامتناع والإحالة إلى مختص","level_en":"(C) Disputed or unresolved — disagreement stated, or abstain and refer to a specialist","evidence":[{"book":"bukhari","number":"4400","grade":{"grades":[]}},{"book":"tirmidhi","number":"3548","grade":{"grades":[{"label":"Daif"},{"label":"Daif"},{"label":"Daif"}]}},{"book":"nasai","number":"2088","grade":{"grades":[{"label":"Sahih"},{"label":"Sahih"},{"label":"Hasan"}]}}]}]};
 const storyP = verify(STORY_MSG).catch(() => null);
 
 /* ---------- hero */
@@ -127,7 +130,10 @@ function heroFill(r) {
     <div class="ph-btn">▶ ${AR() ? "استمع للآية" : "Listen"}</div>
     <div class="ph-lv"><b>${esc(AR() ? qv.level : qv.level_latin)}</b><span>${esc(AR() ? qv.level_ar : qv.level_en)}</span></div>`;
 }
-storyP.then((r) => { heroFill(r); storyCards(r); rerender.push(() => { heroFill(r); storyCards(r); }); });
+let heroData = HERO_SNAPSHOT;
+const heroDraw = () => { heroFill(heroData); storyCards(heroData); };
+queueMicrotask(heroDraw); rerender.push(heroDraw);  // after the rest of this file has been defined
+storyP.then((r) => { if (r?.results?.length) { heroData = r; heroDraw(); } });
 
 /* ---------- scroll helpers */
 const clamp = (v) => Math.max(0, Math.min(1, v));
