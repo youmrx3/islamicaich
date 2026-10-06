@@ -120,8 +120,15 @@ git log --oneline baseline-pre-challenge..HEAD
 
 ## Day 3 · Tuesday 6 October
 
+### Presentation
+- **36 slides on the official challenge template** (`presentation/Thabat_Presentation.pdf` and `.pptx`), structured on the judging criteria: problem and success criterion, solution (desktop tool, details, verse diff, honesty, similar verses, reply, app), the AI pipeline and a comparison with alternatives, sources, scientific safety (levels أ–د), human review, the measured results with a native chart and their limits, the brand, UX and privacy, what was built during the challenge days, operations and cost, the roadmap, how to try it, and the participant. Speaker notes on every slide.
+
+### README
+- A step-by-step guide for the judges to run the project on their own computer (Windows, macOS, Linux, or Docker), with what to try and troubleshooting.
+
 ### Animated film
-- A 60-second animated film (8 scenes, brand transitions, kinetic Arabic type). Every verdict, citation and count on screen is fetched live from the engine. It has an original score synthesized in code (no samples). Source: `video/film60.html`, `video/score.py`, `video/render.py`.
+- **The 2-minute film** (`video/thabat_film120.mp4`): 13 scenes, slower pace, covering the problem, the desktop tool and the app, the scholars' gradings by name, the verse word by word, the authentic alternative, abstention and fatwa referral, repeated and similar verses, the AI pipeline («not RAG») with the measured numbers, the kind reply in 5 languages and the card, the specialist reviewers and levels أ–د, the idea of the logo, and the outro. It has an original 2-minute score synced to all 12 transitions.
+- Earlier, a 60-second animated film (8 scenes, brand transitions, kinetic Arabic type). Every verdict, citation and count on screen is fetched live from the engine. It has an original score synthesized in code (no samples). Source: `video/film60.html`, `video/score.py`, `video/render.py`.
 
 ### `/about` — the maker, the idea, the brand
 - A standalone **About page** (navbar «عن ثَبَت»), written in the participant's own voice:

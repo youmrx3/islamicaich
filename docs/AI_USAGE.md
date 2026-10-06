@@ -39,6 +39,7 @@ The participant (Youcef Kouadria) is responsible for the concept, the method, th
 |---|---|---|---|---|
 | **Claude Code** | Anthropic | Coding assistant: drafting and refactoring backend and frontend code, tests, evaluation scripts and documentation; visual QA with screenshots | Code across `backend/`, `public/`, `eval/`, `scripts/`, and the docs | The participant chose the method and architecture, set the rules (no retyped sacred text, no invented references, annex levels), and reviewed and tested the output |
 | **Claude Design** | Anthropic | Exploring layouts for the website and the mobile app from the participant's brief and brand | Not committed. The designs were re-implemented in code and adapted (layout, content, and corrections to factual claims) | The participant briefed and selected the designs |
+| **Claude Code** (media) | Anthropic | Writing the animated film as a web page rendered frame by frame (`video/film120.html`, `video/render.py`), synthesizing its original score in code (`video/score.py`, no samples), and building the presentation on the official template | `video/`, `presentation/` | The participant directed the content, the pace and the brand, and reviewed every scene and slide; all verdicts shown in the film are fetched live from the engine |
 | **Claude (API)**, optional | Anthropic | Runtime quote extraction only (see part 1) | `backend/app/llm.py` | Off by default; never used as evidence |
 
 ### Not AI-generated

@@ -10,11 +10,19 @@ Verifies the Quran verses and hadith in forwarded messages against the sources, 
 
 *Entry for **Track 04: Knowledge & verification tools**, AI in Service of Islamic Content Challenge 2026 ([IslamicAIch.org](https://islamicaich.org)). Built by **Youcef Kouadria**.*
 
-[Website](#run-it) · [App (PWA)](#the-app) · [How the AI works](#how-the-ai-works) · [Results](#measured-results) · [Docs](#documentation)
+[Run it](#run-it-on-your-computer-for-the-judges) · [Live demo](https://islamicaich.vercel.app) · [App (PWA)](#the-app) · [How the AI works](#how-the-ai-works) · [Results](#measured-results) · [Docs](#documentation)
 
 </div>
 
 ![Thabat website](docs/screenshots/site-hero.png)
+
+## Live demo, video and presentation
+
+| | |
+|---|---|
+| 🌐 **Live demo** | https://islamicaich.vercel.app — desktop tool at [`/verify`](https://islamicaich.vercel.app/verify), the app in a phone frame at [`/mobile`](https://islamicaich.vercel.app/mobile) |
+| 🎬 **Video (2:00)** | [`video/thabat_film120.mp4`](video/thabat_film120.mp4): an animated film with an original score; every verdict on screen comes from the live engine |
+| 📊 **Presentation** | [`presentation/Thabat_Presentation.pdf`](presentation/Thabat_Presentation.pdf) · [PPTX](presentation/Thabat_Presentation.pptx): 36 slides on the official template |
 
 ## The problem
 
@@ -85,7 +93,7 @@ From [`eval/results/REPORT.md`](eval/results/REPORT.md), deterministic core:
 | True source found from a random Arabic phrase with phone-typing noise | **98.5%** recall@3 (exact search: **0%**) |
 | Same, English translations | **97%** recall@3 |
 | Repeated runs | identical output |
-| Speed and footprint | ~25 ms per message · ~0.3 s cold load · ~120 MB RAM |
+| Speed and footprint | ~28 ms per message · ~0.3 s cold load · ~120 MB RAM |
 
 These cases were written during development, so the figures are optimistic. A held-out test set written by a specialist is the next benchmark.
 
@@ -96,29 +104,88 @@ These cases were written during development, so the figures are optimistic. A he
 - **Conflicts are shown, not hidden:** scholars who disagree; a phrase graded differently from its full narration; a Companion's words attributed to the Prophet ﷺ; a verse quoted as a hadith.
 - **Private by design:** messages are not stored; screenshots never leave the device; history stays on the phone. See the [privacy policy](public/privacy.html).
 
-## Run it
+## Run it on your computer (for the judges)
+
+Everything needed is in this repository, including the compiled corpus (`data/dist/`, 111 MB), so **nothing is downloaded at runtime and no account or API key is needed**. It takes about two minutes.
+
+### 1. Requirements
+
+- **Python 3.12 or newer** ([python.org/downloads](https://www.python.org/downloads/)). On Windows, tick *"Add python.exe to PATH"* during installation.
+- **Git** ([git-scm.com](https://git-scm.com/downloads)), or download the repository as a ZIP from GitHub (*Code → Download ZIP*).
+- About 400 MB of free disk space and 300 MB of RAM.
+
+### 2. Get the code
 
 ```bash
+git clone https://github.com/youmrx3/islamicaich.git
+cd islamicaich
+```
+
+### 3. Install (in a virtual environment)
+
+**Windows (PowerShell)**
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
 pip install -r requirements-dev.txt
+```
+
+**macOS / Linux**
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements-dev.txt
+```
+
+### 4. Start Thabat
+
+```bash
 python -m uvicorn index:app --port 8000
 ```
 
-| URL | |
-|---|---|
-| `http://localhost:8000/` | website |
-| `/verify` | the full desktop verification tool (message → results → details, evidence search, reply, card) |
-| `/app` | the app (PWA) · demos: `/app?ex=0` … `/app?ex=5` · search: `/app?mode=search` |
-| `/mobile` | the app in a phone frame + QR code |
-| `/about` | the maker, the idea of the logo, the brand identity (23 boards) |
-| `/join` · `/review` | apply as a reviewer · reviewer and admin sign-in |
-| `/api/docs` | API (`/api/verify`, `/api/search`, `/api/daily`, `/api/reply`, `/api/flag`, `/api/review`…) |
+Open **http://localhost:8000** in your browser. To check the server and the data, open http://localhost:8000/api/health. It should say `"ok": true`, `"hadith_records": 36064` and `"quran_verses": 6236`.
 
-The compiled corpus is committed in `data/dist/`, so nothing needs to be downloaded. To rebuild it from the original sources: `python scripts/build_data.py && python scripts/build_index.py`.
+### 5. What to try
+
+| Open | What you will see |
+|---|---|
+| `http://localhost:8000/` | The website, with live examples from the engine |
+| `/verify` | **The full desktop tool.** Paste a message, or press one of the «جرّب» examples |
+| `/verify?ex=0` | A forwarded message with an authentic hadith, a misquoted verse, a fabricated saying and forwarding pressure |
+| `/verify?ex=1` | A misquoted verse, compared word by word with the Mushaf |
+| `/verify?ex=2` | A made-up hadith: «no source found» (abstention, not a false verdict) |
+| `/verify?ex=5` | A personal fatwa request: level د, referral instead of a ruling |
+| `/verify?mode=search&sq=بر الوالدين` | Evidence search: only authentic verses and hadith, with sources |
+| `/app` · `/mobile` | The mobile app (PWA), and the app inside a phone frame |
+| `/about` | The maker, the idea of the logo and the brand identity |
+| `/join` · `/review` | Apply as a reviewer, and the reviewer/admin sign-in (locally, without `REVIEW_TOKEN`, any password signs you in as admin) |
+| `/api/docs` | The interactive API documentation |
+
+To test reports and review decisions locally, no database is needed: they are written to `data/flags/*.jsonl` (ignored by git). Supabase is only used when its environment variables are set.
+
+### 6. Run the tests and the evaluation
 
 ```bash
-cd backend && python -m pytest tests -q && cd ..   # 25 tests
-python eval/run_eval.py                             # evaluation report
+cd backend && python -m pytest tests -q && cd ..   # 28 tests, about 3 seconds
+python eval/run_eval.py                             # regenerates eval/results/REPORT.md
 ```
+
+### Optional
+
+- **Docker**, instead of steps 3–4: `docker build -t thabat .` then `docker run -p 7860:7860 thabat`, and open http://localhost:7860.
+- **The optional language model**: set `ANTHROPIC_API_KEY` before starting. Without it, Thabat runs fully on its deterministic engine, which is how all the reported results were measured.
+- **Rebuilding the corpus from the original sources** (not needed): `python scripts/build_data.py && python scripts/build_index.py`.
+
+### Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| `python` is not found (Windows) | Use `py` instead of `python`, or reinstall Python with *Add to PATH* |
+| `Activate.ps1 cannot be loaded` (Windows) | Skip activation and use `.venv\Scripts\python -m pip …` and `.venv\Scripts\python -m uvicorn …` |
+| Port 8000 is already in use | Use another port: `python -m uvicorn index:app --port 8010` |
+| Arabic fonts look different | The pages load the Alexandria and Amiri fonts from Google Fonts, so an internet connection gives the intended look; everything works offline too |
 
 ### Deploy (Vercel)
 
@@ -139,14 +206,16 @@ Full guide: [docs/DEPLOY.md](docs/DEPLOY.md).
 index.py              ASGI entry point (Vercel) → backend.app.main:app
 backend/app/          normalize · corpus · matching · grades · verify · scope · search · replies · llm · flags · main
 backend/tests/        safety, annex and API tests
-public/               index.html (website) · verify.html (desktop tool) · app.html (PWA) · mobile.html · join.html · review.html · privacy.html
-  assets/             site.* · app.* · brand/ · icons/
+public/               index.html (website) · verify.html (desktop tool) · app.html (PWA) · mobile.html · about.html · join.html · review.html · privacy.html
+  assets/             site.* · app.* · verify.* · about.* · brand/ · brandbook/ · icons/ · team/
   manifest.webmanifest, sw.js
 data/dist/            compiled corpus (36,064 narrations + 6,236 verses)
 data/curated/         registry.json (popular sayings, under review) · daily.json (hadith of the day)
 supabase/             schema.sql + migrations/: reports, review decisions, reviewer accounts (RLS)
 eval/                 cases, runner, results
 docs/                 methodology · reliability · AI usage · sources · operations · baseline · deploy
+presentation/         the final presentation (PDF + PPTX, official template)
+video/                the 2-minute film (MP4), its source (film120.html), the renderer and the score generator
 CHALLENGE_LOG.md      what was built during 4–6 October 2026
 ```
 
