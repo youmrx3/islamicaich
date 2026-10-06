@@ -41,4 +41,18 @@ This is the part to be judged. Each item has a measurable definition of done.
 
 The submission will list exactly which commits fall between `baseline-pre-challenge` and the final tag.
 
+## Outcome of the plan (6 October 2026)
+
+| # | Deliverable | Status |
+|---|---|---|
+| 1 | Specialist review workflow | ✅ Done, and extended with verified reviewer accounts (`/join` → approval → personal code → signed decisions). All 14 register entries reviewed and approved by Meriem Kouadria (Quran teacher at a zawiya) |
+| 2 | Held-out test set | ⏳ Not completed in the window; remains the next benchmark |
+| 3 | Register to ≥ 60 sayings | ⏳ Not done; the register stays at 14 reviewed entries. Effort went into the repeated/similar verses method instead |
+| 4 | LLM assist evaluated | ⏳ Not done; the LLM stays optional and off by default. All results are from the deterministic core |
+| 5 | Telegram bot | 🔜 Moved to *coming soon*; a WhatsApp-bot simulation on the real engine is in the app |
+| 6 | User test (5 people) | ✅ Done by the participant; no blocking issues reported, so no UI change was needed |
+| 7 | Shareable verdict card | ✅ Done (PNG, Arabic and English) |
+
+Added during the challenge days, beyond the plan: the full brand identity, the new website with its AI section, the desktop tool `/verify`, the installable app (PWA) and the `/mobile` simulator, Supabase storage, repeated and similar Quran verses, verse audio, hadith of the day, the About page, the 2-minute film, and the 36-slide presentation. See [CHALLENGE_LOG.md](../CHALLENGE_LOG.md).
+
 > **Progress against this plan** is recorded day by day in [CHALLENGE_LOG.md](../CHALLENGE_LOG.md). On day 1 the plan was adjusted: the participant delivered a full brand identity and new website/app designs, so the redesigned website, the installable mobile app (PWA) with the `/mobile` simulator, Supabase storage and the review workflow (item 1) and verdict card (item 7) were prioritised. The Telegram bot (item 5) moved to *coming soon*.

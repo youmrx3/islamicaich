@@ -40,6 +40,9 @@ The participant (Youcef Kouadria) is responsible for the concept, the method, th
 | **Claude Code** | Anthropic | Coding assistant: drafting and refactoring backend and frontend code, tests, evaluation scripts and documentation; visual QA with screenshots | Code across `backend/`, `public/`, `eval/`, `scripts/`, and the docs | The participant chose the method and architecture, set the rules (no retyped sacred text, no invented references, annex levels), and reviewed and tested the output |
 | **Claude Design** | Anthropic | Exploring layouts for the website and the mobile app from the participant's brief and brand | Not committed. The designs were re-implemented in code and adapted (layout, content, and corrections to factual claims) | The participant briefed and selected the designs |
 | **Claude Code** (media) | Anthropic | Writing the animated film as a web page rendered frame by frame (`video/film120.html`, `video/render.py`), synthesizing its original score in code (`video/score.py`, no samples), and building the presentation on the official template | `video/`, `presentation/` | The participant directed the content, the pace and the brand, and reviewed every scene and slide; all verdicts shown in the film are fetched live from the engine |
+| **Google Flow** | Google | Generating brand visuals from the participant's logo: scene and mockup images (for example the exhibition booth, the app in hand, apparel) used in the brand book | `public/assets/brandbook/` (some boards), `brand/` source files (not committed) | The participant wrote the prompts, selected the images and composed the boards; the logo and identity themselves are his own design |
+| **Adobe Photoshop** (AI-assisted features) | Adobe | Compositing and retouching the brand mockups and visuals | Brand-book boards | Designed and finalised by the participant |
+| **Adobe Illustrator** (AI-assisted features) | Adobe | Vector work on the brand identity and the brand-book layouts | `public/assets/brand/`, brand-book boards | The logo concept, the grid and the colour system are the participant's own design |
 | **Claude (API)**, optional | Anthropic | Runtime quote extraction only (see part 1) | `backend/app/llm.py` | Off by default; never used as evidence |
 
 ### Not AI-generated
@@ -47,8 +50,8 @@ The participant (Youcef Kouadria) is responsible for the concept, the method, th
 - **All Quran text, hadith text and gradings** come from the published datasets listed in [SOURCES.md](SOURCES.md), verbatim.
 - **The curated register** (`data/curated/registry.json`) cites published scholarly works by title and number. Entries stay *draft* until a named specialist approves them on `/review`.
 - **Test messages** are synthetic, written for testing. No real user conversations were used.
-- **The brand identity** (logo, mark, colour system) is the participant's own design work.
+- **The brand identity** (logo, mark, colour system) is the participant's own design work; AI tools were used only for mockup scenes and finishing, as listed above.
 
-### To be completed by the participant before submission
+### Complete list
 
-Add a row above for each further AI tool used for media during 4–6 October (for example, image generation for brand visuals, the animation video, or the presentation), with what it produced.
+The tools above are the complete list of AI tools used to build Thabat, as declared by the participant on 6 October 2026.

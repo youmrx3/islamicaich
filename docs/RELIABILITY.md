@@ -45,7 +45,7 @@ Maps to the rubric items "Reliability plan" (acceptance, 20%) and "Reliability a
 | 200 random Arabic phrases, clean and with phone-typing noise | Finding the true source | recall@3 100% / 98.5% (exact search 0% with noise) |
 | 100 random English phrases | Cross-language | recall@3 97% |
 | Two full runs | Repeatability | identical |
-| 18 unit/API tests | Safety invariants, annex behaviours, endpoints | pass |
+| 28 unit/API tests | Safety invariants, annex behaviours, endpoints, reviewer accounts, repeated/similar verses | pass |
 
 **Conflict cases covered:** grader disagreement; phrase vs full narration (R014); Companion's words attributed to the Prophet ﷺ; Quran quoted as hadith and the reverse; an authentic English rendering vs a near-identical baseless saying.
 **Missing-reference cases covered:** 11 invented texts in 3 languages, plus 2 "prove X" evidence requests: all abstained.
@@ -54,7 +54,8 @@ Maps to the rubric items "Reliability plan" (acceptance, 20%) and "Reliability a
 ## 5. Human review
 
 - **Reviewers are verified:** specialists apply at `/join`, the admin checks their qualification before approving, and each receives a personal access code (stored only as a hash; revocable). There is no shared password for reviewers.
-- **Register:** entries stay `draft` (with a visible badge) until an approved hadith specialist approves them; every decision is signed with the reviewer's verified name and logged (who, when, what, note).
+- **Register:** entries stay `draft` (with a visible badge) until an approved reviewer approves them; every decision is signed with the reviewer's verified name and logged (who, when, what, note).
+- **Status on 6 October 2026:** all **14 of 14** register entries were reviewed and approved on `/review` by **Meriem Kouadria**, a Quran teacher at a zawiya, through a verified reviewer account. Each decision is stored in Supabase with her name and the time, and every result shows «راجعه مختص» with the reviewer's name. A review by a hadith specialist remains the next step for the register and for a held-out test set.
 - **User reports:** any result can be reported; reports go to the token-protected review queue (`/review`), stored in Supabase in production.
 
 ## 6. Expected errors and handling

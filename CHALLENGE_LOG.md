@@ -120,6 +120,11 @@ git log --oneline baseline-pre-challenge..HEAD
 
 ## Day 3 · Tuesday 6 October
 
+### Review and user test
+- **Register review:** all **14/14** entries were reviewed and approved on `/review` by **Meriem Kouadria** (a Quran teacher at a zawiya), signing in with a verified reviewer account. The decisions are signed with her name, stored in Supabase, and shown on every matching result.
+- **Quick user test:** five people checked forwarded messages with the live app («is this message safe to share?»). The participant reported no blocking issues, so no change was needed.
+- **AI disclosure completed:** Google Flow, Adobe Photoshop and Adobe Illustrator were added to [docs/AI_USAGE.md](docs/AI_USAGE.md).
+
 ### Presentation
 - **36 slides on the official challenge template** (`presentation/Thabat_Presentation.pdf` and `.pptx`), structured on the judging criteria: problem and success criterion, solution (desktop tool, details, verse diff, honesty, similar verses, reply, app), the AI pipeline and a comparison with alternatives, sources, scientific safety (levels أ–د), human review, the measured results with a native chart and their limits, the brand, UX and privacy, what was built during the challenge days, operations and cost, the roadmap, how to try it, and the participant. Speaker notes on every slide.
 

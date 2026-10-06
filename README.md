@@ -41,6 +41,10 @@ Paste a message or share a screenshot. For **every quote in it**, Thabat:
 | 🧭 **Stays in scope** | Every result carries the annex's content level (أ/ب/ج/د). Fatwa requests are referred, not answered |
 | 💬 **Helps you reply kindly** | A gentle reply in Arabic, English, French, Indonesian or Turkish, with an authentic alternative, or a verdict card image for the group |
 
+### On the computer: the full verification tool (`/verify`)
+
+![The desktop verification tool](docs/screenshots/verify-tool.png)
+
 ## The app
 
 One codebase serves the website and an **installable mobile app (PWA)** for Android and iPhone. Native-only features (floating bubble, widgets, iOS share sheet, WhatsApp bot) are shown as **clearly labelled simulations that call the real engine**. The native store apps are *coming soon*.
@@ -97,10 +101,16 @@ From [`eval/results/REPORT.md`](eval/results/REPORT.md), deterministic core:
 
 These cases were written during development, so the figures are optimistic. A held-out test set written by a specialist is the next benchmark.
 
+### Repeated and similar verses
+
+Repeated verses are reported in every place they occur (e.g. «فبأي آلاء ربكما تكذبان», 31 places), the closest wording decides between similar verses, and near-identical verses are shown side by side. See [docs/METHODOLOGY.md](docs/METHODOLOGY.md).
+
+![Repeated and similar verses](docs/screenshots/site-similar-verses.png)
+
 ## Why it can be trusted
 
 - **The sources decide, never the AI.** Quran text (Tanzil) and hadith text and gradings are shown verbatim. Sacred text is never typed by hand or generated.
-- **Human review with verified reviewers.** Specialists apply at `/join`; the admin verifies and approves them, and each gets a personal access code (only its hash is stored). Popular sayings in the register stay *draft* until an approved specialist signs them on `/review`. Every decision is logged with the reviewer's verified name and time, and accounts can be revoked.
+- **Human review with verified reviewers.** Specialists apply at `/join`; the admin verifies and approves them, and each gets a personal access code (only its hash is stored). Popular sayings in the register stay *draft* until an approved specialist signs them on `/review`. Every decision is logged with the reviewer's verified name and time, and accounts can be revoked. All 14 register entries have been reviewed and approved this way (6 October 2026).
 - **Conflicts are shown, not hidden:** scholars who disagree; a phrase graded differently from its full narration; a Companion's words attributed to the Prophet ﷺ; a verse quoted as a hadith.
 - **Private by design:** messages are not stored; screenshots never leave the device; history stays on the phone. See the [privacy policy](public/privacy.html).
 
