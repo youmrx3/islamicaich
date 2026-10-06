@@ -39,6 +39,8 @@ Dates are when the item was first used in this project. Hadith and Quran data ar
 |---|---|---|
 | Thabat brand identity (logo, mark, colours, app icons) | Designed by the participant, Youcef Kouadria (`public/assets/brand/`, `public/assets/icons/`) | Participant's own work |
 | Website and app layouts | The participant's design files (made with Claude Design, see [AI_USAGE.md](AI_USAGE.md)), re-implemented and adapted in code | Participant's own work |
+| Brand identity book (23 boards + PDF) shown on the website | The participant's own design, `public/assets/brandbook/` (web-sized copies of the original boards) | Participant's own work |
+| Participant photo and bio (website section «من صنع ثَبَت») | Provided by the participant for publication | Published with the participant's consent |
 | Challenge logo (footer, "participating in") | Organizer's logo, `public/assets/brand/challenge.svg` | Used only to indicate participation, as provided by the organizer |
 
 ## Data the product does NOT use

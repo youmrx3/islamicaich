@@ -119,4 +119,10 @@ git log --oneline baseline-pre-challenge..HEAD
 - Tests 25 → **28**; evaluation unchanged (98.6%, 0 critical errors).
 
 ## Day 3 · Tuesday 6 October
-*(to be filled)*
+
+### Animated film
+- A 60-second animated film (8 scenes, brand transitions, kinetic Arabic type). Every verdict, citation and count on screen is fetched live from the engine. It has an original score synthesized in code (no samples). Source: `video/film60.html`, `video/score.py`, `video/render.py`.
+
+### «من صنع ثَبَت» — the maker and the brand identity
+- New website section about the participant (senior graphic designer, PhD student in NLP; research: multilingual chatbots for mental-health support), with a link to his Behance.
+- The full **brand identity**: 23 boards in an animated slider with chapters (strategy · the mark · colour & type · applications), thumbnails, swipe and keyboard navigation, a full-screen view and a PDF download.
