@@ -67,7 +67,7 @@ const BB_TABS = [["all", "الكل", "All"], ["s", "الاستراتيجية", "
   function go(k, dir) {
     if (!list.length) return;
     k = (k + list.length) % list.length; if (k === i && dir === undefined) return;
-    const fwd = dir ?? (k > i ? 1 : -1), s = document.querySelectorAll(".bb-slide"), rtl = AR() ? -1 : 1;
+    const fwd = dir ?? (k > i ? 1 : -1), s = document.querySelectorAll(".bb-slide"), rtl = 1;  // the brand book always reads left to right
     const cur = s[i], nxt = s[k];
     cur.style.setProperty("--to", `${-6 * fwd * rtl}%`); cur.classList.remove("on"); cur.classList.add("out");
     nxt.classList.remove("out"); nxt.style.setProperty("--from", `${6 * fwd * rtl}%`);
@@ -95,15 +95,15 @@ const BB_TABS = [["all", "الكل", "All"], ["s", "الاستراتيجية", "
   stage.addEventListener("mouseenter", () => { paused = true; });
   stage.addEventListener("mouseleave", () => { paused = false; restart(); });
   stage.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowLeft") go(AR() ? i + 1 : i - 1, AR() ? 1 : -1);
-    if (e.key === "ArrowRight") go(AR() ? i - 1 : i + 1, AR() ? -1 : 1);
+    if (e.key === "ArrowLeft") go(i - 1, -1);
+    if (e.key === "ArrowRight") go(i + 1, 1);
   });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#bbLight").hidden) closeBig(); });
   let sx = null;
   stage.addEventListener("touchstart", (e) => { sx = e.touches[0].clientX; paused = true; }, { passive: true });
   stage.addEventListener("touchend", (e) => {
     if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; sx = null; paused = false;
-    if (Math.abs(dx) > 40) { const fwd = (dx < 0) !== AR(); go(fwd ? i + 1 : i - 1, fwd ? 1 : -1); } else restart();
+    if (Math.abs(dx) > 40) { const fwd = dx < 0; go(fwd ? i + 1 : i - 1, fwd ? 1 : -1); } else restart();
   });
   // only animate while the slider is on screen
   new IntersectionObserver(([en]) => { paused = !en.isIntersecting; if (en.isIntersecting) restart(); }, { threshold: .25 }).observe(stage);

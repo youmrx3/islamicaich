@@ -116,3 +116,7 @@ body.about { background: var(--sabah); }
   .ab-research-in { grid-template-columns: 1fr; }
   .cv-item { grid-template-columns: 1fr; gap: 2px; } .cv-item .yr { text-align: start; }
 }
+
+/* the brand book reads left to right in both languages */
+.bb-stage[dir="ltr"] .bb-nav { transform: none; }
+.bb-stage[dir="ltr"] .bb-nav:hover { transform: scale(1.08); }
